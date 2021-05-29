@@ -14,28 +14,28 @@ public class Menu {
         PopulateDishes();
     }
     private void PopulateIngredients() {
-        Ingredient ingredientHotSauce= new Ingredient(2,"HotSauce");
+        Ingredient ingredientHotSauce = new Ingredient(2,"HotSauce");
         availableIngredients.put(ingredientHotSauce.getName(), ingredientHotSauce);
 
-        Ingredient ingredientMildSauce= new Ingredient(2,"MildSauce");
+        Ingredient ingredientMildSauce = new Ingredient(2,"MildSauce");
         availableIngredients.put(ingredientMildSauce.getName(), ingredientMildSauce);
 
-        Ingredient ingredientChicken= new Ingredient(6,"Chicken");
+        Ingredient ingredientChicken = new Ingredient(6,"Chicken");
         availableIngredients.put(ingredientChicken.getName(), ingredientChicken);
 
-        Ingredient ingredientBeef= new Ingredient(7,"Beef");
+        Ingredient ingredientBeef = new Ingredient(7,"Beef");
         availableIngredients.put(ingredientBeef.getName(), ingredientBeef);
 
-        Ingredient ingredientLamb= new Ingredient(8,"Lamb");
+        Ingredient ingredientLamb = new Ingredient(8,"Lamb");
         availableIngredients.put(ingredientLamb.getName(), ingredientLamb);
 
-        Ingredient ingredientFrenchFries= new Ingredient(4,"FrenchFries");
+        Ingredient ingredientFrenchFries = new Ingredient(4,"FrenchFries");
         availableIngredients.put(ingredientFrenchFries.getName(), ingredientFrenchFries);
 
-        Ingredient ingredientCheese= new Ingredient(5,"Cheese");
+        Ingredient ingredientCheese = new Ingredient(5,"Cheese");
         availableIngredients.put(ingredientCheese.getName(), ingredientCheese);
 
-        Ingredient ingredientPineapple= new Ingredient(5,"Pineapple");
+        Ingredient ingredientPineapple = new Ingredient(5,"Pineapple");
         availableIngredients.put(ingredientPineapple.getName(), ingredientPineapple);
     }
 
