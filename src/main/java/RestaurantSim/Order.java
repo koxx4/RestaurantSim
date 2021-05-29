@@ -3,6 +3,7 @@ package RestaurantSim;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Order
 {
      private final List<Dish> dishes;
@@ -12,7 +13,8 @@ public class Order
         this.dishes = dishes;
     }
 
-    public List<Dish> getDishes() {
+    public List<Dish> getDishes() 
+    {
         return dishes;
     }
 }

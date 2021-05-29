@@ -11,7 +11,7 @@ public class Customer extends RestaurantGuest
     private Restaurant currentRestaurant;
 
     public Customer(String name)
-    {
+    { 
         super(name);
         RandomizePatience();
     }
