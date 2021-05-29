@@ -1,9 +1,5 @@
 package RestaurantSim;
 
-import org.w3c.dom.ls.LSOutput;
-
-import java.sql.SQLOutput;
-
 public class Program
 {
     private static SimulationManager simulationManager;
