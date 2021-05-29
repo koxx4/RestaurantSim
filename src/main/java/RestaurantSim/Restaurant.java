@@ -14,10 +14,12 @@ public class Restaurant {
     {
           this.menu=menu;
     }
+
     public void PopulateWithWorkers()
     {
 
     }
+
     public int ReceiveOrder(Order order)
     {
         return 1;
@@ -26,14 +28,17 @@ public class Restaurant {
     public Menu getMenu() {
         return menu;
     }
+
     public void AddGuestToQueue(RestaurantGuest restaurantGuest)
     {
         restaurantGuestsToBeServed.add(restaurantGuest);
     }
+
     public void RemoveGuestToQueue(RestaurantGuest restaurantGuest)
     {
         restaurantGuestsToBeServed.remove(restaurantGuest);
     }
+
     public void GiveRate(Double rate)
     {
         rates.add(rate);

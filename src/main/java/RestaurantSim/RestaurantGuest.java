@@ -13,7 +13,6 @@ public abstract class RestaurantGuest {
         this.name=name;
         this.orderID=orderID;
         this.waitingToBeServed=waitingToBeServed;
-
     }
 
     public RestaurantGuest(String name) {

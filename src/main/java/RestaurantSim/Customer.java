@@ -10,12 +10,6 @@ public class Customer extends RestaurantGuest{
     }
     public Order ComposeOrder(Dictionary<String,Dish> availableDishes, Order order)
     {
-        Random random= new Random();
-        int number = random.nextInt(5)+1;
-       /* switch(number)
-        {
-            case 1->
-        }*/
         return order;
     }
     public Order RateRestaurant(Order order)
