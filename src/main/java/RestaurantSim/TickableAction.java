@@ -1,15 +1,18 @@
 package RestaurantSim;
 
-public class TickableAction implements ITickableActionOnFinishCallback,ITickableActionOnUpdateCallback
+public class TickableAction
 {
-    String name;
-    int duration;
-    int ticksToComplete;
+    public ITickableActionOnFinishCallback onFinishCallback;
+    public ITickableActionOnUpdateCallback onUpdateCallback;
+    private String name;
+    private int duration;
+    private int ticksToComplete;
+
 
     public TickableAction(String name, int duration)
     {
-        this.name=name;
-        this.duration=duration;
+        this.name = name;
+        this.duration = duration;
     }
     public TickableAction( int ticksToComplete)
     {
@@ -17,25 +20,40 @@ public class TickableAction implements ITickableActionOnFinishCallback,ITickable
 
     }
 
-    public String getName() {
+    public String GetName() {
         return name;
     }
 
-    public int getDuration() {
+    public int GetDuration() {
         return duration;
     }
 
-    public int getTicksToComplete() {
+    public int GetTicksToComplete() {
         return ticksToComplete;
     }
 
-    public void setTicksToComplete(int ticksToComplete) {
+    public void SetTicksToComplete(int ticksToComplete) {
         this.ticksToComplete = ticksToComplete;
     }
 
-    @Override
-    public void Execute() {
-
+    public void DecrementTicks()
+    {
+        ticksToComplete--;
     }
 
+    public void ExecuteOnFinishCallback()
+    {
+        if(onFinishCallback != null)
+        {
+            onFinishCallback.Execute();
+        }
+    }
+
+    public void ExecuteOnUpdateCallback()
+    {
+        if(onUpdateCallback != null)
+        {
+            onUpdateCallback.Execute();
+        }
+    }
 }
