@@ -9,24 +9,17 @@ public class PreparedOrder {
     private float totalPrice;
 
 
-   /* private float CalculateTotalPrice()
+    private float CalculateTotalPrice()
     {
-
-    }*/
+      return totalPrice;
+    }
 
     public float getTotalPrice() {
         return totalPrice;
     }
     public boolean isReady()
     {
-        if(ready=true)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return ready;
     }
 
     public int getQuality() {

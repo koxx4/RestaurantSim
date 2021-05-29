@@ -16,6 +16,15 @@ public class Restaurant {
     }
     public void PopulateWithWorkers()
     {
+           Cook cook1= new Cook("Cooker Dave");
+           cooks.add(1,cook1);
+
+           Cook cook2= new Cook("Cooker Josh");
+           cooks.add(2,cook2);
+
+           Cook cook3= new Cook("Cooker Sam");
+           cooks.add(3,cook3);
+
 
     }
     public int ReceiveOrder(Order order)

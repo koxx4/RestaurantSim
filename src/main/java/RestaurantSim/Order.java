@@ -9,7 +9,6 @@ public class Order {
         this.dishes = dishes;
     }
 
-    public ArrayList<Dish> getDishes() {
-        return dishes;
+    public ArrayList<Dish> getDishes() { return dishes;
     }
 }
