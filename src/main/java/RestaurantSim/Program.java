@@ -21,7 +21,7 @@ public class Program
         thirdAction.onFinishCallback = () -> System.out.println("ThirdAction FINISH!");
 
 
-        System.out.println("Start symulacji i elo ");
+        System.out.println("Start symulacji i elo benc ");
         simulationManager = new SimulationManager(1000);
         simulationManager.SubscribeAction(firstAction);
         simulationManager.SubscribeAction(secondAction);

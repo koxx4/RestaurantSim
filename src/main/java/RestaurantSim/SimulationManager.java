@@ -81,6 +81,7 @@ public class SimulationManager
 
     public void SubscribeAction(TickableAction action)
     {
+
         gameActions.add(action);
     }
 }
