@@ -5,42 +5,43 @@ public abstract class RestaurantGuest {
     private String name;
     private boolean waitingToBeServed;
 
-    public RestaurantGuest() {
-    }
-
-    public RestaurantGuest(String name,int orderID,boolean waitingToBeServed )
+    public RestaurantGuest(String name)
     {
-        this.name=name;
-        this.orderID=orderID;
-        this.waitingToBeServed=waitingToBeServed;
-    }
-
-    public RestaurantGuest(String name) {
-        this.name=name;
-    }
-
-    public void InteractWithRestaurant(Restaurant restaurant)
-    {
-
-    }
-    public boolean isWaitingToBeServed()
-    {
-        return true;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+        waitingToBeServed = true;
         this.name = name;
     }
 
-    public int getOrderID() {
-        return orderID;
-    }
-    public void receiveOrder(Order order)
+    public RestaurantGuest()
     {
-
+        this("Unnamed Restaurant Guest");
     }
+
+    public String GetName()
+    {
+        return this.name;
+    }
+
+    public void SetName(String name)
+    {
+        this.name = name;
+    }
+    public boolean IsWaitingToBeServed()
+    {
+        return this.waitingToBeServed;
+    }
+    public int GetOrderID()
+    {
+        return this.orderID;
+    }
+    public void SetOrderID(int orderID)
+    {
+        this.orderID = orderID;
+    }
+    public void SetWaitingToBeServed(boolean value)
+    {
+        this.waitingToBeServed = value;
+    }
+
+    abstract public void InteractWithRestaurant(Restaurant restaurant);
+    abstract public void ReceiveOrder(PreparedOrder preparedOrder);
 }

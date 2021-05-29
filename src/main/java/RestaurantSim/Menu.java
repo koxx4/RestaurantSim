@@ -5,15 +5,18 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-public class Menu {
+public class Menu 
+{
     public Dictionary<String,Dish> availableDishes= new Hashtable<>();
     public Dictionary<String,Ingredient> availableIngredients= new Hashtable<>();
 
-    public Menu() {
+    public Menu() 
+    {
         PopulateIngredients();
         PopulateDishes();
     }
-    private void PopulateIngredients() {
+    private void PopulateIngredients()
+    {
         Ingredient ingredientHotSauce = new Ingredient(2,"HotSauce");
         availableIngredients.put(ingredientHotSauce.getName(), ingredientHotSauce);
 
@@ -39,7 +42,8 @@ public class Menu {
         availableIngredients.put(ingredientPineapple.getName(), ingredientPineapple);
     }
 
-    private void PopulateDishes() {
+    private void PopulateDishes() 
+    {
         List<Ingredient> ingredientsKebab = new ArrayList<>();
         List<Ingredient> ingredientsPizza = new ArrayList<>();
         List<Ingredient> ingredientsSalad = new ArrayList<>();
@@ -68,11 +72,13 @@ public class Menu {
         availableDishes.put(dishSalad.getName(), dishSalad);
     }
 
-    public Dictionary<String, Dish> getAvailableDishes() {
+    public Dictionary<String, Dish> getAvailableDishes()
+    {
         return availableDishes;
     }
 
-    public Dictionary<String, Ingredient> getAvailableIngredients() {
+    public Dictionary<String, Ingredient> getAvailableIngredients()
+    {
         return availableIngredients;
     }
 }
