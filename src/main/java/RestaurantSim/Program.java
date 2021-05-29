@@ -13,6 +13,5 @@ public class Program
         System.out.println("Start symulacji");
         simulationManager = new SimulationManager(1000);
         simulationManager.StartSimulation();
-
     }
 }
