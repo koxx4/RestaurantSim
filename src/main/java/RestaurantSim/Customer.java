@@ -1,55 +1,111 @@
 package RestaurantSim;
 
-import java.util.Dictionary;
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-public class Customer extends RestaurantGuest{
+public class Customer extends RestaurantGuest
+{
+    private int patience;
+    private TickableAction waitForOrderAction;
+    private Restaurant currentRestaurant;
 
-    public Customer(String name,int orderID,boolean isWaitingToBeServed) {
-        super(name,orderID,isWaitingToBeServed);
+    public Customer(String name)
+    { 
+        super(name);
+        RandomizePatience();
     }
-    public Order ComposeOrder(Dictionary<String,Dish> availableDishes, Order order)
+
+    public Customer()
     {
-        Random random= new Random();
-        int number = random.nextInt(5)+1;
-       /* switch(number)
+        this("Unnamed restaurant guest");
+    }
+
+    public void RateRestaurant(PreparedOrder preparedOrder)
+    {
+        float rate = 0;
+        switch (preparedOrder.getQuality())
         {
-            case 1->
-        }*/
-        return order;
+            case Inedible: rate = SimulationUitilities.GetRandomFloat(); break;
+            case Bad: rate = SimulationUitilities.GetRandomFloat() + 1; break;
+            case Average: rate = SimulationUitilities.GetRandomFloat() + 2.5f; break;
+            case Good: rate = SimulationUitilities.GetRandomFloat() + 3; break;
+            case Excelent: rate = SimulationUitilities.GetRandomFloat() + 4; break;
+            default: break;
+        }
+        currentRestaurant.GiveRate(rate);
     }
-    public Order RateRestaurant(Order order)
+
+    @Override
+    public void InteractWithRestaurant(Restaurant restaurant)
     {
-        return order;
+        currentRestaurant = restaurant;
+        Order composedOrder = ComposeOrder(currentRestaurant.getMenu());
+
+        int orderID = currentRestaurant.ReceiveOrder(composedOrder);
+        super.SetOrderID(orderID);
+        super.SetWaitingToBeServed(false);
+
+        waitForOrderAction = new TickableAction(super.GetName() + " is waiting for order", patience);
+
+        waitForOrderAction.onFinishCallback = () -> {
+            float drawnChance = SimulationUitilities.GetRandomFloat();
+
+            //If drawn chance is in bounds of chances to rate restaurant
+            if (drawnChance <= SimulationSettings.chanceToRateRestaurant)
+            {
+                //2.0 is always a rate given when order is not prepared on time
+                currentRestaurant.GiveRate(SimulationSettings.rateOnOrderNotPreparedOnTime);
+            }
+
+            //Guest obviously leaves the queue
+            currentRestaurant.RemoveGuestFromQueue(this);
+        };
+
+        SimulationManager.instance.SubscribeAction(waitForOrderAction);
+
     }
 
     @Override
-    public void InteractWithRestaurant(Restaurant restaurant) {
-        super.InteractWithRestaurant(restaurant);
+    public void ReceiveOrder(PreparedOrder preparedOrder)
+    {
+        //Abort waiting for order
+        waitForOrderAction.AbortAction();
+        float drawnChance = SimulationUitilities.GetRandomFloat();
+
+        if (drawnChance <= SimulationSettings.chanceToRateRestaurant)
+        {
+            this.RateRestaurant(preparedOrder);
+        }
     }
 
-    @Override
-    public boolean isWaitingToBeServed() {
-        return super.isWaitingToBeServed();
+    private Order ComposeOrder(Menu menu)
+    {
+        Order composedOrder;
+        Dish randomDish;
+        int numberOfDishes = menu.availableDishes.size();
+        int randomDishIndex = SimulationUitilities.GetRandomInt(numberOfDishes);
+        Iterator<Dish> availableDishesIterator = menu.availableDishes.elements().asIterator();
+
+        for (int i = 0; i != randomDishIndex; i++)
+        {
+            //Move iterator to next element
+            //don't assign it anywhere
+            availableDishesIterator.next();
+        }
+        //After iterator is on a right position
+        randomDish = availableDishesIterator.next();
+        List<Dish> dishesInOrder = new ArrayList<>();
+        dishesInOrder.add(randomDish);
+        composedOrder = new Order(dishesInOrder);
+
+        return composedOrder;
     }
 
-    @Override
-    public String getName() {
-        return super.getName();
+    private void RandomizePatience()
+    {
+        this.patience = SimulationUitilities
+                .GetRandomInt(SimulationSettings.minClientPatience, SimulationSettings.maxClientPatience);
     }
 
-    @Override
-    public void setName(String name) {
-        super.setName(name);
-    }
-
-    @Override
-    public int getOrderID() {
-        return super.getOrderID();
-    }
-
-    @Override
-    public void receiveOrder(Order order) {
-        super.receiveOrder(order);
-    }
 }

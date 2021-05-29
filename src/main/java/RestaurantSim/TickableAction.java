@@ -5,19 +5,22 @@ public class TickableAction
     public ITickableActionOnFinishCallback onFinishCallback;
     public ITickableActionOnUpdateCallback onUpdateCallback;
     private String name;
-    private int duration;
+    private final int duration;
     private int ticksToComplete;
+    private boolean abort;
 
 
     public TickableAction(String name, int duration)
     {
         this.name = name;
         this.duration = duration;
+        this.ticksToComplete = duration;
+        abort = false;
     }
-    public TickableAction( int ticksToComplete)
-    {
-        this.ticksToComplete=ticksToComplete;
 
+    public TickableAction(int duration)
+    {
+        this("Unnamed action", duration);
     }
 
     public String GetName() {
@@ -39,6 +42,15 @@ public class TickableAction
     public void DecrementTicks()
     {
         ticksToComplete--;
+    }
+
+    public boolean IsToBeAborted()
+    {
+        return this.abort;
+    }
+    public void AbortAction()
+    {
+        this.abort = true;
     }
 
     public void ExecuteOnFinishCallback()

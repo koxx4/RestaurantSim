@@ -4,16 +4,17 @@ import java.util.*;
 
 public class Restaurant {
     private HashMap<Integer,PreparedOrder> activeOrders= new HashMap<>();
-    private ArrayList<Cook> cooks = new ArrayList<>();
-    private ArrayList<RestaurantGuest> restaurantGuestsToBeServed= new ArrayList<>();
-    private ArrayList<RestaurantGuest> restaurantGuestsWaitingForOrder= new ArrayList<>();
-    private ArrayList<Double>rates= new ArrayList<>();
+    private List<Cook> cooks = new ArrayList<>();
+    private List<RestaurantGuest> restaurantGuestsToBeServed= new ArrayList<>();
+    private List<RestaurantGuest> restaurantGuestsWaitingForOrder= new ArrayList<>();
+    private List<Float> rates = new ArrayList<>();
     private Menu menu;
 
     public Restaurant(Menu menu)
     {
           this.menu=menu;
     }
+
     public void PopulateWithWorkers()
     {
            Cook cook1= new Cook("Cooker Dave");
@@ -27,6 +28,7 @@ public class Restaurant {
 
 
     }
+
     public int ReceiveOrder(Order order)
     {
         return 1;
@@ -35,18 +37,19 @@ public class Restaurant {
     public Menu getMenu() {
         return menu;
     }
+
     public void AddGuestToQueue(RestaurantGuest restaurantGuest)
     {
         restaurantGuestsToBeServed.add(restaurantGuest);
     }
-    public void RemoveGuestToQueue(RestaurantGuest restaurantGuest)
+
+    public void RemoveGuestFromQueue(RestaurantGuest restaurantGuest)
     {
         restaurantGuestsToBeServed.remove(restaurantGuest);
     }
-    public void GiveRate(Double rate)
+    public void GiveRate(float rate)
+
     {
         rates.add(rate);
     }
-
-
 }

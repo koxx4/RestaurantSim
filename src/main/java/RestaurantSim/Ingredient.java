@@ -4,8 +4,7 @@ public class Ingredient {
     private float price;
     private String name;
 
-    public Ingredient(float price, String name)
-    {
+    public Ingredient(float price, String name) {
         this.price=price;
         this.name=name;
     }
@@ -17,5 +16,4 @@ public class Ingredient {
     public String getName() {
         return name;
     }
-
 }
