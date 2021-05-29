@@ -4,10 +4,10 @@ import java.util.*;
 
 public class Restaurant {
     private HashMap<Integer,PreparedOrder> activeOrders= new HashMap<>();
-    private ArrayList<Cook> cooks = new ArrayList<>();
-    private ArrayList<RestaurantGuest> restaurantGuestsToBeServed= new ArrayList<>();
-    private ArrayList<RestaurantGuest> restaurantGuestsWaitingForOrder= new ArrayList<>();
-    private ArrayList<Double>rates= new ArrayList<>();
+    private List<Cook> cooks = new ArrayList<>();
+    private List<RestaurantGuest> restaurantGuestsToBeServed= new ArrayList<>();
+    private List<RestaurantGuest> restaurantGuestsWaitingForOrder= new ArrayList<>();
+    private List<Float> rates = new ArrayList<>();
     private Menu menu;
 
     public Restaurant(Menu menu)
@@ -30,11 +30,11 @@ public class Restaurant {
     {
         restaurantGuestsToBeServed.add(restaurantGuest);
     }
-    public void RemoveGuestToQueue(RestaurantGuest restaurantGuest)
+    public void RemoveGuestFromQueue(RestaurantGuest restaurantGuest)
     {
         restaurantGuestsToBeServed.remove(restaurantGuest);
     }
-    public void GiveRate(Double rate)
+    public void GiveRate(float rate)
     {
         rates.add(rate);
     }

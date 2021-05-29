@@ -4,6 +4,7 @@ import org.apache.commons.lang3.time.StopWatch;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class SimulationManager
 {
@@ -23,11 +24,6 @@ public class SimulationManager
         this.tickDuration = tickDuration;
         stopWatch = new StopWatch();
         gameActions = new ArrayList<>();
-    }
-
-    private RestaurantGuest GenerateNextRestaurantGuest(RestaurantGuest restaurantGuest)
-    {
-        return null;
     }
 
     private void Tick()
@@ -54,7 +50,7 @@ public class SimulationManager
 
     public boolean isRunning()
     {
-        return false;
+        return this.running;
     }
 
     public void StartSimulation()
@@ -67,8 +63,10 @@ public class SimulationManager
             stopWatch.suspend();
             elapsedTime = stopWatch.getTime();
 
+            //If elapsed time matches tick duration
             if (elapsedTime >= tickDuration)
             {
+                //Tick
                 System.out.println("Tick! Duration: " + elapsedTime);
                 stopWatch.reset();
                 Tick();
@@ -82,5 +80,19 @@ public class SimulationManager
     public void SubscribeAction(TickableAction action)
     {
         gameActions.add(action);
+    }
+
+    public void Stop()
+    {
+        System.out.println("Stopping simulation!");
+        this.running = false;
+    }
+
+    private Customer GenerateCustomer(RestaurantGuest restaurantGuest)
+    {
+        Customer generatedRestaurantGuest = new Customer("Johne Doe");
+
+
+        return  generatedRestaurantGuest;
     }
 }

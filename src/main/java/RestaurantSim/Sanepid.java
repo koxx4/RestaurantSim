@@ -2,42 +2,30 @@ package RestaurantSim;
 
 public class Sanepid extends RestaurantGuest {
 
-    public Sanepid(String name,int orderID,boolean isWaitingToBeServed) {
-        super(name,orderID,isWaitingToBeServed);
+    public Sanepid(String name)
+    {
+        super(name);
     }
+
+    public Sanepid()
+    {
+        super();
+    }
+
     private void EvaluateRestaurantWork()
     {
 
     }
 
-
     @Override
-    public void InteractWithRestaurant(Restaurant restaurant) {
-        super.InteractWithRestaurant(restaurant);
+    public void InteractWithRestaurant(Restaurant restaurant)
+    {
+        EvaluateRestaurantWork();
     }
 
     @Override
-    public boolean isWaitingToBeServed() {
-        return super.isWaitingToBeServed();
-    }
+    public void ReceiveOrder(PreparedOrder preparedOrder)
+    {
 
-    @Override
-    public String getName() {
-        return super.getName();
-    }
-
-    @Override
-    public void setName(String name) {
-        super.setName(name);
-    }
-
-    @Override
-    public int getOrderID() {
-        return super.getOrderID();
-    }
-
-    @Override
-    public void receiveOrder(Order order) {
-        super.receiveOrder(order);
     }
 }
