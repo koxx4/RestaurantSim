@@ -32,8 +32,12 @@ public class SimulationManager
         {
             for (int i = gameActions.size() - 1; i >= 0; i--)
             {
+                if(gameActions.get(i).IsToBeAborted())
+                {
+                    gameActions.remove(i);
+                }
                 //If action is done
-                if (gameActions.get(i).GetTicksToComplete() <= 1)
+                else if (gameActions.get(i).GetTicksToComplete() <= 1)
                 {
                     gameActions.get(i).ExecuteOnFinishCallback();
                     gameActions.remove(i);
@@ -79,7 +83,6 @@ public class SimulationManager
 
     public void SubscribeAction(TickableAction action)
     {
-
         gameActions.add(action);
     }
 
