@@ -20,7 +20,7 @@ public class Program
         secondAction.onUpdateCallback = () -> System.out.println("SecondAction onUpdateCallback");
         thirdAction.onFinishCallback = () -> System.out.println("ThirdAction FINISH!");
 
-        System.out.println("testowy napis :D");
+        System.out.println("testowy napis elo benc");
         System.out.println("Start symulacji");
         simulationManager = new SimulationManager(1000);
         simulationManager.SubscribeAction(firstAction);
