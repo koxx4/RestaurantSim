@@ -24,6 +24,14 @@ public class SimulationManager
         this.tickDuration = tickDuration;
         stopWatch = new StopWatch();
         gameActions = new ArrayList<>();
+        restaurant = new Restaurant(new Menu());
+
+        Initialize();
+    }
+
+    public SimulationManager()
+    {
+        this(1000);
     }
 
     private void Tick()
@@ -92,11 +100,28 @@ public class SimulationManager
         this.running = false;
     }
 
-    private Customer GenerateCustomer(RestaurantGuest restaurantGuest)
+    private Customer GenerateCustomer()
     {
-        Customer generatedRestaurantGuest = new Customer("Johne Doe");
+        return new Customer("Johne Doe");
+    }
 
+    private void Initialize()
+    {
+        //If we want to set up some things before
+        //starting simulation
+        CreateSpawnCustomerAction();
+    }
 
-        return  generatedRestaurantGuest;
+    private void CreateSpawnCustomerAction()
+    {
+        TickableAction spawnNextCustomer = new TickableAction
+                ("Spawning customer action", SimulationUitilities.GetRandomInt(10,30));
+        spawnNextCustomer.onFinishCallback = () -> {
+            //So we create new customer, place him into simulation
+            this.restaurant.AddGuestToQueue(GenerateCustomer());
+            //Then we recreate this task beacause we want to
+            //spawn customers infinitely (for now?)
+            CreateSpawnCustomerAction();
+        };
     }
 }

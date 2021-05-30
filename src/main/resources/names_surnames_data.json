@@ -1,0 +1,16 @@
+{
+  //Guys those are only examples. Loading this data
+  //is not implemented yet!
+  "names":[
+    "Jill",
+    "Peter",
+    "Pablo",
+    "Bob"
+  ],
+  "surnames":[
+    "Wolf",
+    "Winters",
+    "Smith",
+    "Valentine"
+  ]
+}

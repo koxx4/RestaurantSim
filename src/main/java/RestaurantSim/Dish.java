@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Dish 
 {
-    private List<Ingredient> ingredients = new ArrayList<>();
+    private List<Ingredient> ingredients;
     private String name;
 
     public Dish(List<Ingredient> ingredients, String name) 
@@ -18,9 +18,9 @@ public class Dish
     {
         float price = 0;
 
-        for(Ingredient ingred : ingredients) 
+        for(Ingredient ingredient : ingredients)
         {
-            price += ingred.getPrice();
+            price += ingredient.getPrice();
         }
         return price;
     }

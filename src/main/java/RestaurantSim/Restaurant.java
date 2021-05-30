@@ -25,8 +25,6 @@ public class Restaurant {
 
            Cook cook3= new Cook("Cooker Sam");
            cooks.add(3,cook3);
-
-
     }
 
     public int ReceiveOrder(Order order)
@@ -45,7 +43,8 @@ public class Restaurant {
 
     public void RemoveGuestFromQueue(RestaurantGuest restaurantGuest)
     {
-        restaurantGuestsToBeServed.remove(restaurantGuest);
+        if(!restaurantGuestsToBeServed.isEmpty())
+            restaurantGuestsToBeServed.remove(restaurantGuest);
     }
     public void GiveRate(float rate)
 

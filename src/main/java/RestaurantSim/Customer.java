@@ -6,19 +6,27 @@ import java.util.List;
 
 public class Customer extends RestaurantGuest
 {
-    private int patience;
     private TickableAction waitForOrderAction;
     private Restaurant currentRestaurant;
 
-    public Customer(String name)
+    public Customer(String name, int patience)
     { 
+        super(name, patience);
+    }
+
+    public Customer(int patience)
+    {
+        super(patience);
+    }
+
+    public Customer(String name)
+    {
         super(name);
-        RandomizePatience();
     }
 
     public Customer()
     {
-        this("Unnamed restaurant guest");
+        super();
     }
 
     public void RateRestaurant(PreparedOrder preparedOrder)
@@ -46,7 +54,7 @@ public class Customer extends RestaurantGuest
         super.SetOrderID(orderID);
         super.SetWaitingToBeServed(false);
 
-        waitForOrderAction = new TickableAction(super.GetName() + " is waiting for order", patience);
+        waitForOrderAction = new TickableAction(super.GetName() + " is waiting for order", this.GetPatience());
 
         waitForOrderAction.onFinishCallback = () -> {
             float drawnChance = SimulationUitilities.GetRandomFloat();
@@ -100,12 +108,6 @@ public class Customer extends RestaurantGuest
         composedOrder = new Order(dishesInOrder);
 
         return composedOrder;
-    }
-
-    private void RandomizePatience()
-    {
-        this.patience = SimulationUitilities
-                .GetRandomInt(SimulationSettings.minClientPatience, SimulationSettings.maxClientPatience);
     }
 
 }
