@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
-import java.util.List;
 
 public class Menu 
 {
@@ -18,29 +17,29 @@ public class Menu
     }
     private void PopulateIngredients()
     {
-        Ingredient ingredientHotSauce = new Ingredient(2,"HotSauce");
-        availableIngredients.put(ingredientHotSauce.getName(), ingredientHotSauce);
+        Ingredient ingredientHotSauce = new Ingredient("HotSauce",2, 2);
+        availableIngredients.put(ingredientHotSauce.GetName(), ingredientHotSauce);
 
-        Ingredient ingredientMildSauce = new Ingredient(2,"MildSauce");
-        availableIngredients.put(ingredientMildSauce.getName(), ingredientMildSauce);
+        Ingredient ingredientMildSauce = new Ingredient("MildSauce",2, 2);
+        availableIngredients.put(ingredientMildSauce.GetName(), ingredientMildSauce);
 
-        Ingredient ingredientChicken = new Ingredient(6,"Chicken");
-        availableIngredients.put(ingredientChicken.getName(), ingredientChicken);
+        Ingredient ingredientChicken = new Ingredient("Chicken",6, 10);
+        availableIngredients.put(ingredientChicken.GetName(), ingredientChicken);
 
-        Ingredient ingredientBeef = new Ingredient(7,"Beef");
-        availableIngredients.put(ingredientBeef.getName(), ingredientBeef);
+        Ingredient ingredientBeef = new Ingredient("Beef",7, 12);
+        availableIngredients.put(ingredientBeef.GetName(), ingredientBeef);
 
-        Ingredient ingredientLamb = new Ingredient(8,"Lamb");
-        availableIngredients.put(ingredientLamb.getName(), ingredientLamb);
+        Ingredient ingredientLamb = new Ingredient("Lamb",8, 13);
+        availableIngredients.put(ingredientLamb.GetName(), ingredientLamb);
 
-        Ingredient ingredientFrenchFries = new Ingredient(4,"FrenchFries");
-        availableIngredients.put(ingredientFrenchFries.getName(), ingredientFrenchFries);
+        Ingredient ingredientFrenchFries = new Ingredient("FrenchFries",4, 6);
+        availableIngredients.put(ingredientFrenchFries.GetName(), ingredientFrenchFries);
 
-        Ingredient ingredientCheese = new Ingredient(5,"Cheese");
-        availableIngredients.put(ingredientCheese.getName(), ingredientCheese);
+        Ingredient ingredientCheese = new Ingredient("Cheese",5, 2);
+        availableIngredients.put(ingredientCheese.GetName(), ingredientCheese);
 
-        Ingredient ingredientPineapple = new Ingredient(5,"Pineapple");
-        availableIngredients.put(ingredientPineapple.getName(), ingredientPineapple);
+        Ingredient ingredientPineapple = new Ingredient("Pineapple",5, 5);
+        availableIngredients.put(ingredientPineapple.GetName(), ingredientPineapple);
     }
 
     private void PopulateDishes() 

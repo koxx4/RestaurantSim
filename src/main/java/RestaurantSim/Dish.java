@@ -1,7 +1,6 @@
 package RestaurantSim;
 
 import java.util.List;
-import java.util.ArrayList;
 
 public class Dish 
 {
@@ -20,7 +19,7 @@ public class Dish
 
         for(Ingredient ingredient : ingredients)
         {
-            price += ingredient.getPrice();
+            price += ingredient.GetPrice();
         }
         return price;
     }

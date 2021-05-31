@@ -1,10 +1,10 @@
 package RestaurantSim;
 
 public abstract class RestaurantGuest {
-    private int orderID;
     private final int patience;
     private String name;
     private boolean waitingToBeServed;
+    private OrderReceipt orderReceipt;
 
     public RestaurantGuest(String name, int patience)
     {
@@ -45,19 +45,18 @@ public abstract class RestaurantGuest {
     {
         return this.waitingToBeServed;
     }
-    public int GetOrderID()
+    public void SetOrderReceipt(OrderReceipt orderReceipt)
     {
-        return this.orderID;
-    }
-    public void SetOrderID(int orderID)
-    {
-        this.orderID = orderID;
+        this.orderReceipt = orderReceipt;
     }
     public void SetWaitingToBeServed(boolean value)
     {
         this.waitingToBeServed = value;
     }
-
+    public OrderReceipt GetOrderReceipt()
+    {
+        return this.orderReceipt;
+    }
     abstract public void InteractWithRestaurant(Restaurant restaurant);
     abstract public void ReceiveOrder(PreparedOrder preparedOrder);
 }

@@ -8,19 +8,25 @@ public class TickableAction
     private final int duration;
     private int ticksToComplete;
     private boolean abort;
+    private boolean repeatable;
 
 
-    public TickableAction(String name, int duration)
+    public TickableAction(String name, int duration, boolean repeatable)
     {
         this.name = name;
         this.duration = duration;
         this.ticksToComplete = duration;
+        this.repeatable = repeatable;
         abort = false;
+    }
+    public TickableAction(String name, int duration)
+    {
+        this(name, duration, false);
     }
 
     public TickableAction(int duration)
     {
-        this("Unnamed action", duration);
+        this("Unnamed action", duration, false);
     }
 
     public String GetName() {
@@ -67,5 +73,13 @@ public class TickableAction
         {
             onUpdateCallback.Execute();
         }
+    }
+    public boolean IsRepeatable()
+    {
+        return this.repeatable;
+    }
+    public void SetRepeatable(boolean value)
+    {
+        this.repeatable = value;
     }
 }

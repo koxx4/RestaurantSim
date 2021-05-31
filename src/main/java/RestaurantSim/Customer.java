@@ -32,7 +32,7 @@ public class Customer extends RestaurantGuest
     public void RateRestaurant(PreparedOrder preparedOrder)
     {
         float rate = 0;
-        switch (preparedOrder.getQuality())
+        switch (preparedOrder.GetQuality())
         {
             case Inedible: rate = SimulationUitilities.GetRandomFloat(); break;
             case Bad: rate = SimulationUitilities.GetRandomFloat() + 1; break;
@@ -50,8 +50,13 @@ public class Customer extends RestaurantGuest
         currentRestaurant = restaurant;
         Order composedOrder = ComposeOrder(currentRestaurant.getMenu());
 
-        int orderID = currentRestaurant.ReceiveOrder(composedOrder);
-        super.SetOrderID(orderID);
+        //For now we assume that client doesn't give tip
+        //TODO: client gives sometimes tip
+
+        OrderReceipt orderReceipt =
+                currentRestaurant.ReceiveOrder(composedOrder, composedOrder.GetTotalPrice());
+
+        super.SetOrderReceipt(orderReceipt);
         super.SetWaitingToBeServed(false);
 
         waitForOrderAction = new TickableAction(super.GetName() + " is waiting for order", this.GetPatience());

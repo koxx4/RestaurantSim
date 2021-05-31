@@ -13,6 +13,17 @@ public class Order
         this.dishes = dishes;
     }
 
+    public float GetTotalPrice()
+    {
+        float totalPrice = 0;
+        for (var dish: dishes)
+        {
+            totalPrice += dish.GetPrice();
+        }
+        return totalPrice;
+    }
+
+
     public List<Dish> getDishes() 
     {
         return dishes;

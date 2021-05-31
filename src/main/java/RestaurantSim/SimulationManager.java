@@ -40,22 +40,31 @@ public class SimulationManager
         {
             for (int i = gameActions.size() - 1; i >= 0; i--)
             {
-                if(gameActions.get(i).IsToBeAborted())
+                var action = gameActions.get(i);
+
+                if(action.IsToBeAborted())
                 {
                     gameActions.remove(i);
                 }
                 //If action is done
-                else if (gameActions.get(i).GetTicksToComplete() <= 1)
+                else if (action.GetTicksToComplete() <= 1)
                 {
-                    gameActions.get(i).ExecuteOnFinishCallback();
-                    gameActions.remove(i);
+                    action.ExecuteOnFinishCallback();
+                    if(action.IsRepeatable())
+                    {
+                        //Renew action
+                        action.SetTicksToComplete(action.GetDuration());
+                    }
+                    else
+                        gameActions.remove(i);
                 }
                 //Else update action
                 else
                 {
-                    gameActions.get(i).DecrementTicks();
-                    gameActions.get(i).ExecuteOnUpdateCallback();
+                    action.DecrementTicks();
+                    action.ExecuteOnUpdateCallback();
                 }
+
             }
         }
     }
@@ -115,7 +124,8 @@ public class SimulationManager
     private void CreateSpawnCustomerAction()
     {
         TickableAction spawnNextCustomer = new TickableAction
-                ("Spawning customer action", SimulationUitilities.GetRandomInt(10,30));
+                ("Spawning customer action", SimulationUitilities
+                        .GetRandomInt(SimulationSettings.minTicksSpawnClient, SimulationSettings.maxTicksSpawnClient));
         spawnNextCustomer.onFinishCallback = () -> {
             //So we create new customer, place him into simulation
             this.restaurant.AddGuestToQueue(GenerateCustomer());

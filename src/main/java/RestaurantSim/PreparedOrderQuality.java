@@ -1,6 +1,6 @@
 package RestaurantSim;
 
-public enum DishQuality
+public enum PreparedOrderQuality
 {
     Inedible,
     Bad,

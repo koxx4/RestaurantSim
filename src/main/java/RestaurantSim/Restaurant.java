@@ -3,52 +3,122 @@ package RestaurantSim;
 import java.util.*;
 
 public class Restaurant {
-    private HashMap<Integer,PreparedOrder> activeOrders= new HashMap<>();
-    private List<Cook> cooks = new ArrayList<>();
-    private List<RestaurantGuest> restaurantGuestsToBeServed= new ArrayList<>();
-    private List<RestaurantGuest> restaurantGuestsWaitingForOrder= new ArrayList<>();
-    private List<Float> rates = new ArrayList<>();
-    private Menu menu;
+    private Stack<PreparedOrder> ordersToPickUp;
+    private List<Cook> cooks;
+    private Queue<RestaurantGuest> restaurantGuests;
+    private List<Float> rates;
+    private final Menu menu;
+    private int orderCounter;
+    private boolean busyWithGuest;
 
     public Restaurant(Menu menu)
     {
-          this.menu=menu;
+          this.menu = menu;
+          this.orderCounter = 0;
+          this.busyWithGuest = false;
+          this.restaurantGuests = new ArrayDeque<>();
+          this.rates = new ArrayList<>();
+          this.cooks = new ArrayList<>();
+          this.ordersToPickUp = new Stack<>();
+          this.PopulateWithWorkers();
+          this.CreateGuestHandlingAction();
+          this.CreateOrderPickUpAction();
     }
 
-    public void PopulateWithWorkers()
+    public OrderReceipt ReceiveOrder(Order order, float payForOrder)
     {
-           Cook cook1= new Cook("Cooker Dave");
-           cooks.add(1,cook1);
+        if(payForOrder >= order.GetTotalPrice())
+        {
+            //We essentially treat orderCounter as an id for our orders
+            orderCounter++;
+            GetFreeCook().ReceiveOrder(order, orderCounter, this);
+            return new OrderReceipt(orderCounter);
+        }
 
-           Cook cook2= new Cook("Cooker Josh");
-           cooks.add(2,cook2);
-
-           Cook cook3= new Cook("Cooker Sam");
-           cooks.add(3,cook3);
+        return null;
     }
 
-    public int ReceiveOrder(Order order)
+    public Menu getMenu()
     {
-        return 1;
-    }
-
-    public Menu getMenu() {
         return menu;
     }
 
     public void AddGuestToQueue(RestaurantGuest restaurantGuest)
     {
-        restaurantGuestsToBeServed.add(restaurantGuest);
+        restaurantGuests.add(restaurantGuest);
     }
 
     public void RemoveGuestFromQueue(RestaurantGuest restaurantGuest)
     {
-        if(!restaurantGuestsToBeServed.isEmpty())
-            restaurantGuestsToBeServed.remove(restaurantGuest);
+        if(!restaurantGuests.isEmpty())
+            restaurantGuests.remove(restaurantGuest);
     }
     public void GiveRate(float rate)
-
     {
         rates.add(rate);
     }
+
+    public void AddPreparedOrder(PreparedOrder preparedOrder)
+    {
+        this.ordersToPickUp.add(preparedOrder);
+    }
+
+    private void PopulateWithWorkers()
+    {
+        for(int i = 0; i < SimulationSettings.numberOfCooks; i++)
+        {
+            cooks.add(new Cook("Cooker " + i));
+        }
+    }
+
+    private void CreateGuestHandlingAction()
+    {
+        TickableAction guestHandling = new TickableAction("Guest handling action", 3, true);
+        guestHandling.onFinishCallback = () -> {
+            Cook freeCook = GetFreeCook();
+            if(freeCook != null && !restaurantGuests.isEmpty())
+            {
+                RestaurantGuest restaurantGuestToBeServed = restaurantGuests.poll();
+                restaurantGuestToBeServed.InteractWithRestaurant(this);
+            }
+        };
+        SimulationManager.instance.SubscribeAction(guestHandling);
+    }
+
+    private void CreateOrderPickUpAction()
+    {
+        TickableAction orderPickUpAction = new TickableAction("Order pick up action", 2, true);
+        orderPickUpAction.onFinishCallback = () -> {
+            if(!ordersToPickUp.isEmpty())
+            {
+                this.GivePreparedOrderToGuest();
+            }
+        };
+        SimulationManager.instance.SubscribeAction(orderPickUpAction);
+    }
+
+    private void GivePreparedOrderToGuest()
+    {
+        PreparedOrder preparedOrder = ordersToPickUp.pop();
+        for (var guest: restaurantGuests)
+        {
+            OrderReceipt guestReceipt = guest.GetOrderReceipt();
+            if( (guestReceipt != null) && (guestReceipt.GetOrderID() == preparedOrder.GetID()) )
+            {
+                guest.ReceiveOrder(preparedOrder);
+            }
+        }
+
+    }
+
+    private Cook GetFreeCook()
+    {
+        for (var cook : cooks)
+        {
+            if(!cook.isBusy())
+                return cook;
+        }
+        return null;
+    }
+
 }

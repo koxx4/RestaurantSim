@@ -1,31 +1,27 @@
 package RestaurantSim;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PreparedOrder
 {
-    private List<Dish> dishes = new ArrayList<>();
-    private boolean ready;
-    private DishQuality quality;
+    private final List<Dish> dishes;
+    private final int id;
+    private final PreparedOrderQuality quality;
     private float totalPrice;
 
-    public float getTotalPrice()
+    public PreparedOrder(List<Dish> listOfDishes, int id, PreparedOrderQuality quality)
     {
-        return totalPrice;
-    }
-    public boolean isReady()
-    {
-        return ready;
+        this.dishes = listOfDishes;
+        this.id = id;
+        this.quality = quality;
     }
 
-    public DishQuality getQuality()
+    public PreparedOrderQuality GetQuality()
     {
         return quality;
     }
-
-    public void setQuality(DishQuality quality)
+    public int GetID()
     {
-        this.quality = quality;
+        return this.id;
     }
 }
