@@ -12,21 +12,25 @@ public class Customer extends RestaurantGuest
     public Customer(String name, int patience)
     { 
         super(name, patience);
+        CreateWaitingTask();
     }
 
     public Customer(int patience)
     {
         super(patience);
+        CreateWaitingTask();
     }
 
     public Customer(String name)
     {
         super(name);
+        CreateWaitingTask();
     }
 
     public Customer()
     {
         super();
+        CreateWaitingTask();
     }
 
     public void RateRestaurant(PreparedOrder preparedOrder)
@@ -41,12 +45,15 @@ public class Customer extends RestaurantGuest
             case Excelent: rate = SimulationUitilities.GetRandomFloat() + 4; break;
             default: break;
         }
+        System.out.println("Customer: Rating restaurant for " + rate + " stars");
         currentRestaurant.GiveRate(rate);
     }
 
     @Override
     public void InteractWithRestaurant(Restaurant restaurant)
     {
+        System.out.println("Customer: " + super.GetName() + " is interacting with restaurant");
+
         currentRestaurant = restaurant;
         Order composedOrder = ComposeOrder(currentRestaurant.getMenu());
 
@@ -59,29 +66,13 @@ public class Customer extends RestaurantGuest
         super.SetOrderReceipt(orderReceipt);
         super.SetWaitingToBeServed(false);
 
-        waitForOrderAction = new TickableAction(super.GetName() + " is waiting for order", this.GetPatience());
-
-        waitForOrderAction.onFinishCallback = () -> {
-            float drawnChance = SimulationUitilities.GetRandomFloat();
-
-            //If drawn chance is in bounds of chances to rate restaurant
-            if (drawnChance <= SimulationSettings.chanceToRateRestaurant)
-            {
-                //2.0 is always a rate given when order is not prepared on time
-                currentRestaurant.GiveRate(SimulationSettings.rateOnOrderNotPreparedOnTime);
-            }
-
-            //Guest obviously leaves the queue
-            currentRestaurant.RemoveGuestFromQueue(this);
-        };
-
-        SimulationManager.instance.SubscribeAction(waitForOrderAction);
-
+        System.out.println("Customer: " + super.GetName() + " received order receipt, ID: " + orderReceipt.GetOrderID());
     }
 
     @Override
     public void ReceiveOrder(PreparedOrder preparedOrder)
     {
+        System.out.println("Customer: Received prepared order " + preparedOrder.GetID());
         //Abort waiting for order
         waitForOrderAction.AbortAction();
         float drawnChance = SimulationUitilities.GetRandomFloat();
@@ -90,6 +81,9 @@ public class Customer extends RestaurantGuest
         {
             this.RateRestaurant(preparedOrder);
         }
+
+        //Guest obviously leaves the queue
+        currentRestaurant.RemoveGuestFromQueue(this);
     }
 
     private Order ComposeOrder(Menu menu)
@@ -113,6 +107,27 @@ public class Customer extends RestaurantGuest
         composedOrder = new Order(dishesInOrder);
 
         return composedOrder;
+    }
+    private void CreateWaitingTask()
+    {
+        waitForOrderAction = new TickableAction(super.GetName() + " is waiting for order", this.GetPatience());
+        System.out.println("Customer: Arrived at restaurant. Gonna wait till " + super.GetPatience() + " ticks brefore I leave!");
+        waitForOrderAction.onFinishCallback = () -> {
+            System.out.println("Customer: I don't want to wait longer. I'm leaving...");
+            float drawnChance = SimulationUitilities.GetRandomFloat();
+
+            //If drawn chance is in bounds of chances to rate restaurant
+            if (drawnChance <= SimulationSettings.chanceToRateRestaurant)
+            {
+                //2.0 is always a rate given when order is not prepared on time
+                currentRestaurant.GiveRate(SimulationSettings.rateOnOrderNotPreparedOnTime);
+            }
+
+            //Guest obviously leaves the queue
+            currentRestaurant.RemoveGuestFromQueue(this);
+        };
+
+        SimulationManager.instance.SubscribeAction(waitForOrderAction);
     }
 
 }

@@ -24,7 +24,7 @@ public class Order
     }
 
 
-    public List<Dish> getDishes() 
+    public List<Dish> GetDishes()
     {
         return dishes;
     }
