@@ -89,8 +89,9 @@ public class SimulationManager
     private void CreateSpawnCustomerAction()
     {
         TickableAction spawnNextCustomer = new TickableAction
-                ("Spawning customer action", SimulationUitilities
-                        .GetRandomInt(SimulationSettings.minTicksSpawnClient, SimulationSettings.maxTicksSpawnClient));
+                ("Spawning customer action", SimulationUitilities.
+                        GetRandomInt(SimulationSettings.minTicksSpawnClient, SimulationSettings.maxTicksSpawnClient));
+
         System.out.println("SimMan: next customer in " + spawnNextCustomer.GetDuration() + " ticks");
 
         spawnNextCustomer.onFinishCallback = () -> {

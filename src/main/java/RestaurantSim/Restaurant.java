@@ -46,9 +46,9 @@ public class Restaurant {
 
     public void AddGuestToQueue(RestaurantGuest restaurantGuest)
     {
-        System.out.println("Restaurant: " + restaurantGuest.GetName() + " joined the queue");
-
         restaurantGuests.add(restaurantGuest);
+        System.out.println("Restaurant: " + restaurantGuest.GetName() +
+                " joined the queue ("+restaurantGuests.size()+")");
     }
 
     public void RemoveGuestFromQueue(RestaurantGuest restaurantGuest)
@@ -65,7 +65,7 @@ public class Restaurant {
 
     public void AddPreparedOrder(PreparedOrder preparedOrder)
     {
-        this.ordersToPickUp.add(preparedOrder);
+        this.ordersToPickUp.push(preparedOrder);
     }
 
     private void PopulateWithWorkers()
@@ -84,8 +84,13 @@ public class Restaurant {
             if(freeCook != null && !restaurantGuests.isEmpty())
             {
                 RestaurantGuest restaurantGuestToBeServed = restaurantGuests.poll();
-                System.out.println("Restaruant: Interacting with " + restaurantGuestToBeServed.GetName());
-                restaurantGuestToBeServed.InteractWithRestaurant(this);
+                if(restaurantGuestToBeServed.IsWaitingToBeServed())
+                {
+                    System.out.println("Restaruant: Interacting with " + restaurantGuestToBeServed.GetName());
+                    restaurantGuestToBeServed.InteractWithRestaurant(this);
+                }
+                //For now just readd customer
+                restaurantGuests.add(restaurantGuestToBeServed);
             }
         };
         SimulationManager.instance.SubscribeAction(guestHandling);
