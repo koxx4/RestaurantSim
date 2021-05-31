@@ -11,6 +11,7 @@ public class SimulationManager
     public static SimulationManager instance;
     private int tickDuration;
     private long elapsedTime;
+    private long elapsedTicks;
     private boolean running;
     private Restaurant restaurant;
     private List<TickableAction> gameActions;
@@ -34,41 +35,6 @@ public class SimulationManager
         this(1000);
     }
 
-    private void Tick()
-    {
-        if (!gameActions.isEmpty())
-        {
-            for (int i = gameActions.size() - 1; i >= 0; i--)
-            {
-                var action = gameActions.get(i);
-
-                if(action.IsToBeAborted())
-                {
-                    gameActions.remove(i);
-                }
-                //If action is done
-                else if (action.GetTicksToComplete() <= 1)
-                {
-                    action.ExecuteOnFinishCallback();
-                    if(action.IsRepeatable())
-                    {
-                        //Renew action
-                        action.SetTicksToComplete(action.GetDuration());
-                    }
-                    else
-                        gameActions.remove(i);
-                }
-                //Else update action
-                else
-                {
-                    action.DecrementTicks();
-                    action.ExecuteOnUpdateCallback();
-                }
-
-            }
-        }
-    }
-
     public boolean isRunning()
     {
         return this.running;
@@ -88,7 +54,6 @@ public class SimulationManager
             if (elapsedTime >= tickDuration)
             {
                 //Tick
-                System.out.println("Tick! Duration: " + elapsedTime);
                 stopWatch.reset();
                 Tick();
                 stopWatch.start();
@@ -124,14 +89,60 @@ public class SimulationManager
     private void CreateSpawnCustomerAction()
     {
         TickableAction spawnNextCustomer = new TickableAction
-                ("Spawning customer action", SimulationUitilities
-                        .GetRandomInt(SimulationSettings.minTicksSpawnClient, SimulationSettings.maxTicksSpawnClient));
+                ("Spawning customer action", SimulationUitilities.
+                        GetRandomInt(SimulationSettings.minTicksSpawnClient, SimulationSettings.maxTicksSpawnClient));
+
+        System.out.println("SimMan: next customer in " + spawnNextCustomer.GetDuration() + " ticks");
+
         spawnNextCustomer.onFinishCallback = () -> {
             //So we create new customer, place him into simulation
             this.restaurant.AddGuestToQueue(GenerateCustomer());
             //Then we recreate this task beacause we want to
             //spawn customers infinitely (for now?)
+            System.out.println("SimMan: created customer!");
             CreateSpawnCustomerAction();
         };
+
+        this.SubscribeAction(spawnNextCustomer);
+
     }
+
+    private void Tick()
+    {
+        elapsedTicks++;
+        System.out.println("SimMan: Tick("+ elapsedTicks +")! Duration: " + elapsedTime);
+
+        if (!gameActions.isEmpty())
+        {
+            for (int i = gameActions.size() - 1; i >= 0; i--)
+            {
+                var action = gameActions.get(i);
+
+                if(action.IsToBeAborted())
+                {
+                    gameActions.remove(i);
+                }
+                //If action is done
+                else if (action.GetTicksToComplete() <= 1)
+                {
+                    action.ExecuteOnFinishCallback();
+                    if(action.IsRepeatable())
+                    {
+                        //Renew action
+                        action.SetTicksToComplete(action.GetDuration());
+                    }
+                    else
+                        gameActions.remove(i);
+                }
+                //Else update action
+                else
+                {
+                    action.DecrementTicks();
+                    action.ExecuteOnUpdateCallback();
+                }
+
+            }
+        }
+    }
+
 }

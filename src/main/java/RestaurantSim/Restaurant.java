@@ -30,6 +30,7 @@ public class Restaurant {
         if(payForOrder >= order.GetTotalPrice())
         {
             //We essentially treat orderCounter as an id for our orders
+            System.out.println("Restaruant: received order. Cost: " + order.GetTotalPrice());
             orderCounter++;
             GetFreeCook().ReceiveOrder(order, orderCounter, this);
             return new OrderReceipt(orderCounter);
@@ -46,12 +47,16 @@ public class Restaurant {
     public void AddGuestToQueue(RestaurantGuest restaurantGuest)
     {
         restaurantGuests.add(restaurantGuest);
+        System.out.println("Restaurant: " + restaurantGuest.GetName() +
+                " joined the queue ("+restaurantGuests.size()+")");
     }
 
     public void RemoveGuestFromQueue(RestaurantGuest restaurantGuest)
     {
         if(!restaurantGuests.isEmpty())
             restaurantGuests.remove(restaurantGuest);
+
+        System.out.println("Restaurant: " + restaurantGuest.GetName() + " left the queue");
     }
     public void GiveRate(float rate)
     {
@@ -60,7 +65,7 @@ public class Restaurant {
 
     public void AddPreparedOrder(PreparedOrder preparedOrder)
     {
-        this.ordersToPickUp.add(preparedOrder);
+        this.ordersToPickUp.push(preparedOrder);
     }
 
     private void PopulateWithWorkers()
@@ -79,7 +84,13 @@ public class Restaurant {
             if(freeCook != null && !restaurantGuests.isEmpty())
             {
                 RestaurantGuest restaurantGuestToBeServed = restaurantGuests.poll();
-                restaurantGuestToBeServed.InteractWithRestaurant(this);
+                if(restaurantGuestToBeServed.IsWaitingToBeServed())
+                {
+                    System.out.println("Restaruant: Interacting with " + restaurantGuestToBeServed.GetName());
+                    restaurantGuestToBeServed.InteractWithRestaurant(this);
+                }
+                //For now just readd customer
+                restaurantGuests.add(restaurantGuestToBeServed);
             }
         };
         SimulationManager.instance.SubscribeAction(guestHandling);
@@ -105,6 +116,7 @@ public class Restaurant {
             OrderReceipt guestReceipt = guest.GetOrderReceipt();
             if( (guestReceipt != null) && (guestReceipt.GetOrderID() == preparedOrder.GetID()) )
             {
+                System.out.println("Restaruant: Giving order to " + guest.GetName());
                 guest.ReceiveOrder(preparedOrder);
             }
         }
