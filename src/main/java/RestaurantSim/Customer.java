@@ -45,34 +45,30 @@ public class Customer extends RestaurantGuest
             case Excelent: rate = SimulationUitilities.GetRandomFloat() + 4; break;
             default: break;
         }
-        System.out.println("Customer: Rating restaurant for " + rate + " stars");
+        System.out.println(this + "Rating restaurant for " + rate + " stars");
         currentRestaurant.GiveRate(rate);
     }
 
     @Override
     public void InteractWithRestaurant(Restaurant restaurant)
     {
-        System.out.println("Customer: " + super.GetName() + " is interacting with restaurant");
+        System.out.println("Customer (" + super.GetName() + "): is interacting with restaurant");
 
         currentRestaurant = restaurant;
-        Order composedOrder = ComposeOrder(currentRestaurant.getMenu());
+        Order composedOrder = ComposeOrder(currentRestaurant.GetMenu());
+
+        System.out.println(this + "I will try to buy " + composedOrder.GetDishes().get(0).getName());
 
         //For now we assume that client doesn't give tip
         //TODO: client gives sometimes tip
 
-        OrderReceipt orderReceipt =
-                currentRestaurant.ReceiveOrder(composedOrder, composedOrder.GetTotalPrice());
-
-        super.SetOrderReceipt(orderReceipt);
-        super.SetWaitingToBeServed(false);
-
-        System.out.println("Customer: " + super.GetName() + " received order receipt, ID: " + orderReceipt.GetOrderID());
+        TryMakeOrder(composedOrder);
     }
 
     @Override
     public void ReceiveOrder(PreparedOrder preparedOrder)
     {
-        System.out.println("Customer: Received prepared order " + preparedOrder.GetID());
+        System.out.println(this + "Received prepared order " + preparedOrder.GetID());
         //Abort waiting for order
         waitForOrderAction.AbortAction();
         float drawnChance = SimulationUitilities.GetRandomFloat();
@@ -108,12 +104,14 @@ public class Customer extends RestaurantGuest
 
         return composedOrder;
     }
+
     private void CreateWaitingTask()
     {
         waitForOrderAction = new TickableAction(super.GetName() + " is waiting for order", this.GetPatience());
-        System.out.println("Customer: Arrived at restaurant. Gonna wait till " + super.GetPatience() + " ticks brefore I leave!");
+        System.out.println(this + "Arrived at restaurant. Gonna wait " + super.GetPatience() + " ticks brefore I leave!");
+
         waitForOrderAction.onFinishCallback = () -> {
-            System.out.println("Customer: I don't want to wait longer. I'm leaving...");
+            System.out.println(this + "I don't have more time. I'm leaving...");
             float drawnChance = SimulationUitilities.GetRandomFloat();
 
             //If drawn chance is in bounds of chances to rate restaurant
@@ -121,6 +119,7 @@ public class Customer extends RestaurantGuest
             {
                 //2.0 is always a rate given when order is not prepared on time
                 currentRestaurant.GiveRate(SimulationSettings.rateOnOrderNotPreparedOnTime);
+                System.out.println(this + "Also, your restaurant sucks!");
             }
 
             //Guest obviously leaves the queue
@@ -128,6 +127,25 @@ public class Customer extends RestaurantGuest
         };
 
         SimulationManager.instance.SubscribeAction(waitForOrderAction);
+    }
+
+    private void TryMakeOrder(Order composedOrder)
+    {
+        OrderReceipt orderReceipt =
+                currentRestaurant.ReceiveOrder(composedOrder, composedOrder.GetTotalPrice());
+
+        if(orderReceipt != null)
+        {
+            super.SetOrderReceipt(orderReceipt);
+            super.SetWaitingToBeServed(false);
+            System.out.println(this + "received order receipt, ID: " + orderReceipt.GetOrderID());
+        }
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Customer (" + super.GetName() +"): ";
     }
 
 }

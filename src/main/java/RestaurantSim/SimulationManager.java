@@ -92,7 +92,7 @@ public class SimulationManager
                 ("Spawning customer action", SimulationUitilities.
                         GetRandomInt(SimulationSettings.minTicksSpawnClient, SimulationSettings.maxTicksSpawnClient));
 
-        System.out.println("SimMan: next customer in " + spawnNextCustomer.GetDuration() + " ticks");
+        System.out.println(this + "next customer in " + spawnNextCustomer.GetDuration() + " ticks");
 
         spawnNextCustomer.onFinishCallback = () -> {
             //So we create new customer, place him into simulation
@@ -110,7 +110,7 @@ public class SimulationManager
     private void Tick()
     {
         elapsedTicks++;
-        System.out.println("SimMan: Tick("+ elapsedTicks +")! Duration: " + elapsedTime);
+        System.out.println(this + "Tick("+ elapsedTicks +")! Duration: " + elapsedTime);
 
         if (!gameActions.isEmpty())
         {
@@ -143,6 +143,12 @@ public class SimulationManager
 
             }
         }
+    }
+
+    @Override
+    public String toString()
+    {
+        return "SimMan: ";
     }
 
 }
