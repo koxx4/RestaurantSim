@@ -57,6 +57,11 @@ public abstract class RestaurantGuest {
     {
         return this.orderReceipt;
     }
+    @Override
+    public String toString()
+    {
+        return "RestaurantGuest (" + this.name +"): ";
+    }
     abstract public void InteractWithRestaurant(Restaurant restaurant);
     abstract public void ReceiveOrder(PreparedOrder preparedOrder);
 }
