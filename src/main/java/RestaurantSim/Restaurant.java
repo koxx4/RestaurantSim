@@ -75,12 +75,12 @@ public class Restaurant {
     private void CreateGuestHandlingAction()
     {
         TickableAction guestHandling = new TickableAction("Guest handling action", 3, true);
-        guestHandling.onFinishCallback = () -> {
+        guestHandling.SetOnFinishCallback( () -> {
             if( FreeCookAvailable() && !restaurantGuests.isEmpty())
             {
                 TryHandleNextRestaurantGuest();
             }
-        };
+        });
         SimulationManager.instance.SubscribeAction(guestHandling);
     }
 
@@ -104,12 +104,12 @@ public class Restaurant {
     private void CreateOrderPickUpAction()
     {
         TickableAction orderPickUpAction = new TickableAction("Order pick up action", 2, true);
-        orderPickUpAction.onFinishCallback = () -> {
+        orderPickUpAction.SetOnFinishCallback( () -> {
             if(!ordersToPickUp.isEmpty())
             {
                 this.GivePreparedOrderToGuest();
             }
-        };
+        });
         SimulationManager.instance.SubscribeAction(orderPickUpAction);
     }
 
@@ -132,7 +132,7 @@ public class Restaurant {
     {
         for (var cook : cooks)
         {
-            if(!cook.isBusy())
+            if(!cook.IsBusy())
                 return cook;
         }
         return null;
@@ -142,7 +142,7 @@ public class Restaurant {
     {
         for (var cook : cooks)
         {
-            if(!cook.isBusy())
+            if(!cook.IsBusy())
                 return true;
         }
         return false;

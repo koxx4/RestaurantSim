@@ -39,4 +39,24 @@ public final class SimulationUitilities
     {
         return internalRandomGenerator.nextFloat();
     }
+
+    public static boolean IsGoingToHappen(float chanceToHappen, Random randomGenerator)
+    {
+        float drawnChance = randomGenerator.nextFloat();
+
+        return drawnChance <= chanceToHappen;
+    }
+
+    /**
+     * Returns true with given possibility. Otherwise returns false.
+     * Helpful if you want to run some code based on probability of something occurring.
+     * @param chanceToHappen Chance that this function will return true
+     * @return true or false
+     */
+    public static boolean IsGoingToHappen(float chanceToHappen)
+    {
+        float drawnChance = internalRandomGenerator.nextFloat();
+
+        return drawnChance <= chanceToHappen;
+    }
 }

@@ -1,0 +1,12 @@
+{
+  "chanceToRateRestaurant": 0.33,
+  "chanceToRateRestaurantImpatience": 0.7,
+  "numberOfCooks": 4,
+  "rateOnOrderNotPreparedOnTime": 2,
+  "maxClientPatience": 45,
+  "minClientPatience": 15,
+  "maxCookAgility": 20,
+  "minCookAgility": 3,
+  "maxTicksSpawnClient": 15,
+  "minTicksSpawnClient": 3
+}

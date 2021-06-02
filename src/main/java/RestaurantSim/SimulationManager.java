@@ -94,14 +94,14 @@ public class SimulationManager
 
         System.out.println(this + "next customer in " + spawnNextCustomer.GetDuration() + " ticks");
 
-        spawnNextCustomer.onFinishCallback = () -> {
+        spawnNextCustomer.SetOnFinishCallback(  () -> {
             //So we create new customer, place him into simulation
             this.restaurant.AddGuestToQueue(GenerateCustomer());
             //Then we recreate this task beacause we want to
             //spawn customers infinitely (for now?)
             System.out.println("SimMan: created customer!");
             CreateSpawnCustomerAction();
-        };
+        });
 
         this.SubscribeAction(spawnNextCustomer);
 

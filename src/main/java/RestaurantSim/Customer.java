@@ -70,10 +70,9 @@ public class Customer extends RestaurantGuest
     {
         System.out.println(this + "Received prepared order " + preparedOrder.GetID());
         //Abort waiting for order
-        waitForOrderAction.AbortAction();
-        float drawnChance = SimulationUitilities.GetRandomFloat();
+        waitForOrderAction.Abort();
 
-        if (drawnChance <= SimulationSettings.chanceToRateRestaurant)
+        if (SimulationUitilities.IsGoingToHappen(SimulationSettings.chanceToRateRestaurant))
         {
             this.RateRestaurant(preparedOrder);
         }
@@ -110,12 +109,11 @@ public class Customer extends RestaurantGuest
         waitForOrderAction = new TickableAction(super.GetName() + " is waiting for order", this.GetPatience());
         System.out.println(this + "Arrived at restaurant. Gonna wait " + super.GetPatience() + " ticks brefore I leave!");
 
-        waitForOrderAction.onFinishCallback = () -> {
+        waitForOrderAction.SetOnFinishCallback( () -> {
             System.out.println(this + "I don't have more time. I'm leaving...");
-            float drawnChance = SimulationUitilities.GetRandomFloat();
 
-            //If drawn chance is in bounds of chances to rate restaurant
-            if (drawnChance <= SimulationSettings.chanceToRateRestaurant)
+            //If this code is going to happen with this chance... then it's going to happen
+            if (SimulationUitilities.IsGoingToHappen(SimulationSettings.chanceToRateRestaurantImpatience))
             {
                 //2.0 is always a rate given when order is not prepared on time
                 currentRestaurant.GiveRate(SimulationSettings.rateOnOrderNotPreparedOnTime);
@@ -124,7 +122,7 @@ public class Customer extends RestaurantGuest
 
             //Guest obviously leaves the queue
             currentRestaurant.RemoveGuestFromQueue(this);
-        };
+        });
 
         SimulationManager.instance.SubscribeAction(waitForOrderAction);
     }

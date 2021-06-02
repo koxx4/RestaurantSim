@@ -25,9 +25,9 @@ public class Cook
 
         System.out.println(actionMessage + ". This will take me " + prepareOrderAction.GetDuration() + " ticks.");
 
-        prepareOrderAction.onFinishCallback = () -> {
+        prepareOrderAction.SetOnFinishCallback( () -> {
             FinishPreparingOrder(order, orderID, sourceRestaurant);
-        };
+        });
         SimulationManager.instance.SubscribeAction(prepareOrderAction);
 
         this.busy = true;
@@ -38,13 +38,12 @@ public class Cook
         //TODO: Quality will be dependent on cook skills in the future
         System.out.println(this + " I have prepared order, ID: " + orderID);
 
-        sourceRestaurant.AddPreparedOrder(new PreparedOrder(order.GetDishes(), orderID,
-                PreparedOrderQuality.Average));
+        sourceRestaurant.AddPreparedOrder(new PreparedOrder(order, orderID, PreparedOrderQuality.Average));
 
         this.busy = false;
     }
 
-    public boolean isBusy()
+    public boolean IsBusy()
     {
         return busy;
     }

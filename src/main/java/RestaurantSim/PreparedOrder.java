@@ -16,6 +16,11 @@ public class PreparedOrder
         this.quality = quality;
     }
 
+    public PreparedOrder(Order sourceOrder, int id, PreparedOrderQuality quality)
+    {
+        this(sourceOrder.GetDishes(), id, quality);
+    }
+
     public PreparedOrderQuality GetQuality()
     {
         return quality;
