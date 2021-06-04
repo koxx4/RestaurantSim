@@ -69,25 +69,25 @@ public class Customer extends RestaurantGuest
     public void ReceiveOrder(PreparedOrder preparedOrder)
     {
         System.out.println(this + "Received prepared order " + preparedOrder.GetID());
-        //Abort waiting for order
-        waitForOrderAction.Abort();
 
-        if (SimulationUitilities.IsGoingToHappen(SimulationSettings.chanceToRateRestaurant))
+        if (SimulationUitilities.IsGoingToHappen(SimulationManager.instance.GetSettings().chanceToRateRestaurant))
         {
             this.RateRestaurant(preparedOrder);
         }
 
+        //Abort waiting for order
+        waitForOrderAction.Abort();
         //Guest obviously leaves the queue
-        currentRestaurant.RemoveGuestFromQueue(this);
+        CreateLeaveTask();
     }
 
     private Order ComposeOrder(Menu menu)
     {
         Order composedOrder;
         Dish randomDish;
-        int numberOfDishes = menu.availableDishes.size();
+        int numberOfDishes = menu.GetAvailableDishes().size();
         int randomDishIndex = SimulationUitilities.GetRandomInt(numberOfDishes);
-        Iterator<Dish> availableDishesIterator = menu.availableDishes.elements().asIterator();
+        Iterator<Dish> availableDishesIterator = menu.GetAvailableDishes().elements().asIterator();
 
         for (int i = 0; i != randomDishIndex; i++)
         {
@@ -113,10 +113,10 @@ public class Customer extends RestaurantGuest
             System.out.println(this + "I don't have more time. I'm leaving...");
 
             //If this code is going to happen with this chance... then it's going to happen
-            if (SimulationUitilities.IsGoingToHappen(SimulationSettings.chanceToRateRestaurantImpatience))
+            if (SimulationUitilities.IsGoingToHappen(SimulationManager.instance.GetSettings().chanceToRateRestaurantImpatience))
             {
                 //2.0 is always a rate given when order is not prepared on time
-                currentRestaurant.GiveRate(SimulationSettings.rateOnOrderNotPreparedOnTime);
+                currentRestaurant.GiveRate(SimulationManager.instance.GetSettings().rateOnOrderNotPreparedOnTime);
                 System.out.println(this + "Also, your restaurant sucks!");
             }
 
@@ -125,6 +125,14 @@ public class Customer extends RestaurantGuest
         });
 
         SimulationManager.instance.SubscribeAction(waitForOrderAction);
+    }
+
+    private void CreateLeaveTask()
+    {
+        TickableAction leaveTask = new TickableAction(1);
+        leaveTask.SetOnFinishCallback(
+                () -> currentRestaurant.RemoveGuestFromQueue(this));
+        SimulationManager.instance.SubscribeAction(leaveTask);
     }
 
     private void TryMakeOrder(Order composedOrder)

@@ -66,7 +66,7 @@ public class Restaurant {
 
     private void PopulateWithWorkers()
     {
-        for(int i = 0; i < SimulationSettings.numberOfCooks; i++)
+        for(int i = 0; i < SimulationManager.instance.GetSettings().numberOfCooks; i++)
         {
             cooks.add(new Cook("Cook " + i));
         }
@@ -116,16 +116,22 @@ public class Restaurant {
     private void GivePreparedOrderToGuest()
     {
         PreparedOrder preparedOrder = ordersToPickUp.pop();
+        RestaurantGuest eligibleGuest = null;
         for (var guest: restaurantGuests)
         {
-            OrderReceipt guestReceipt = guest.GetOrderReceipt();
-            if( (guestReceipt != null) && (guestReceipt.GetOrderID() == preparedOrder.GetID()) )
+            if(CustomerIsEligibleForOrder(preparedOrder, guest))
             {
                 System.out.println(this + "Giving order to " + guest.GetName());
                 guest.ReceiveOrder(preparedOrder);
             }
         }
 
+    }
+
+    private boolean CustomerIsEligibleForOrder(PreparedOrder preparedOrder, RestaurantGuest guest)
+    {
+        OrderReceipt guestReceipt = guest.GetOrderReceipt();
+        return (guestReceipt != null) && (guestReceipt.GetOrderID() == preparedOrder.GetID());
     }
 
     private Cook GetFreeCook()

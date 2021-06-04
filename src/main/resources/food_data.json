@@ -1,0 +1,19 @@
+{
+  "ingredientsData": [
+    {"name": "french fries", "price": 4.5, "ticksToPrepare": 6},
+    {"name": "tomato slice", "price": 1, "ticksToPrepare": 2},
+    {"name": "hot sauce", "price": 3.5, "ticksToPrepare": 3},
+    {"name": "mild sauce", "price": 3.5, "ticksToPrepare": 3},
+    {"name": "soy sauce", "price": 3, "ticksToPrepare": 2},
+    {"name": "rice", "price": 3, "ticksToPrepare": 10},
+    {"name": "salmon", "price": 10, "ticksToPrepare": 8},
+    {"name": "cheese", "price": 2, "ticksToPrepare": 4},
+    {"name": "roasted chicken", "price": 5.5, "ticksToPrepare": 9}
+  ],
+
+  "dishesData":[
+    {"name":"Kebab","ingredients":["cheese","hot sauce","roasted chicken"]},
+    {"name":"Pizza","ingredients":["cheese","mild sauce"]},
+    {"name":"Sushi","ingredients":["rice","salmon", "soy sauce"]}
+  ]
+}

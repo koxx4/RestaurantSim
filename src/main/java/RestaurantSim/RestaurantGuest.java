@@ -16,7 +16,8 @@ public abstract class RestaurantGuest {
     public RestaurantGuest(String name)
     {
         this(name, SimulationUitilities.
-                GetRandomInt(SimulationSettings.minClientPatience, SimulationSettings.maxClientPatience));
+                GetRandomInt(SimulationManager.instance.GetSettings().minClientPatience,
+                        SimulationManager.instance.GetSettings().maxClientPatience));
     }
     public RestaurantGuest(int patience)
     {
@@ -26,7 +27,8 @@ public abstract class RestaurantGuest {
     public RestaurantGuest()
     {
         this("Unnamed Restaurant Guest", SimulationUitilities.
-            GetRandomInt(SimulationSettings.minClientPatience, SimulationSettings.maxClientPatience));
+            GetRandomInt(SimulationManager.instance.GetSettings().minClientPatience,
+                    SimulationManager.instance.GetSettings().maxClientPatience));
     }
 
     public String GetName()

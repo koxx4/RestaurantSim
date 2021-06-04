@@ -2,15 +2,30 @@ package RestaurantSim;
 
 public class SimulationSettings
 {
-    public static final float chanceToRateRestaurant = 0.33f;
-    public static final float chanceToRateRestaurantImpatience = 0.70f;
-    public static final int maxClientPatience = 45;
-    public static final int minClientPatience = 15;
-    public static final int maxCookAgility = 20;
-    public static final int minCookAgility = 3;
-    public static final int maxTicksSpawnClient = 15;
-    public static final int minTicksSpawnClient = 3;
-    public static final float rateOnOrderNotPreparedOnTime = 2.0f;
-    public static final int numberOfCooks = 4;
+    public final float chanceToRateRestaurant;
+    public final float chanceToRateRestaurantImpatience;
+    public final int maxClientPatience;
+    public final int minClientPatience;
+    public final int maxCookAgility;
+    public final int minCookAgility;
+    public final int maxTicksSpawnClient;
+    public final int minTicksSpawnClient;
+    public final float rateOnOrderNotPreparedOnTime;
+    public final int numberOfCooks;
+
+    public SimulationSettings()
+    {
+        chanceToRateRestaurant = 0;
+        chanceToRateRestaurantImpatience = 0;
+        maxClientPatience = 0;
+        minClientPatience = 0;
+        maxCookAgility = 0;
+        minCookAgility = 0;
+        maxTicksSpawnClient = 0;
+        minTicksSpawnClient = 0;
+        rateOnOrderNotPreparedOnTime = 0;
+        numberOfCooks = 0;
+    }
+
 }
 

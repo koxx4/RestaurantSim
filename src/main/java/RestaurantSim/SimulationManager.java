@@ -1,14 +1,19 @@
 package RestaurantSim;
 
+import com.google.gson.Gson;
 import org.apache.commons.lang3.time.StopWatch;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class SimulationManager
 {
     public static SimulationManager instance;
+    private SimulationSettings settings;
+    private PeopleData peopleData;
+    private FoodData foodData;
     private int tickDuration;
     private long elapsedTime;
     private long elapsedTicks;
@@ -25,9 +30,14 @@ public class SimulationManager
         this.tickDuration = tickDuration;
         stopWatch = new StopWatch();
         gameActions = new ArrayList<>();
-        restaurant = new Restaurant(new Menu());
-
-        Initialize();
+        try
+        {
+            Initialize();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            this.Stop();
+        }
     }
 
     public SimulationManager()
@@ -71,27 +81,49 @@ public class SimulationManager
 
     public void Stop()
     {
-        System.out.println("Stopping simulation!");
+        System.out.println(this + "Stopping simulation!");
         this.running = false;
+    }
+
+    public SimulationSettings GetSettings()
+    {
+        return this.settings;
     }
 
     private Customer GenerateCustomer()
     {
-        return new Customer("Johne Doe");
+        return new Customer(peopleData.GetRandomFullName());
     }
 
-    private void Initialize()
+    private void Initialize() throws IOException
     {
         //If we want to set up some things before
         //starting simulation
+        LoadJsonConfigs();
+
         CreateSpawnCustomerAction();
+        //Only now we can create restaurant
+        restaurant = new Restaurant(new Menu(this.foodData));
+    }
+
+    private void LoadJsonConfigs() throws IOException
+    {
+        Gson gson = new Gson();
+
+        String simSettingsPath = getClass().getResource("/simulation_settings.json").getPath();
+        String menuPath = getClass().getResource("/food_data.json").getPath();
+        String namesSurnamesPath = getClass().getResource("/names_surnames_data.json").getPath();
+
+        this.settings = gson.fromJson(new FileReader(simSettingsPath), SimulationSettings.class);
+        this.foodData = gson.fromJson(new FileReader(menuPath), FoodData.class);
+        this.peopleData = gson.fromJson(new FileReader(namesSurnamesPath), PeopleData.class);
     }
 
     private void CreateSpawnCustomerAction()
     {
         TickableAction spawnNextCustomer = new TickableAction
                 ("Spawning customer action", SimulationUitilities.
-                        GetRandomInt(SimulationSettings.minTicksSpawnClient, SimulationSettings.maxTicksSpawnClient));
+                        GetRandomInt(settings.minTicksSpawnClient, settings.maxTicksSpawnClient));
 
         System.out.println(this + "next customer in " + spawnNextCustomer.GetDuration() + " ticks");
 

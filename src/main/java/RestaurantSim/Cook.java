@@ -16,7 +16,8 @@ public class Cook
     public Cook(String name)
     {
         this(name, SimulationUitilities
-                .GetRandomInt(SimulationSettings.minCookAgility, SimulationSettings.maxCookAgility));
+                .GetRandomInt(SimulationManager.instance.GetSettings().minCookAgility,
+                        SimulationManager.instance.GetSettings().maxCookAgility));
     }
 
     public void ReceiveOrder(Order order, int orderID, Restaurant sourceRestaurant)
