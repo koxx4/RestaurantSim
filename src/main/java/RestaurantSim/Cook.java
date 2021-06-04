@@ -1,5 +1,7 @@
 package RestaurantSim;
 
+import org.jetbrains.annotations.NotNull;
+
 public class Cook
 {
     private final String name;
@@ -33,7 +35,7 @@ public class Cook
         this.busy = true;
     }
 
-    private void FinishPreparingOrder(Order order, int orderID, Restaurant sourceRestaurant)
+    private void FinishPreparingOrder(Order order, int orderID, @NotNull Restaurant sourceRestaurant)
     {
         //TODO: Quality will be dependent on cook skills in the future
         System.out.println(this + " I have prepared order, ID: " + orderID);

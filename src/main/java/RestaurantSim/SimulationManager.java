@@ -55,7 +55,8 @@ public class SimulationManager
             {
                 //Tick
                 stopWatch.reset();
-                Tick();
+                try { Tick(); }
+                catch (Exception ex) { ex.printStackTrace(); }
                 stopWatch.start();
             }
             else

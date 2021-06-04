@@ -1,5 +1,7 @@
 package RestaurantSim;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 public class PreparedOrder
@@ -16,7 +18,7 @@ public class PreparedOrder
         this.quality = quality;
     }
 
-    public PreparedOrder(Order sourceOrder, int id, PreparedOrderQuality quality)
+    public PreparedOrder(@NotNull Order sourceOrder, int id, PreparedOrderQuality quality)
     {
         this(sourceOrder.GetDishes(), id, quality);
     }
