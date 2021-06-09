@@ -1,9 +1,7 @@
 package RestaurantSim;
 
-import com.google.gson.Gson;
 import org.apache.commons.lang3.time.StopWatch;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +9,9 @@ import java.util.List;
 public class SimulationManager
 {
     public static SimulationManager instance;
-    private SimulationSettings settings;
-    private PeopleData peopleData;
-    private FoodData foodData;
+    private final SimulationSettings settings;
+    private final PeopleData peopleData;
+    private final FoodData foodData;
     private int tickDuration;
     private long elapsedTime;
     private long elapsedTicks;
@@ -22,27 +20,25 @@ public class SimulationManager
     private List<TickableAction> gameActions;
     private StopWatch stopWatch;
 
-    //Tick duration is in miliseconds!
-    public SimulationManager(int tickDuration)
-    {
+    public SimulationManager(SimulationSettings settings, SimulationData simulationData) {
         instance = this;
         this.running = true;
-        this.tickDuration = tickDuration;
+        this.tickDuration = settings.tickDuration;
+
+        this.settings = settings;
+        this.peopleData = simulationData.peopleData;
+        this.foodData = simulationData.foodData;
+
         stopWatch = new StopWatch();
         gameActions = new ArrayList<>();
         try
         {
-            Initialize();
+            initialize();
         } catch (Exception e)
         {
             e.printStackTrace();
-            this.Stop();
+            this.stop();
         }
-    }
-
-    public SimulationManager()
-    {
-        this(1000);
     }
 
     public boolean isRunning()
@@ -50,7 +46,7 @@ public class SimulationManager
         return this.running;
     }
 
-    public void StartSimulation()
+    public void startSimulation()
     {
         // Initialize
         stopWatch.start();
@@ -65,7 +61,7 @@ public class SimulationManager
             {
                 //Tick
                 stopWatch.reset();
-                try { Tick(); }
+                try { tick(); }
                 catch (Exception ex) { ex.printStackTrace(); }
                 stopWatch.start();
             }
@@ -74,73 +70,70 @@ public class SimulationManager
         }
     }
 
-    public void SubscribeAction(TickableAction action)
+    public void subscribeAction( TickableAction action)
     {
         gameActions.add(action);
     }
 
-    public void Stop()
+    public void stop()
     {
         System.out.println(this + "Stopping simulation!");
         this.running = false;
     }
 
-    public SimulationSettings GetSettings()
+    public SimulationSettings getSettings()
     {
         return this.settings;
     }
 
-    private Customer GenerateCustomer()
+    public String GetRandomFullName()
     {
-        return new Customer(peopleData.GetRandomFullName());
+        return this.peopleData.getRandomFullName();
     }
 
-    private void Initialize() throws IOException
+    private Customer generateCustomer()
+    {
+        CustomerBuilder customerBuilder = new CustomerBuilder();
+
+        Customer buildedCustomer = customerBuilder.buildCustomer()
+                .named(peopleData.getRandomFullName())
+                .withRandomPatience(settings.minClientPatience, settings.maxClientPatience)
+                .withRater(new QualityBasedOrderRater())
+                .getBuildCustomer();
+
+        return buildedCustomer;
+    }
+
+    private void initialize() throws IOException
     {
         //If we want to set up some things before
-        //starting simulation
-        LoadJsonConfigs();
-
-        CreateSpawnCustomerAction();
+        createSpawnCustomerAction();
         //Only now we can create restaurant
         restaurant = new Restaurant(new Menu(this.foodData));
     }
 
-    private void LoadJsonConfigs() throws IOException
-    {
-        Gson gson = new Gson();
-
-        String simSettingsPath = getClass().getResource("/simulation_settings.json").getPath();
-        String menuPath = getClass().getResource("/food_data.json").getPath();
-        String namesSurnamesPath = getClass().getResource("/names_surnames_data.json").getPath();
-
-        this.settings = gson.fromJson(new FileReader(simSettingsPath), SimulationSettings.class);
-        this.foodData = gson.fromJson(new FileReader(menuPath), FoodData.class);
-        this.peopleData = gson.fromJson(new FileReader(namesSurnamesPath), PeopleData.class);
-    }
-
-    private void CreateSpawnCustomerAction()
+    private void createSpawnCustomerAction()
     {
         TickableAction spawnNextCustomer = new TickableAction
-                ("Spawning customer action", SimulationUitilities.
-                        GetRandomInt(settings.minTicksSpawnClient, settings.maxTicksSpawnClient));
+                ("Spawning customer action",
+                        SimulationUitilities.getRandomInt(settings.minTicksSpawnClient, settings.maxTicksSpawnClient));
 
-        System.out.println(this + "next customer in " + spawnNextCustomer.GetDuration() + " ticks");
+        System.out.println(this + "next customer in " + spawnNextCustomer.getDuration() + " ticks");
 
-        spawnNextCustomer.SetOnFinishCallback(  () -> {
+        spawnNextCustomer.setOnFinishCallback(  () -> {
             //So we create new customer, place him into simulation
-            this.restaurant.AddGuestToQueue(GenerateCustomer());
-            //Then we recreate this task beacause we want to
-            //spawn customers infinitely (for now?)
+            Customer generatedCustomer = generateCustomer();
+            generatedCustomer.onRestaurantEnter();
+            this.restaurant.addGuestToQueue(generatedCustomer);
             System.out.println("SimMan: created customer!");
-            CreateSpawnCustomerAction();
+            createSpawnCustomerAction();
         });
 
-        this.SubscribeAction(spawnNextCustomer);
+        this.subscribeAction(spawnNextCustomer);
 
     }
 
-    private void Tick()
+    private void tick()
     {
         elapsedTicks++;
         System.out.println(this + "Tick("+ elapsedTicks +")! Duration: " + elapsedTime);
@@ -151,18 +144,18 @@ public class SimulationManager
             {
                 var action = gameActions.get(i);
 
-                if(action.IsToBeAborted())
+                if(action.isToBeAborted())
                 {
                     gameActions.remove(i);
                 }
                 //If action is done
-                else if (action.GetTicksToComplete() <= 1)
+                else if (action.getTicksToComplete() <= 1)
                 {
-                    action.ExecuteOnFinishCallback();
-                    if(action.IsRepeatable())
+                    action.executeOnFinishCallback();
+                    if(action.isRepeatable())
                     {
                         //Renew action
-                        action.SetTicksToComplete(action.GetDuration());
+                        action.setTicksToComplete(action.getDuration());
                     }
                     else
                         gameActions.remove(i);
@@ -170,8 +163,8 @@ public class SimulationManager
                 //Else update action
                 else
                 {
-                    action.DecrementTicks();
-                    action.ExecuteOnUpdateCallback();
+                    action.decrementTicks();
+                    action.executeOnUpdateCallback();
                 }
 
             }

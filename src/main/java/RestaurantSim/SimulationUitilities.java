@@ -4,7 +4,7 @@ import java.util.Random;
 
 public final class SimulationUitilities
 {
-    private static Random internalRandomGenerator = new Random();
+    private static final Random internalRandomGenerator = new Random();
     /**
      * Returns a pseudo-random number between min and max, inclusive.
      * The difference between min and max can be at most
@@ -15,32 +15,32 @@ public final class SimulationUitilities
      * @return Integer between min and max, inclusive.
      * @see java.util.Random#nextInt(int)
      */
-    public static int GetRandomInt(int min, int max, Random randomGenerator)
+    public static int getRandomInt( int min, int max, Random randomGenerator)
     {
         return randomGenerator.nextInt((max - min) + 1) + min;
     }
-    public static int GetRandomInt(int min, int max)
+    public static int getRandomInt( int min, int max)
     {
         return internalRandomGenerator.nextInt((max - min) + 1) + min;
     }
-    public static int GetRandomInt(int max, Random randomGenerator)
+    public static int getRandomInt( int max, Random randomGenerator)
     {
         return randomGenerator.nextInt(max);
     }
-    public static int GetRandomInt(int max)
+    public static int getRandomInt( int max)
     {
         return internalRandomGenerator.nextInt(max);
     }
-    public static float GetRandomFloat(Random randomGenerator)
+    public static float getRandomFloat( Random randomGenerator)
     {
         return randomGenerator.nextFloat();
     }
-    public static float GetRandomFloat()
+    public static float getRandomFloat()
     {
         return internalRandomGenerator.nextFloat();
     }
 
-    public static boolean IsGoingToHappen(float chanceToHappen, Random randomGenerator)
+    public static boolean isGoingToHappen( float chanceToHappen, Random randomGenerator)
     {
         float drawnChance = randomGenerator.nextFloat();
 
@@ -53,10 +53,11 @@ public final class SimulationUitilities
      * @param chanceToHappen Chance that this function will return true
      * @return true or false
      */
-    public static boolean IsGoingToHappen(float chanceToHappen)
+    public static boolean isGoingToHappen( float chanceToHappen )
     {
         float drawnChance = internalRandomGenerator.nextFloat();
 
         return drawnChance <= chanceToHappen;
     }
+
 }

@@ -12,35 +12,35 @@ public class PeopleData
 
     }
 
-    public List<String> GetNames()
+    public List<String> getNames()
     {
         return names;
     }
 
-    public List<String> GetSurnames()
+    public List<String> getSurnames()
     {
         return surnames;
     }
 
-    public String GetRandomName()
+    public String getRandomName()
     {
         if (!names.isEmpty())
-            return names.get(SimulationUitilities.GetRandomInt(names.size()));
+            return names.get(SimulationUitilities.getRandomInt(names.size()));
 
         return "Invalid name";
     }
 
-    public String GetRandomSurname()
+    public String getRandomSurname()
     {
         if (!surnames.isEmpty())
-            return surnames.get(SimulationUitilities.GetRandomInt(surnames.size()));
+            return surnames.get(SimulationUitilities.getRandomInt(surnames.size()));
 
         return "Invalid surname";
     }
 
-    public String GetRandomFullName()
+    public String getRandomFullName()
     {
-        return GetRandomName() + " " + GetRandomSurname();
+        return getRandomName() + " " + getRandomSurname();
     }
 
 }

@@ -13,12 +13,12 @@ public class JsonDish
 
     }
 
-    public String GetName()
+    public String getName()
     {
         return this.name;
     }
 
-    public List<String> GetAssociatedIngredients()
+    public List<String> getAssociatedIngredients()
     {
         return this.ingredients;
     }

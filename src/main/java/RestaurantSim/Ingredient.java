@@ -13,15 +13,15 @@ public class Ingredient
         this.ticksToPrepare = ticksToPrepare;
     }
 
-    public float GetPrice()
+    public float getPrice()
     {
         return price;
     }
-    public String GetName()
+    public String getName()
     {
         return name;
     }
-    public int GetTicksToPrepare()
+    public int getTicksToPrepare()
     {
         return ticksToPrepare;
     }

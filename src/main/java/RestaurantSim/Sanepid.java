@@ -2,30 +2,30 @@ package RestaurantSim;
 
 public class Sanepid extends RestaurantGuest {
 
-    public Sanepid(String name)
-    {
-        super(name);
-    }
-
     public Sanepid()
     {
         super();
     }
 
-    private void EvaluateRestaurantWork()
+    private void evaluateRestaurantWork()
     {
 
     }
 
     @Override
-    public void InteractWithRestaurant(Restaurant restaurant)
+    public void interactWithRestaurant( Restaurant restaurant)
     {
-        EvaluateRestaurantWork();
+        evaluateRestaurantWork();
     }
 
     @Override
-    public void ReceiveOrder(PreparedOrder preparedOrder)
+    public void receiveOrder( PreparedOrder preparedOrder)
     {
 
+    }
+
+    @Override
+    public void onRestaurantEnter( ) {
+        evaluateRestaurantWork();
     }
 }

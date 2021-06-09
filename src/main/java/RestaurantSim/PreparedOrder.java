@@ -23,11 +23,11 @@ public class PreparedOrder
         this(sourceOrder.GetDishes(), id, quality);
     }
 
-    public PreparedOrderQuality GetQuality()
+    public PreparedOrderQuality getQuality()
     {
         return quality;
     }
-    public int GetID()
+    public int getID()
     {
         return this.id;
     }

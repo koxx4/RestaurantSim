@@ -1,13 +1,26 @@
 package RestaurantSim;
 
+import java.io.IOException;
+
 public class Program
 {
-    private static SimulationManager simulationManager;
 
     public static void main(String[] args)
     {
-        System.out.println("Start symulacji");
-        simulationManager = new SimulationManager(1000);
-        simulationManager.StartSimulation();
+        SimulationManager simulationManager = null;
+        SimulationSettingsLoader simulationSettingsLoader = new SimulationSettingsLoader();
+        SimulationDataLoader simulationDataLoader = new SimulationDataLoader();
+
+        try {
+            simulationManager = new SimulationManager(
+                    simulationSettingsLoader.loadFromJson(),
+                    simulationDataLoader.loadFromJson());
+
+            simulationManager.startSimulation();
+
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
+
     }
 }

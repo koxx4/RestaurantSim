@@ -7,46 +7,60 @@ public class Cook
     private final String name;
     private boolean busy;
     private int agility;
+    private int skillLevel;
 
-    public Cook(String name, int agility)
+    public Cook(String name, int agility, int skillLevel)
     {
         this.name = name;
+        this.agility = agility;
+        this.skillLevel = skillLevel;
     }
 
     public Cook(String name)
     {
         this(name, SimulationUitilities
-                .GetRandomInt(SimulationManager.instance.GetSettings().minCookAgility,
-                        SimulationManager.instance.GetSettings().maxCookAgility));
+                .getRandomInt(SimulationManager.instance.getSettings().minCookAgility,
+                        SimulationManager.instance.getSettings().maxCookAgility),
+                SimulationUitilities.getRandomInt(SimulationManager.instance.getSettings().minCookSkill,
+                        SimulationManager.instance.getSettings().maxCookSkill));
     }
 
-    public void ReceiveOrder(Order order, int orderID, Restaurant sourceRestaurant)
+    public void receiveOrder( Order order, int orderID, Restaurant sourceRestaurant)
     {
         String actionMessage = this + "Preparing order "+ orderID;
 
-        TickableAction prepareOrderAction = new TickableAction(actionMessage, this.EstimateWorkTime(order));
+        TickableAction prepareOrderAction = new TickableAction(actionMessage, this.estimateWorkTime(order));
 
-        System.out.println(actionMessage + ". This will take me " + prepareOrderAction.GetDuration() + " ticks.");
+        System.out.println(actionMessage + ". This will take me " + prepareOrderAction.getDuration() + " ticks.");
 
-        prepareOrderAction.SetOnFinishCallback( () -> {
-            FinishPreparingOrder(order, orderID, sourceRestaurant);
+        prepareOrderAction.setOnFinishCallback( () -> {
+            finishPreparingOrder(order, orderID, sourceRestaurant);
         });
-        SimulationManager.instance.SubscribeAction(prepareOrderAction);
+        SimulationManager.instance.subscribeAction(prepareOrderAction);
 
         this.busy = true;
     }
 
-    private void FinishPreparingOrder(Order order, int orderID, @NotNull Restaurant sourceRestaurant)
+    private void finishPreparingOrder( Order order, int orderID, @NotNull Restaurant sourceRestaurant)
     {
         //TODO: Quality will be dependent on cook skills in the future
         System.out.println(this + " I have prepared order, ID: " + orderID);
 
-        sourceRestaurant.AddPreparedOrder(new PreparedOrder(order, orderID, PreparedOrderQuality.Average));
+       // PreparedOrderQuality calculatedQuality = this.calculatePreparedDishQuality();
+        sourceRestaurant.addPreparedOrder(new PreparedOrder(order, orderID, PreparedOrderQuality.Average));
 
         this.busy = false;
     }
 
-    public boolean IsBusy()
+    private PreparedOrderQuality calculatePreparedDishQuality()
+    {
+        PreparedOrderQuality base = PreparedOrderQuality.values()[this.skillLevel];
+
+        //TODO:
+        return null;
+    }
+
+    public boolean isBusy()
     {
         return busy;
     }
@@ -56,14 +70,14 @@ public class Cook
         return name;
     }
 
-    private int EstimateWorkTime(Order order)
+    private int estimateWorkTime( Order order)
     {
         int ticksToPrepareOrder = 0;
         for (var dish : order.GetDishes())
         {
             for (var ingredient : dish.getIngredients())
             {
-                ticksToPrepareOrder += ingredient.GetTicksToPrepare();
+                ticksToPrepareOrder += ingredient.getTicksToPrepare();
             }
         }
         ticksToPrepareOrder -= this.agility;

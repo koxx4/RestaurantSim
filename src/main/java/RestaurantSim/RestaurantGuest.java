@@ -1,61 +1,45 @@
 package RestaurantSim;
 
 public abstract class RestaurantGuest {
-    private final int patience;
+    private int patience;
     private String name;
     private boolean waitingToBeServed;
     private OrderReceipt orderReceipt;
 
-    public RestaurantGuest(String name, int patience)
-    {
-        waitingToBeServed = true;
-        this.name = name;
-        this.patience = patience;
-    }
-
-    public RestaurantGuest(String name)
-    {
-        this(name, SimulationUitilities.
-                GetRandomInt(SimulationManager.instance.GetSettings().minClientPatience,
-                        SimulationManager.instance.GetSettings().maxClientPatience));
-    }
-    public RestaurantGuest(int patience)
-    {
-        this("Unnamed Restaurant Guest", patience);
-    }
-
     public RestaurantGuest()
     {
-        this("Unnamed Restaurant Guest", SimulationUitilities.
-            GetRandomInt(SimulationManager.instance.GetSettings().minClientPatience,
-                    SimulationManager.instance.GetSettings().maxClientPatience));
+        waitingToBeServed = true;
+        this.name = "Unnamed restaurantGuest";
     }
 
-    public String GetName()
+    public String getName()
     {
         return this.name;
     }
-    public void SetName(String name)
+    public void setName( String name)
     {
         this.name = name;
     }
-    public int GetPatience()
+    public int getPatience()
     {
         return this.patience;
     }
-    public boolean IsWaitingToBeServed()
+    public void setPatience(int value) {
+        this.patience = value;
+    }
+    public boolean isWaitingToBeServed()
     {
         return this.waitingToBeServed;
     }
-    public void SetOrderReceipt(OrderReceipt orderReceipt)
+    public void setOrderReceipt( OrderReceipt orderReceipt)
     {
         this.orderReceipt = orderReceipt;
     }
-    public void SetWaitingToBeServed(boolean value)
+    public void setWaitingToBeServed( boolean value)
     {
         this.waitingToBeServed = value;
     }
-    public OrderReceipt GetOrderReceipt()
+    public OrderReceipt getOrderReceipt()
     {
         return this.orderReceipt;
     }
@@ -64,6 +48,7 @@ public abstract class RestaurantGuest {
     {
         return "RestaurantGuest (" + this.name +"): ";
     }
-    abstract public void InteractWithRestaurant(Restaurant restaurant);
-    abstract public void ReceiveOrder(PreparedOrder preparedOrder);
+    abstract public void interactWithRestaurant( Restaurant restaurant);
+    abstract public void receiveOrder( PreparedOrder preparedOrder);
+    abstract public void onRestaurantEnter();
 }

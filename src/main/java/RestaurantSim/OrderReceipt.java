@@ -9,7 +9,7 @@ public class OrderReceipt
         this.orderID = orderID;
     }
 
-    public int GetOrderID()
+    public int getOrderID()
     {
         return orderID;
     }

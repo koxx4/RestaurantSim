@@ -18,154 +18,154 @@ public class Restaurant {
           this.rates = new ArrayList<>();
           this.cooks = new ArrayList<>();
           this.ordersToPickUp = new Stack<>();
-          this.PopulateWithWorkers();
-          this.CreateGuestHandlingAction();
-          this.CreateOrderPickUpAction();
+          this.populateWithWorkers();
+          this.createGuestHandlingAction();
+          this.createOrderPickUpAction();
     }
 
-    public OrderReceipt ReceiveOrder(Order order, float payForOrder)
+    public OrderReceipt receiveOrder( Order order, float payForOrder)
     {
         if(payForOrder >= order.GetTotalPrice())
         {
-            if(TryHandleOrder(order))
+            if( tryHandleOrder(order))
                 return new OrderReceipt(orderCounter);
         }
 
         return null;
     }
 
-    public Menu GetMenu()
+    public Menu getMenu()
     {
         return menu;
     }
 
-    public void AddGuestToQueue(RestaurantGuest restaurantGuest)
+    public void addGuestToQueue( RestaurantGuest restaurantGuest)
     {
         restaurantGuests.add(restaurantGuest);
-        System.out.println(this + restaurantGuest.GetName() +
+        System.out.println(this + restaurantGuest.getName() +
                 " joined the queue (" + restaurantGuests.size() + ")");
     }
 
-    public void RemoveGuestFromQueue(RestaurantGuest restaurantGuest)
+    public void removeGuestFromQueue( RestaurantGuest restaurantGuest)
     {
         if(!restaurantGuests.isEmpty())
             restaurantGuests.remove(restaurantGuest);
 
-        System.out.println(this + restaurantGuest.GetName() + " left the queue");
+        System.out.println(this + restaurantGuest.getName() + " left the queue");
     }
 
-    public void GiveRate(float rate)
+    public void giveRate( float rate)
     {
         rates.add(rate);
     }
 
-    public void AddPreparedOrder(PreparedOrder preparedOrder)
+    public void addPreparedOrder( PreparedOrder preparedOrder)
     {
         this.ordersToPickUp.push(preparedOrder);
     }
 
-    private void PopulateWithWorkers()
+    private void populateWithWorkers()
     {
-        for(int i = 0; i < SimulationManager.instance.GetSettings().numberOfCooks; i++)
+        for( int i = 0; i < SimulationManager.instance.getSettings().numberOfCooks; i++)
         {
-            cooks.add(new Cook("Cook " + i));
+            cooks.add(new Cook(SimulationManager.instance.GetRandomFullName()));
         }
     }
 
-    private void CreateGuestHandlingAction()
+    private void createGuestHandlingAction()
     {
         TickableAction guestHandling = new TickableAction("Guest handling action", 3, true);
-        guestHandling.SetOnFinishCallback( () -> {
-            if( FreeCookAvailable() && !restaurantGuests.isEmpty())
+        guestHandling.setOnFinishCallback( () -> {
+            if( freeCookAvailable() && !restaurantGuests.isEmpty())
             {
-                TryHandleNextRestaurantGuest();
+                tryHandleNextRestaurantGuest();
             }
         });
-        SimulationManager.instance.SubscribeAction(guestHandling);
+        SimulationManager.instance.subscribeAction(guestHandling);
     }
 
-    private void TryHandleNextRestaurantGuest()
+    private void tryHandleNextRestaurantGuest()
     {
         RestaurantGuest restaurantGuestToBeServed = restaurantGuests.poll();
-        if(restaurantGuestToBeServed.IsWaitingToBeServed())
+        if(restaurantGuestToBeServed.isWaitingToBeServed())
         {
-            HandleRestaurantGuest(restaurantGuestToBeServed);
+            handleRestaurantGuest(restaurantGuestToBeServed);
         }
         //For now just readd customer
         restaurantGuests.add(restaurantGuestToBeServed);
     }
 
-    private void HandleRestaurantGuest(RestaurantGuest restaurantGuestToBeServed)
+    private void handleRestaurantGuest( RestaurantGuest restaurantGuestToBeServed)
     {
-        System.out.println(this + "Interacting with " + restaurantGuestToBeServed.GetName());
-        restaurantGuestToBeServed.InteractWithRestaurant(this);
+        System.out.println(this + "Interacting with " + restaurantGuestToBeServed.getName());
+        restaurantGuestToBeServed.interactWithRestaurant(this);
     }
 
-    private void CreateOrderPickUpAction()
+    private void createOrderPickUpAction()
     {
         TickableAction orderPickUpAction = new TickableAction("Order pick up action", 2, true);
-        orderPickUpAction.SetOnFinishCallback( () -> {
+        orderPickUpAction.setOnFinishCallback( () -> {
             if(!ordersToPickUp.isEmpty())
             {
-                this.GivePreparedOrderToGuest();
+                this.givePreparedOrderToGuest();
             }
         });
-        SimulationManager.instance.SubscribeAction(orderPickUpAction);
+        SimulationManager.instance.subscribeAction(orderPickUpAction);
     }
 
-    private void GivePreparedOrderToGuest()
+    private void givePreparedOrderToGuest()
     {
         PreparedOrder preparedOrder = ordersToPickUp.pop();
         RestaurantGuest eligibleGuest = null;
         for (var guest: restaurantGuests)
         {
-            if(CustomerIsEligibleForOrder(preparedOrder, guest))
+            if( customerIsEligibleForOrder(preparedOrder, guest))
             {
-                System.out.println(this + "Giving order to " + guest.GetName());
-                guest.ReceiveOrder(preparedOrder);
+                System.out.println(this + "Giving order to " + guest.getName());
+                guest.receiveOrder(preparedOrder);
             }
         }
 
     }
 
-    private boolean CustomerIsEligibleForOrder(PreparedOrder preparedOrder, RestaurantGuest guest)
+    private boolean customerIsEligibleForOrder( PreparedOrder preparedOrder, RestaurantGuest guest)
     {
-        OrderReceipt guestReceipt = guest.GetOrderReceipt();
-        return (guestReceipt != null) && (guestReceipt.GetOrderID() == preparedOrder.GetID());
+        OrderReceipt guestReceipt = guest.getOrderReceipt();
+        return (guestReceipt != null) && (guestReceipt.getOrderID() == preparedOrder.getID());
     }
 
-    private Cook GetFreeCook()
+    private Cook getFreeCook()
     {
         for (var cook : cooks)
         {
-            if(!cook.IsBusy())
+            if(!cook.isBusy())
                 return cook;
         }
         return null;
     }
 
-    private boolean FreeCookAvailable()
+    private boolean freeCookAvailable()
     {
         for (var cook : cooks)
         {
-            if(!cook.IsBusy())
+            if(!cook.isBusy())
                 return true;
         }
         return false;
     }
 
-    private boolean TryHandleOrder(Order order)
+    private boolean tryHandleOrder( Order order)
     {
         //We essentially treat orderCounter as an id for our orders
         System.out.println(this + "received order. Cost: $" + order.GetTotalPrice());
 
         orderCounter++;
-        Cook freeCook = GetFreeCook();
+        Cook freeCook = getFreeCook();
 
         if(freeCook != null)
         {
             System.out.println(this + "Fine, your order is being made");
-            freeCook.ReceiveOrder(order, orderCounter, this);
+            freeCook.receiveOrder(order, orderCounter, this);
             return true;
         }
 

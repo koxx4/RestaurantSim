@@ -4,24 +4,24 @@ public class TickableAction
 {
     private ITickableActionOnFinishCallback onFinishCallback;
     private ITickableActionOnTickCallback onTickCallback;
-    private String name;
+    private final String description;
     private final int duration;
     private int ticksToComplete;
     private boolean abort;
     private boolean repeatable;
 
 
-    public TickableAction(String name, int duration, boolean repeatable)
+    public TickableAction( String description, int duration, boolean repeatable)
     {
-        this.name = name;
+        this.description = description;
         this.duration = duration;
         this.ticksToComplete = duration;
         this.repeatable = repeatable;
         abort = false;
     }
-    public TickableAction(String name, int duration)
+    public TickableAction( String description, int duration)
     {
-        this(name, duration, false);
+        this(description, duration, false);
     }
 
     public TickableAction(int duration)
@@ -29,62 +29,62 @@ public class TickableAction
         this("Unnamed action", duration, false);
     }
 
-    public String GetName() {
-        return name;
+    public String getDescription() {
+        return description;
     }
 
-    public int GetDuration() {
+    public int getDuration() {
         return duration;
     }
 
-    public int GetTicksToComplete() {
+    public int getTicksToComplete() {
         return ticksToComplete;
     }
 
-    public void SetTicksToComplete(int ticksToComplete) {
+    public void setTicksToComplete( int ticksToComplete) {
         this.ticksToComplete = ticksToComplete;
     }
 
-    public void DecrementTicks()
+    public void decrementTicks()
     {
         ticksToComplete--;
     }
 
-    public boolean IsToBeAborted()
+    public boolean isToBeAborted()
     {
         return this.abort;
     }
-    public void Abort()
+    public void abort()
     {
         this.abort = true;
     }
 
-    public void ExecuteOnFinishCallback()
+    public void executeOnFinishCallback()
     {
         if(onFinishCallback != null)
         {
-            onFinishCallback.Execute();
+            onFinishCallback.execute();
         }
     }
 
-    public void ExecuteOnUpdateCallback()
+    public void executeOnUpdateCallback()
     {
         if(onTickCallback != null)
         {
-            onTickCallback.Execute();
+            onTickCallback.execute();
         }
     }
-    public boolean IsRepeatable()
+    public boolean isRepeatable()
     {
         return this.repeatable;
     }
 
-    public void SetRepeatable(boolean value)
+    public void setRepeatable( boolean value)
     {
         this.repeatable = value;
     }
 
-    public void SetOnFinishCallback(ITickableActionOnFinishCallback onFinishCallback)
+    public void setOnFinishCallback( ITickableActionOnFinishCallback onFinishCallback)
     {
         this.onFinishCallback = onFinishCallback;
     }

@@ -1,4 +1,5 @@
 {
+  "tickDuration" : 1000,
   "chanceToRateRestaurant": 0.33,
   "chanceToRateRestaurantImpatience": 0.7,
   "numberOfCooks": 4,
@@ -7,6 +8,12 @@
   "minClientPatience": 15,
   "maxCookAgility": 20,
   "minCookAgility": 3,
+  "maxCookSkill": 5,
+  "minCookSkill": 1,
   "maxTicksSpawnClient": 15,
-  "minTicksSpawnClient": 3
+  "minTicksSpawnClient": 3,
+  "dishQualityWorsenChance": 0.5,
+  "dishQualityImproveChance": 0.4,
+  "dishQualitWorsenChangeRate": 0.1,
+  "dishQualityImproveChangeRate": 0.1
 }

@@ -1,52 +1,60 @@
 package RestaurantSim;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.*;
 
 public class Menu 
 {
-    private Dictionary<String,Dish> availableDishes;
-    private Dictionary<String,Ingredient> availableIngredients;
+    private final FoodData loadedFoodData;
+    private Map<String,Dish> availableDishes;
+    private Map<String,Ingredient> availableIngredients;
 
     public Menu(FoodData foodData)
     {
-        PopulateIngredients(foodData);
-        PopulateDishes(foodData);
+        this.loadedFoodData = foodData;
+        populateIngredients();
+        populateDishes();
     }
 
-    private void PopulateIngredients(FoodData foodData)
+    private void populateIngredients()
     {
         this.availableIngredients = new Hashtable<>();
-        for (var ingredient: foodData.GetIngredientsData())
+        for (var ingredient: loadedFoodData.GetIngredientsData())
         {
-            availableIngredients.put(ingredient.GetName(), ingredient);
+            availableIngredients.put(ingredient.getName(), ingredient);
         }
     }
 
-    private void PopulateDishes(FoodData foodData)
+    private void populateDishes()
     {
         this.availableDishes = new Hashtable<>();
-        for (var jsonDish: foodData.GetDishData())
+        for (var jsonDish: loadedFoodData.GetDishData())
         {
             List<Ingredient> dishIngredients = new ArrayList<>();
 
-            for (var associatedIngredient: jsonDish.GetAssociatedIngredients())
+            for (var associatedIngredient: jsonDish.getAssociatedIngredients())
                 dishIngredients.add(availableIngredients.get(associatedIngredient));
 
-            Dish newDish = new Dish(dishIngredients, jsonDish.GetName());
+            Dish newDish = new Dish(dishIngredients, jsonDish.getName());
             availableDishes.put(newDish.getName(), newDish);
         }
     }
 
-    public Dictionary<String, Dish> GetAvailableDishes()
+    public Map<String, Dish> getAvailableDishes()
     {
         return availableDishes;
     }
 
-    public Dictionary<String, Ingredient> GetAvailableIngredients()
+    public Map<String, Ingredient> getAvailableIngredients()
     {
         return availableIngredients;
+    }
+
+    public Dish getRandomDish() {
+        int numberOfDishes = loadedFoodData.GetDishData().size();
+
+        String randomDishName = loadedFoodData.GetDishData()
+                .get(SimulationUitilities.getRandomInt(numberOfDishes)).getName();
+
+        return this.availableDishes.get(randomDishName);
     }
 }

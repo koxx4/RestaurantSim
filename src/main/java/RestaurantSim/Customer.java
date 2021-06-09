@@ -3,155 +3,127 @@ package RestaurantSim;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 public class Customer extends RestaurantGuest
 {
+    private IOrderRater orderRater;
     private TickableAction waitForOrderAction;
     private Restaurant currentRestaurant;
-
-    public Customer(String name, int patience)
-    { 
-        super(name, patience);
-        CreateWaitingTask();
-    }
-
-    public Customer(int patience)
-    {
-        super(patience);
-        CreateWaitingTask();
-    }
-
-    public Customer(String name)
-    {
-        super(name);
-        CreateWaitingTask();
-    }
 
     public Customer()
     {
         super();
-        CreateWaitingTask();
     }
 
-    public void RateRestaurant(PreparedOrder preparedOrder)
+    public void setOrderRater( IOrderRater orderRater ) {
+        this.orderRater = orderRater;
+    }
+
+    public void rateRestaurant( PreparedOrder preparedOrder)
     {
-        float rate = 0;
-        switch (preparedOrder.GetQuality())
-        {
-            case Inedible: rate = SimulationUitilities.GetRandomFloat(); break;
-            case Bad: rate = SimulationUitilities.GetRandomFloat() + 1; break;
-            case Average: rate = SimulationUitilities.GetRandomFloat() + 2.5f; break;
-            case Good: rate = SimulationUitilities.GetRandomFloat() + 3; break;
-            case Excelent: rate = SimulationUitilities.GetRandomFloat() + 4; break;
-            default: break;
+        if ( orderRater != null ) {
+            float rate = 0;
+            rate = orderRater.rateOrder(preparedOrder);
+
+            System.out.println(this + "Rating restaurant for " + rate + " stars");
+            currentRestaurant.giveRate(rate);
         }
-        System.out.println(this + "Rating restaurant for " + rate + " stars");
-        currentRestaurant.GiveRate(rate);
     }
 
     @Override
-    public void InteractWithRestaurant(Restaurant restaurant)
+    public void interactWithRestaurant( Restaurant restaurant )
     {
-        System.out.println("Customer (" + super.GetName() + "): is interacting with restaurant");
+        System.out.println("Customer (" + super.getName() + "): is interacting with restaurant");
 
         currentRestaurant = restaurant;
-        Order composedOrder = ComposeOrder(currentRestaurant.GetMenu());
+        Order composedOrder = composeOrder(currentRestaurant.getMenu());
 
         System.out.println(this + "I will try to buy " + composedOrder.GetDishes().get(0).getName());
 
         //For now we assume that client doesn't give tip
         //TODO: client gives sometimes tip
 
-        TryMakeOrder(composedOrder);
+        tryMakeOrder(composedOrder);
     }
 
     @Override
-    public void ReceiveOrder(PreparedOrder preparedOrder)
+    public void receiveOrder( PreparedOrder preparedOrder)
     {
-        System.out.println(this + "Received prepared order " + preparedOrder.GetID());
+        System.out.println(this + "Received prepared order " + preparedOrder.getID());
 
-        if (SimulationUitilities.IsGoingToHappen(SimulationManager.instance.GetSettings().chanceToRateRestaurant))
+        if (SimulationUitilities.isGoingToHappen(SimulationManager.instance.getSettings().chanceToRateRestaurant))
         {
-            this.RateRestaurant(preparedOrder);
+            this.rateRestaurant(preparedOrder);
         }
 
         //Abort waiting for order
-        waitForOrderAction.Abort();
+        waitForOrderAction.abort();
         //Guest obviously leaves the queue
-        CreateLeaveTask();
+        createLeaveTask();
     }
 
-    private Order ComposeOrder(Menu menu)
-    {
-        Order composedOrder;
-        Dish randomDish;
-        int numberOfDishes = menu.GetAvailableDishes().size();
-        int randomDishIndex = SimulationUitilities.GetRandomInt(numberOfDishes);
-        Iterator<Dish> availableDishesIterator = menu.GetAvailableDishes().elements().asIterator();
+    @Override
+    public void onRestaurantEnter( ) {
+        createWaitingTask();
+    }
 
-        for (int i = 0; i != randomDishIndex; i++)
-        {
-            //Move iterator to next element
-            //don't assign it anywhere
-            availableDishesIterator.next();
-        }
-        //After iterator is on a right position
-        randomDish = availableDishesIterator.next();
-        List<Dish> dishesInOrder = new ArrayList<>();
-        dishesInOrder.add(randomDish);
-        composedOrder = new Order(dishesInOrder);
+    private Order composeOrder( Menu menu )
+    {
+        //For now customer orders only one dish
+        Order composedOrder = new Order(List.of(menu.getRandomDish()));
 
         return composedOrder;
     }
 
-    private void CreateWaitingTask()
+    private void createWaitingTask()
     {
-        waitForOrderAction = new TickableAction(super.GetName() + " is waiting for order", this.GetPatience());
-        System.out.println(this + "Arrived at restaurant. Gonna wait " + super.GetPatience() + " ticks brefore I leave!");
+        waitForOrderAction = new TickableAction(super.getName() + " is waiting for order", this.getPatience());
+        System.out.println(this + "Arrived at restaurant. Gonna wait " + super.getPatience() + " ticks brefore I leave!");
 
-        waitForOrderAction.SetOnFinishCallback( () -> {
+        waitForOrderAction.setOnFinishCallback( () -> {
             System.out.println(this + "I don't have more time. I'm leaving...");
 
             //If this code is going to happen with this chance... then it's going to happen
-            if (SimulationUitilities.IsGoingToHappen(SimulationManager.instance.GetSettings().chanceToRateRestaurantImpatience))
+            if (SimulationUitilities.isGoingToHappen(SimulationManager.instance.getSettings().chanceToRateRestaurantImpatience))
             {
                 //2.0 is always a rate given when order is not prepared on time
-                currentRestaurant.GiveRate(SimulationManager.instance.GetSettings().rateOnOrderNotPreparedOnTime);
+                currentRestaurant.giveRate(SimulationManager.instance.getSettings().rateOnOrderNotPreparedOnTime);
                 System.out.println(this + "Also, your restaurant sucks!");
             }
 
             //Guest obviously leaves the queue
-            currentRestaurant.RemoveGuestFromQueue(this);
+            currentRestaurant.removeGuestFromQueue(this);
         });
 
-        SimulationManager.instance.SubscribeAction(waitForOrderAction);
+        SimulationManager.instance.subscribeAction(waitForOrderAction);
     }
 
-    private void CreateLeaveTask()
+    private void createLeaveTask()
     {
         TickableAction leaveTask = new TickableAction(1);
-        leaveTask.SetOnFinishCallback(
-                () -> currentRestaurant.RemoveGuestFromQueue(this));
-        SimulationManager.instance.SubscribeAction(leaveTask);
+        leaveTask.setOnFinishCallback(
+                () -> currentRestaurant.removeGuestFromQueue(this));
+        SimulationManager.instance.subscribeAction(leaveTask);
     }
 
-    private void TryMakeOrder(Order composedOrder)
+    private void tryMakeOrder( Order composedOrder)
     {
         OrderReceipt orderReceipt =
-                currentRestaurant.ReceiveOrder(composedOrder, composedOrder.GetTotalPrice());
+                currentRestaurant.receiveOrder(composedOrder, composedOrder.GetTotalPrice());
 
         if(orderReceipt != null)
         {
-            super.SetOrderReceipt(orderReceipt);
-            super.SetWaitingToBeServed(false);
-            System.out.println(this + "received order receipt, ID: " + orderReceipt.GetOrderID());
+            super.setOrderReceipt(orderReceipt);
+            super.setWaitingToBeServed(false);
+            System.out.println(this + "received order receipt, ID: " + orderReceipt.getOrderID());
         }
     }
 
     @Override
     public String toString()
     {
-        return "Customer (" + super.GetName() +"): ";
+        return "Customer (" + super.getName() +"): ";
     }
 
 }
