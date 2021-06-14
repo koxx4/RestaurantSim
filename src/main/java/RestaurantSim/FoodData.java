@@ -5,8 +5,8 @@ import java.util.List;
 
 public class FoodData
 {
-    private List<Ingredient> ingredientsData = new ArrayList<>();
-    private List<JsonDish> dishesData = new ArrayList<>();
+    private final List<Ingredient> ingredientsData = new ArrayList<>();
+    private final List<JsonDish> dishesData = new ArrayList<>();
 
     public FoodData()
     {

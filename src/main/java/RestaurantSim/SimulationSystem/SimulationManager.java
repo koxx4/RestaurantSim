@@ -1,24 +1,26 @@
-package RestaurantSim;
+package RestaurantSim.SimulationSystem;
 
+import RestaurantSim.*;
 import org.apache.commons.lang3.time.StopWatch;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimulationManager
+public class SimulationManager implements ITickableActionObject
 {
     public static SimulationManager instance;
     private final SimulationSettings settings;
     private final PeopleData peopleData;
     private final FoodData foodData;
-    private int tickDuration;
+    private final TickManager tickManager;
+    private final int tickDuration;
     private long elapsedTime;
     private long elapsedTicks;
     private boolean running;
     private Restaurant restaurant;
-    private List<TickableAction> gameActions;
-    private StopWatch stopWatch;
+    private final StopWatch stopWatch;
+    private final List<ITickableActionObject> tickableActionObjects;
+    private final List<TickableAction> managerActions;
 
     public SimulationManager(SimulationSettings settings, SimulationData simulationData) {
         instance = this;
@@ -28,17 +30,19 @@ public class SimulationManager
         this.settings = settings;
         this.peopleData = simulationData.peopleData;
         this.foodData = simulationData.foodData;
+        this.tickManager = new TickManager();
+        this.managerActions = new ArrayList<>();
 
         stopWatch = new StopWatch();
-        gameActions = new ArrayList<>();
-        try
-        {
+        tickableActionObjects = new ArrayList<>();
+
+        try {
             initialize();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             this.stop();
         }
+
     }
 
     public boolean isRunning()
@@ -70,11 +74,6 @@ public class SimulationManager
         }
     }
 
-    public void subscribeAction( TickableAction action)
-    {
-        gameActions.add(action);
-    }
-
     public void stop()
     {
         System.out.println(this + "Stopping simulation!");
@@ -104,12 +103,27 @@ public class SimulationManager
         return buildedCustomer;
     }
 
-    private void initialize() throws IOException
+    private List<Cook> generateAndRegisterCooks()
     {
-        //If we want to set up some things before
+        List<Cook> generatedCooks = new ArrayList<>();
+        for(int i = 0; i < 5; i++) {
+            Cook newCook = new Cook(peopleData.getRandomFullName());
+            generatedCooks.add(newCook);
+            registerTickableActionObject(newCook);
+        }
+
+        return generatedCooks;
+    }
+
+    private void initialize()
+    {
+        //This might seem a little funny but yeah manager registers
+        //itself
+        registerTickableActionObject(this);
         createSpawnCustomerAction();
-        //Only now we can create restaurant
-        restaurant = new Restaurant(new Menu(this.foodData));
+
+        restaurant = new Restaurant(new Menu(this.foodData), generateAndRegisterCooks());
+        registerTickableActionObject(restaurant);
     }
 
     private void createSpawnCustomerAction()
@@ -123,13 +137,17 @@ public class SimulationManager
         spawnNextCustomer.setOnFinishCallback(  () -> {
             //So we create new customer, place him into simulation
             Customer generatedCustomer = generateCustomer();
-            generatedCustomer.onRestaurantEnter();
+            //generatedCustomer.onRestaurantEnter();
             this.restaurant.addGuestToQueue(generatedCustomer);
+
             System.out.println("SimMan: created customer!");
+            System.out.println(this  + "" +  generatedCustomer + "Arrived at restaurant. Gonna wait " +
+                    generatedCustomer.getPatience() + " ticks before he'll leave!");
+
             createSpawnCustomerAction();
         });
 
-        this.subscribeAction(spawnNextCustomer);
+        managerActions.add(spawnNextCustomer);
 
     }
 
@@ -138,37 +156,14 @@ public class SimulationManager
         elapsedTicks++;
         System.out.println(this + "Tick("+ elapsedTicks +")! Duration: " + elapsedTime);
 
-        if (!gameActions.isEmpty())
+        if (!tickableActionObjects.isEmpty())
         {
-            for (int i = gameActions.size() - 1; i >= 0; i--)
-            {
-                var action = gameActions.get(i);
-
-                if(action.isToBeAborted())
-                {
-                    gameActions.remove(i);
-                }
-                //If action is done
-                else if (action.getTicksToComplete() <= 1)
-                {
-                    action.executeOnFinishCallback();
-                    if(action.isRepeatable())
-                    {
-                        //Renew action
-                        action.setTicksToComplete(action.getDuration());
-                    }
-                    else
-                        gameActions.remove(i);
-                }
-                //Else update action
-                else
-                {
-                    action.decrementTicks();
-                    action.executeOnUpdateCallback();
-                }
-
-            }
+            tickManager.updateTickableActionObjects(tickableActionObjects);
         }
+    }
+
+    private void registerTickableActionObject(ITickableActionObject object) {
+        tickableActionObjects.add(object);
     }
 
     @Override
@@ -177,4 +172,8 @@ public class SimulationManager
         return "SimMan: ";
     }
 
+    @Override
+    public List<TickableAction> getTickableActions() {
+        return managerActions;
+    }
 }

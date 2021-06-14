@@ -1,6 +1,6 @@
 package RestaurantSim;
 
-public interface ITickableActionOnTickCallback
+public interface ITickableActionTickCallback
 {
     void execute();
 }

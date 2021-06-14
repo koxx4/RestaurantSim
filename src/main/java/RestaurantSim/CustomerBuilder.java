@@ -1,5 +1,7 @@
 package RestaurantSim;
 
+import RestaurantSim.SimulationSystem.SimulationUitilities;
+
 import java.util.List;
 
 public class CustomerBuilder {
@@ -14,12 +16,12 @@ public class CustomerBuilder {
     }
 
     public CustomerBuilder named(String name){
-        ((RestaurantGuest)customerToBuild).setName(name);
+        customerToBuild.setName(name);
         return this;
     }
 
     public CustomerBuilder withPatience(int value){
-        ((RestaurantGuest)customerToBuild).setPatience(value);
+        customerToBuild.setPatience(value);
         return this;
     }
 
@@ -27,12 +29,12 @@ public class CustomerBuilder {
         String firstName = firstNames.get(SimulationUitilities.getRandomInt(firstNames.size()));
         String lastName = lastNames.get(SimulationUitilities.getRandomInt(firstNames.size()));
         String fullName = firstName + " " + lastName;
-        ((RestaurantGuest)customerToBuild).setName(fullName);
+        customerToBuild.setName(fullName);
         return this;
     }
 
     public CustomerBuilder withRandomPatience(int minValue, int maxValue){
-        ((RestaurantGuest)customerToBuild)
+        customerToBuild
                 .setPatience(SimulationUitilities.getRandomInt(minValue, maxValue));
         return this;
     }

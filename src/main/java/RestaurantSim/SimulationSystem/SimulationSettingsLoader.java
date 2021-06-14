@@ -1,4 +1,4 @@
-package RestaurantSim;
+package RestaurantSim.SimulationSystem;
 
 import com.google.gson.Gson;
 

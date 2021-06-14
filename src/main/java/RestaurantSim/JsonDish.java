@@ -6,7 +6,7 @@ import java.util.List;
 public class JsonDish
 {
     private String name;
-    private List<String> ingredients = new ArrayList<>();
+    private final List<String> ingredients = new ArrayList<>();
 
     public JsonDish()
     {

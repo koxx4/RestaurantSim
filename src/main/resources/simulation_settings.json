@@ -1,6 +1,6 @@
 {
   "tickDuration" : 1000,
-  "chanceToRateRestaurant": 0.33,
+  "chanceToRateRestaurant": 0.66,
   "chanceToRateRestaurantImpatience": 0.7,
   "numberOfCooks": 4,
   "rateOnOrderNotPreparedOnTime": 2,

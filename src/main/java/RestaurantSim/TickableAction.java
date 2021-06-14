@@ -2,8 +2,8 @@ package RestaurantSim;
 
 public class TickableAction
 {
-    private ITickableActionOnFinishCallback onFinishCallback;
-    private ITickableActionOnTickCallback onTickCallback;
+    private ITickableActionFinishCallback onFinishCallback;
+    private ITickableActionTickCallback onTickCallback;
     private final String description;
     private final int duration;
     private int ticksToComplete;
@@ -84,12 +84,12 @@ public class TickableAction
         this.repeatable = value;
     }
 
-    public void setOnFinishCallback( ITickableActionOnFinishCallback onFinishCallback)
+    public void setOnFinishCallback( ITickableActionFinishCallback onFinishCallback)
     {
         this.onFinishCallback = onFinishCallback;
     }
 
-    public void SetOnTickCallback(ITickableActionOnTickCallback onTickCallback)
+    public void SetOnTickCallback( ITickableActionTickCallback onTickCallback)
     {
         this.onTickCallback = onTickCallback;
     }

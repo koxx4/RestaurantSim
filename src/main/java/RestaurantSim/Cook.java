@@ -1,16 +1,23 @@
 package RestaurantSim;
 
+import RestaurantSim.SimulationSystem.SimulationManager;
+import RestaurantSim.SimulationSystem.SimulationUitilities;
 import org.jetbrains.annotations.NotNull;
 
-public class Cook
+import java.util.ArrayList;
+import java.util.List;
+
+public class Cook implements ITickableActionObject
 {
     private final String name;
     private boolean busy;
-    private int agility;
-    private int skillLevel;
+    private final int agility;
+    private final int skillLevel;
+    private final List<TickableAction> tickableActions;
 
     public Cook(String name, int agility, int skillLevel)
     {
+        this.tickableActions = new ArrayList<>();
         this.name = name;
         this.agility = agility;
         this.skillLevel = skillLevel;
@@ -36,7 +43,7 @@ public class Cook
         prepareOrderAction.setOnFinishCallback( () -> {
             finishPreparingOrder(order, orderID, sourceRestaurant);
         });
-        SimulationManager.instance.subscribeAction(prepareOrderAction);
+        tickableActions.add(prepareOrderAction);
 
         this.busy = true;
     }
@@ -54,7 +61,7 @@ public class Cook
 
     private PreparedOrderQuality calculatePreparedDishQuality()
     {
-        PreparedOrderQuality base = PreparedOrderQuality.values()[this.skillLevel];
+
 
         //TODO:
         return null;
@@ -88,5 +95,10 @@ public class Cook
     public String toString()
     {
         return "Cook (" + this.name +"): ";
+    }
+
+    @Override
+    public List<TickableAction> getTickableActions() {
+        return tickableActions;
     }
 }

@@ -1,6 +1,6 @@
 package RestaurantSim;
 
-public abstract class RestaurantGuest {
+public abstract class RestaurantGuest implements ITickableActionObject {
     private int patience;
     private String name;
     private boolean waitingToBeServed;
@@ -50,5 +50,4 @@ public abstract class RestaurantGuest {
     }
     abstract public void interactWithRestaurant( Restaurant restaurant);
     abstract public void receiveOrder( PreparedOrder preparedOrder);
-    abstract public void onRestaurantEnter();
 }

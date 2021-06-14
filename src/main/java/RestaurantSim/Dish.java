@@ -4,8 +4,8 @@ import java.util.List;
 
 public class Dish 
 {
-    private List<Ingredient> ingredients;
-    private String name;
+    private final List<Ingredient> ingredients;
+    private final String name;
 
     public Dish(List<Ingredient> ingredients, String name) 
     {

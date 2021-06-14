@@ -1,19 +1,23 @@
 package RestaurantSim;
 
+import RestaurantSim.SimulationSystem.SimulationManager;
+import RestaurantSim.SimulationSystem.SimulationUitilities;
+
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 public class Customer extends RestaurantGuest
 {
     private IOrderRater orderRater;
     private TickableAction waitForOrderAction;
     private Restaurant currentRestaurant;
+    private final List<TickableAction> tickableActions;
 
     public Customer()
     {
         super();
+        tickableActions = new ArrayList<>();
+        createWaitingTask();
     }
 
     public void setOrderRater( IOrderRater orderRater ) {
@@ -52,7 +56,7 @@ public class Customer extends RestaurantGuest
     {
         System.out.println(this + "Received prepared order " + preparedOrder.getID());
 
-        if (SimulationUitilities.isGoingToHappen(SimulationManager.instance.getSettings().chanceToRateRestaurant))
+        if ( SimulationUitilities.isGoingToHappen(SimulationManager.instance.getSettings().chanceToRateRestaurant))
         {
             this.rateRestaurant(preparedOrder);
         }
@@ -61,11 +65,6 @@ public class Customer extends RestaurantGuest
         waitForOrderAction.abort();
         //Guest obviously leaves the queue
         createLeaveTask();
-    }
-
-    @Override
-    public void onRestaurantEnter( ) {
-        createWaitingTask();
     }
 
     private Order composeOrder( Menu menu )
@@ -79,7 +78,6 @@ public class Customer extends RestaurantGuest
     private void createWaitingTask()
     {
         waitForOrderAction = new TickableAction(super.getName() + " is waiting for order", this.getPatience());
-        System.out.println(this + "Arrived at restaurant. Gonna wait " + super.getPatience() + " ticks brefore I leave!");
 
         waitForOrderAction.setOnFinishCallback( () -> {
             System.out.println(this + "I don't have more time. I'm leaving...");
@@ -96,7 +94,7 @@ public class Customer extends RestaurantGuest
             currentRestaurant.removeGuestFromQueue(this);
         });
 
-        SimulationManager.instance.subscribeAction(waitForOrderAction);
+        tickableActions.add(waitForOrderAction);
     }
 
     private void createLeaveTask()
@@ -104,7 +102,7 @@ public class Customer extends RestaurantGuest
         TickableAction leaveTask = new TickableAction(1);
         leaveTask.setOnFinishCallback(
                 () -> currentRestaurant.removeGuestFromQueue(this));
-        SimulationManager.instance.subscribeAction(leaveTask);
+        tickableActions.add(leaveTask);
     }
 
     private void tryMakeOrder( Order composedOrder)
@@ -124,6 +122,11 @@ public class Customer extends RestaurantGuest
     public String toString()
     {
         return "Customer (" + super.getName() +"): ";
+    }
+
+    @Override
+    public List<TickableAction> getTickableActions() {
+        return tickableActions;
     }
 
 }

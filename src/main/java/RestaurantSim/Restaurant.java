@@ -1,26 +1,31 @@
 package RestaurantSim;
 
+import RestaurantSim.SimulationSystem.SimulationManager;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
-public class Restaurant {
-    private Stack<PreparedOrder> ordersToPickUp;
-    private List<Cook> cooks;
-    private Queue<RestaurantGuest> restaurantGuests;
-    private List<Float> rates;
+public class Restaurant implements ITickableActionObject{
+    private final Stack<PreparedOrder> ordersToPickUp;
+    private final List<Cook> cooks;
+    private final Queue<RestaurantGuest> restaurantGuests;
+    private final List<Float> rates;
     private final Menu menu;
+    private final List<TickableAction> tickableActions;
     private int orderCounter;
 
-    public Restaurant(Menu menu)
+    public Restaurant(Menu menu, @NotNull List<Cook> cooks)
     {
-          this.menu = menu;
-          this.orderCounter = 0;
-          this.restaurantGuests = new ArrayDeque<>();
-          this.rates = new ArrayList<>();
-          this.cooks = new ArrayList<>();
-          this.ordersToPickUp = new Stack<>();
-          this.populateWithWorkers();
-          this.createGuestHandlingAction();
-          this.createOrderPickUpAction();
+        tickableActions = new ArrayList<>();
+        this.cooks = cooks;
+        this.menu = menu;
+        this.orderCounter = 0;
+        this.restaurantGuests = new ArrayDeque<>();
+        this.rates = new ArrayList<>();
+        this.ordersToPickUp = new Stack<>();
+        this.populateWithWorkers();
+        this.createGuestHandlingAction();
+        this.createOrderPickUpAction();
     }
 
     public OrderReceipt receiveOrder( Order order, float payForOrder)
@@ -81,7 +86,7 @@ public class Restaurant {
                 tryHandleNextRestaurantGuest();
             }
         });
-        SimulationManager.instance.subscribeAction(guestHandling);
+        tickableActions.add(guestHandling);
     }
 
     private void tryHandleNextRestaurantGuest()
@@ -110,7 +115,7 @@ public class Restaurant {
                 this.givePreparedOrderToGuest();
             }
         });
-        SimulationManager.instance.subscribeAction(orderPickUpAction);
+        tickableActions.add(orderPickUpAction);
     }
 
     private void givePreparedOrderToGuest()
@@ -179,4 +184,8 @@ public class Restaurant {
         return "Restaurant: ";
     }
 
+    @Override
+    public List<TickableAction> getTickableActions() {
+        return tickableActions;
+    }
 }

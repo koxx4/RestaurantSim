@@ -1,5 +1,7 @@
 package RestaurantSim;
 
+import java.util.List;
+
 public class Sanepid extends RestaurantGuest {
 
     public Sanepid()
@@ -25,7 +27,7 @@ public class Sanepid extends RestaurantGuest {
     }
 
     @Override
-    public void onRestaurantEnter( ) {
-        evaluateRestaurantWork();
+    public List<TickableAction> getTickableActions() {
+        return null;
     }
 }
