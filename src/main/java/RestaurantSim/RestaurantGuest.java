@@ -1,15 +1,18 @@
 package RestaurantSim;
 
+import RestaurantSim.SimulationSystem.ITickableActionObject;
+
 public abstract class RestaurantGuest implements ITickableActionObject {
     private int patience;
     private String name;
     private boolean waitingToBeServed;
     private OrderReceipt orderReceipt;
 
-    public RestaurantGuest()
+    public RestaurantGuest(String name, int patience)
     {
+        this.name = name;
+        this.patience = patience;
         waitingToBeServed = true;
-        this.name = "Unnamed restaurantGuest";
     }
 
     public String getName()

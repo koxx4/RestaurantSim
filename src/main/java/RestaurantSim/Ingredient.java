@@ -25,4 +25,9 @@ public class Ingredient
     {
         return ticksToPrepare;
     }
+
+    @Override
+    public String toString() {
+        return "Ingredient{" + "price=" + price + ", ticksToPrepare=" + ticksToPrepare + ", name='" + name + '\'' + '}';
+    }
 }

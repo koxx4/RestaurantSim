@@ -1,27 +1,33 @@
 package RestaurantSim;
 
+import RestaurantSim.SimulationSystem.IOrderRater;
 import RestaurantSim.SimulationSystem.SimulationUitilities;
 
 import java.util.List;
 
 public class CustomerBuilder {
-    private final Customer customerToBuild;
+    private String name;
+    private int patience;
+    private IOrderRater orderRater;
+    boolean startedBuilding;
 
     public CustomerBuilder(){
-        this.customerToBuild = new Customer();
+        name = "Unnamed customer";
+        startedBuilding = false;
     }
 
     public CustomerBuilder buildCustomer(){
+        startedBuilding = true;
         return this;
     }
 
     public CustomerBuilder named(String name){
-        customerToBuild.setName(name);
+        this.name = name;
         return this;
     }
 
     public CustomerBuilder withPatience(int value){
-        customerToBuild.setPatience(value);
+        this.patience = value;
         return this;
     }
 
@@ -29,23 +35,25 @@ public class CustomerBuilder {
         String firstName = firstNames.get(SimulationUitilities.getRandomInt(firstNames.size()));
         String lastName = lastNames.get(SimulationUitilities.getRandomInt(firstNames.size()));
         String fullName = firstName + " " + lastName;
-        customerToBuild.setName(fullName);
+        this.name = fullName;
         return this;
     }
 
     public CustomerBuilder withRandomPatience(int minValue, int maxValue){
-        customerToBuild
-                .setPatience(SimulationUitilities.getRandomInt(minValue, maxValue));
+        this.patience = SimulationUitilities.getRandomInt(minValue, maxValue);
         return this;
     }
 
     public CustomerBuilder withRater(IOrderRater rater){
-        customerToBuild.setOrderRater(rater);
+       this.orderRater = rater;
         return this;
     }
 
-    public Customer getBuildCustomer(){
-        return this.customerToBuild;
+    public Customer getBuiltCustomer(){
+        if(startedBuilding)
+            return new Customer(name, patience, orderRater);
+        else
+            return null;
     }
 
 }

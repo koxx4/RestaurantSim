@@ -1,4 +1,6 @@
-package RestaurantSim;
+package RestaurantSim.SimulationSystem;
+
+import RestaurantSim.Ingredient;
 
 import java.util.ArrayList;
 import java.util.List;

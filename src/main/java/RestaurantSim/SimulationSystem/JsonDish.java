@@ -1,4 +1,4 @@
-package RestaurantSim;
+package RestaurantSim.SimulationSystem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,11 +7,6 @@ public class JsonDish
 {
     private String name;
     private final List<String> ingredients = new ArrayList<>();
-
-    public JsonDish()
-    {
-
-    }
 
     public String getName()
     {

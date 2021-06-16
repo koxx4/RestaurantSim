@@ -1,11 +1,12 @@
 package RestaurantSim;
 
-import RestaurantSim.SimulationSystem.SimulationManager;
+import RestaurantSim.SimulationSystem.ITickableActionObject;
+import RestaurantSim.SimulationSystem.TickableAction;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-public class Restaurant implements ITickableActionObject{
+public class Restaurant implements ITickableActionObject {
     private final Stack<PreparedOrder> ordersToPickUp;
     private final List<Cook> cooks;
     private final Queue<RestaurantGuest> restaurantGuests;
@@ -13,17 +14,18 @@ public class Restaurant implements ITickableActionObject{
     private final Menu menu;
     private final List<TickableAction> tickableActions;
     private int orderCounter;
+    private boolean opened;
 
     public Restaurant(Menu menu, @NotNull List<Cook> cooks)
     {
-        tickableActions = new ArrayList<>();
+        this.opened = true;
+        this.tickableActions = new ArrayList<>();
         this.cooks = cooks;
         this.menu = menu;
         this.orderCounter = 0;
         this.restaurantGuests = new ArrayDeque<>();
         this.rates = new ArrayList<>();
         this.ordersToPickUp = new Stack<>();
-        this.populateWithWorkers();
         this.createGuestHandlingAction();
         this.createOrderPickUpAction();
     }
@@ -69,17 +71,33 @@ public class Restaurant implements ITickableActionObject{
         this.ordersToPickUp.push(preparedOrder);
     }
 
-    private void populateWithWorkers()
-    {
-        for( int i = 0; i < SimulationManager.instance.getSettings().numberOfCooks; i++)
-        {
-            cooks.add(new Cook(SimulationManager.instance.GetRandomFullName()));
+    public void close(Object sender){
+
+        if ( sender.getClass() == Sanepid.class ){
+            this.opened = false;
         }
+    }
+
+    public boolean isOpened(){
+        return opened;
+    }
+
+    public float getRatesAverage() {
+        float sum = 0;
+
+        for(var rate : rates)
+            sum += rate;
+
+        return sum / rates.size();
+    }
+
+    public int getNumberOfRates(){
+        return rates.size();
     }
 
     private void createGuestHandlingAction()
     {
-        TickableAction guestHandling = new TickableAction("Guest handling action", 3, true);
+        TickableAction guestHandling = new TickableAction("Guest handling action", 2, true);
         guestHandling.setOnFinishCallback( () -> {
             if( freeCookAvailable() && !restaurantGuests.isEmpty())
             {
@@ -162,7 +180,6 @@ public class Restaurant implements ITickableActionObject{
     private boolean tryHandleOrder( Order order)
     {
         //We essentially treat orderCounter as an id for our orders
-        System.out.println(this + "received order. Cost: $" + order.GetTotalPrice());
 
         orderCounter++;
         Cook freeCook = getFreeCook();
@@ -170,12 +187,17 @@ public class Restaurant implements ITickableActionObject{
         if(freeCook != null)
         {
             System.out.println(this + "Fine, your order is being made");
+            printOrderInfo(order, orderCounter);
             freeCook.receiveOrder(order, orderCounter, this);
             return true;
         }
 
         System.out.println(this + "I'm so sorry, I don't have any cooks left! Try again later.");
         return false;
+    }
+
+    private void printOrderInfo(Order order, int id){
+        System.out.println("Order info:\nid = " + id + "\n" + order);
     }
 
     @Override
@@ -187,5 +209,10 @@ public class Restaurant implements ITickableActionObject{
     @Override
     public List<TickableAction> getTickableActions() {
         return tickableActions;
+    }
+
+    @Override
+    public boolean shouldBeUnregistered() {
+        return false;
     }
 }

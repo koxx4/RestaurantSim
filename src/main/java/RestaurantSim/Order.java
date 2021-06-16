@@ -28,4 +28,9 @@ public class Order
     {
         return dishes;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" + "dishes=" + dishes + '}';
+    }
 }

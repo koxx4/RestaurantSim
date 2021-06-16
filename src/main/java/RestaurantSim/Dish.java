@@ -33,4 +33,9 @@ public class Dish
     {
         return ingredients;
     }
+
+    @Override
+    public String toString() {
+        return "Dish{" + "ingredients=" + ingredients + ", name='" + name + '\'' + '}';
+    }
 }

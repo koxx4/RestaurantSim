@@ -1,4 +1,4 @@
-package RestaurantSim;
+package RestaurantSim.SimulationSystem;
 
 public class TickableAction
 {
@@ -27,6 +27,10 @@ public class TickableAction
     public TickableAction(int duration)
     {
         this("Unnamed action", duration, false);
+    }
+    public TickableAction(int duration, boolean repeatable)
+    {
+        this("Unnamed action", duration, repeatable);
     }
 
     public String getDescription() {
@@ -89,7 +93,7 @@ public class TickableAction
         this.onFinishCallback = onFinishCallback;
     }
 
-    public void SetOnTickCallback( ITickableActionTickCallback onTickCallback)
+    public void setOnTickCallback( ITickableActionTickCallback onTickCallback)
     {
         this.onTickCallback = onTickCallback;
     }

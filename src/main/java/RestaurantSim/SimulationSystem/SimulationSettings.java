@@ -19,6 +19,13 @@ public class SimulationSettings
     public final float dishQualityImproveChance;
     public final float dishQualitWorsenChangeRate;
     public final float dishQualityImproveChangeRate;
+    public final float sanepidRestaurantRateBasedCloseChance;
+    public final int restaruantRatesCheckFrequency;
+    public final float sanepidAppearanceChanceModifier;
+    public final int sanepidEvaluationTime;
+    public final int restaurantStartProtectionDuration;
+    public final float customerChanceToMakeOwnDish;
+    public final float customerChanceToAddIngredient;
 
     public SimulationSettings()
     {
@@ -39,6 +46,13 @@ public class SimulationSettings
         dishQualityImproveChance = 0;
         dishQualitWorsenChangeRate = 0;
         dishQualityImproveChangeRate = 0;
+        sanepidRestaurantRateBasedCloseChance = 0;
+        restaruantRatesCheckFrequency = 0;
+        sanepidAppearanceChanceModifier = 0;
+        sanepidEvaluationTime = 0;
+        restaurantStartProtectionDuration = 0;
+        customerChanceToMakeOwnDish = 0;
+        customerChanceToAddIngredient = 0;
     }
 
 }

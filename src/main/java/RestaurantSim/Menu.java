@@ -1,35 +1,35 @@
 package RestaurantSim;
 
+import RestaurantSim.SimulationSystem.FoodData;
 import RestaurantSim.SimulationSystem.SimulationUitilities;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Menu 
 {
-    private final FoodData loadedFoodData;
     private Map<String,Dish> availableDishes;
     private Map<String,Ingredient> availableIngredients;
 
     public Menu(FoodData foodData)
     {
-        this.loadedFoodData = foodData;
-        populateIngredients();
-        populateDishes();
+        populateIngredients(foodData);
+        populateDishes(foodData);
     }
 
-    private void populateIngredients()
+    private void populateIngredients(FoodData foodData)
     {
         this.availableIngredients = new Hashtable<>();
-        for (var ingredient: loadedFoodData.GetIngredientsData())
+        for (var ingredient: foodData.GetIngredientsData())
         {
             availableIngredients.put(ingredient.getName(), ingredient);
         }
     }
 
-    private void populateDishes()
+    private void populateDishes(FoodData foodData)
     {
         this.availableDishes = new Hashtable<>();
-        for (var jsonDish: loadedFoodData.GetDishData())
+        for (var jsonDish: foodData.GetDishData())
         {
             List<Ingredient> dishIngredients = new ArrayList<>();
 
@@ -52,11 +52,24 @@ public class Menu
     }
 
     public Dish getRandomDish() {
-        int numberOfDishes = loadedFoodData.GetDishData().size();
+        var dishIterator =  availableDishes.values().iterator();
+        int randomIndex = SimulationUitilities.getRandomInt(availableDishes.values().size());
 
-        String randomDishName = loadedFoodData.GetDishData()
-                .get(SimulationUitilities.getRandomInt(numberOfDishes)).getName();
+        for(int i = 0; i < randomIndex; i++){
+            dishIterator.next();
+        }
 
-        return this.availableDishes.get(randomDishName);
+        return dishIterator.next();
+    }
+
+    public Ingredient getRandomIngredient() {
+        var ingredIterator =  availableIngredients.values().iterator();
+        int randomIndex = SimulationUitilities.getRandomInt(availableIngredients.values().size());
+
+        for(int i = 0; i < randomIndex; i++){
+            ingredIterator.next();
+        }
+
+        return ingredIterator.next();
     }
 }

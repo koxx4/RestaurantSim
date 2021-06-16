@@ -1,8 +1,9 @@
 package RestaurantSim;
 
+import RestaurantSim.SimulationSystem.IOrderRater;
 import RestaurantSim.SimulationSystem.SimulationUitilities;
 
-public class QualityBasedOrderRater implements IOrderRater{
+public class QualityBasedOrderRater implements IOrderRater {
 
     @Override
     public float rateOrder( PreparedOrder order ) {

@@ -1,7 +1,9 @@
 package RestaurantSim;
 
+import RestaurantSim.SimulationSystem.IOrderRater;
 import RestaurantSim.SimulationSystem.SimulationManager;
 import RestaurantSim.SimulationSystem.SimulationUitilities;
+import RestaurantSim.SimulationSystem.TickableAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +14,14 @@ public class Customer extends RestaurantGuest
     private TickableAction waitForOrderAction;
     private Restaurant currentRestaurant;
     private final List<TickableAction> tickableActions;
+    private boolean shouldBeUnregistered;
 
-    public Customer()
+    public Customer(String name, int patience, IOrderRater orderRater)
     {
-        super();
+        super(name,patience);
+        this.orderRater = orderRater;
         tickableActions = new ArrayList<>();
+        this.shouldBeUnregistered = false;
         createWaitingTask();
     }
 
@@ -33,6 +38,16 @@ public class Customer extends RestaurantGuest
             System.out.println(this + "Rating restaurant for " + rate + " stars");
             currentRestaurant.giveRate(rate);
         }
+    }
+
+    @Override
+    public List<TickableAction> getTickableActions() {
+        return tickableActions;
+    }
+
+    @Override
+    public boolean shouldBeUnregistered() {
+        return shouldBeUnregistered;
     }
 
     @Override
@@ -67,12 +82,29 @@ public class Customer extends RestaurantGuest
         createLeaveTask();
     }
 
-    private Order composeOrder( Menu menu )
+    private Order composeOrder(Menu menu)
     {
-        //For now customer orders only one dish
-        Order composedOrder = new Order(List.of(menu.getRandomDish()));
+        if(SimulationUitilities.isGoingToHappen(SimulationManager.instance.getSettings().customerChanceToMakeOwnDish))
+            return composeOwnDish(menu);
 
-        return composedOrder;
+        return composeOrderFromMenu(menu);
+    }
+
+    private Order composeOwnDish( Menu menu ) {
+        String dishName = getName() + " custom dish.";
+        List<Ingredient> ingredients = new ArrayList<>();
+
+        do {
+            ingredients.add(menu.getRandomIngredient());
+
+        }while (SimulationUitilities
+                .isGoingToHappen(SimulationManager.instance.getSettings().customerChanceToAddIngredient));
+
+        return new Order(List.of(new Dish(ingredients, dishName)));
+    }
+
+    private Order composeOrderFromMenu(Menu menu) {
+        return new Order(List.of(menu.getRandomDish()));
     }
 
     private void createWaitingTask()
@@ -101,7 +133,10 @@ public class Customer extends RestaurantGuest
     {
         TickableAction leaveTask = new TickableAction(1);
         leaveTask.setOnFinishCallback(
-                () -> currentRestaurant.removeGuestFromQueue(this));
+                () -> {
+                    currentRestaurant.removeGuestFromQueue(this);
+                    shouldBeUnregistered = true;
+                });
         tickableActions.add(leaveTask);
     }
 
@@ -122,11 +157,6 @@ public class Customer extends RestaurantGuest
     public String toString()
     {
         return "Customer (" + super.getName() +"): ";
-    }
-
-    @Override
-    public List<TickableAction> getTickableActions() {
-        return tickableActions;
     }
 
 }

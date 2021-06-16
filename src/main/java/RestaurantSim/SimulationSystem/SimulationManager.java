@@ -15,11 +15,9 @@ public class SimulationManager implements ITickableActionObject
     private final TickManager tickManager;
     private final int tickDuration;
     private long elapsedTime;
-    private long elapsedTicks;
     private boolean running;
     private Restaurant restaurant;
     private final StopWatch stopWatch;
-    private final List<ITickableActionObject> tickableActionObjects;
     private final List<TickableAction> managerActions;
 
     public SimulationManager(SimulationSettings settings, SimulationData simulationData) {
@@ -34,7 +32,6 @@ public class SimulationManager implements ITickableActionObject
         this.managerActions = new ArrayList<>();
 
         stopWatch = new StopWatch();
-        tickableActionObjects = new ArrayList<>();
 
         try {
             initialize();
@@ -85,45 +82,81 @@ public class SimulationManager implements ITickableActionObject
         return this.settings;
     }
 
-    public String GetRandomFullName()
-    {
-        return this.peopleData.getRandomFullName();
+    @Override
+    public String toString() {
+        return "SimMan: ";
     }
 
-    private Customer generateCustomer()
+    @Override
+    public List<TickableAction> getTickableActions() {
+        return managerActions;
+    }
+
+    @Override
+    public boolean shouldBeUnregistered() {
+        return false;
+    }
+
+    private Customer generateAndRegisterCustomer()
     {
         CustomerBuilder customerBuilder = new CustomerBuilder();
 
-        Customer buildedCustomer = customerBuilder.buildCustomer()
+        Customer builtCustomer = customerBuilder.buildCustomer()
                 .named(peopleData.getRandomFullName())
                 .withRandomPatience(settings.minClientPatience, settings.maxClientPatience)
                 .withRater(new QualityBasedOrderRater())
-                .getBuildCustomer();
+                .getBuiltCustomer();
 
-        return buildedCustomer;
+        assert builtCustomer != null;
+
+        tickManager.registerTickableObject(builtCustomer);
+        return builtCustomer;
+    }
+    private Sanepid generateAndRegisterSanepid() {
+        Sanepid sanepid = new Sanepid(peopleData.getRandomFullName(), new RateBasedEvaluationService());
+        tickManager.registerTickableObject(sanepid);
+
+        return sanepid;
     }
 
-    private List<Cook> generateAndRegisterCooks()
+    private Cook generateAndRegisterCook()
     {
-        List<Cook> generatedCooks = new ArrayList<>();
-        for(int i = 0; i < 5; i++) {
-            Cook newCook = new Cook(peopleData.getRandomFullName());
-            generatedCooks.add(newCook);
-            registerTickableActionObject(newCook);
+        CookBuilder cookBuilder = new CookBuilder();
+
+        Cook cook = cookBuilder.buildCook()
+                .named(peopleData.getRandomFullName())
+                .withRandomAgility(settings.maxCookAgility, settings.maxCookAgility)
+                .withRandomSkillLevel(settings.minCookSkill, settings.maxCookSkill)
+                .withOrderQualityDeterminer(new SkillBasedQualityDeterminer())
+                .getBuiltCook();
+
+        assert cook != null;
+
+        tickManager.registerTickableObject(cook);
+        return cook;
+    }
+
+    private List<Cook> generateCooksList(int listSize){
+        List<Cook> cooks = new ArrayList<>();
+
+        for(int i = 0; i < listSize; i++){
+            cooks.add(generateAndRegisterCook());
         }
 
-        return generatedCooks;
+        return cooks;
     }
 
     private void initialize()
     {
         //This might seem a little funny but yeah manager registers
         //itself
-        registerTickableActionObject(this);
+        tickManager.registerTickableObject(this);
         createSpawnCustomerAction();
+        createRestaurantProtectionAction();
 
-        restaurant = new Restaurant(new Menu(this.foodData), generateAndRegisterCooks());
-        registerTickableActionObject(restaurant);
+        restaurant = new Restaurant(new Menu(this.foodData), generateCooksList(settings.numberOfCooks));
+        tickManager.registerTickableObject(restaurant);
+
     }
 
     private void createSpawnCustomerAction()
@@ -136,7 +169,7 @@ public class SimulationManager implements ITickableActionObject
 
         spawnNextCustomer.setOnFinishCallback(  () -> {
             //So we create new customer, place him into simulation
-            Customer generatedCustomer = generateCustomer();
+            Customer generatedCustomer = generateAndRegisterCustomer();
             //generatedCustomer.onRestaurantEnter();
             this.restaurant.addGuestToQueue(generatedCustomer);
 
@@ -150,30 +183,49 @@ public class SimulationManager implements ITickableActionObject
         managerActions.add(spawnNextCustomer);
 
     }
+    private void createSpawnSanepidAction() {
+        TickableAction action = new TickableAction(1);
+        action.setOnFinishCallback( () -> {
+
+            restaurant.addGuestToQueue(generateAndRegisterSanepid());
+
+        });
+        managerActions.add(action);
+    }
+
+    private void createRestaruantRateCheckAction() {
+
+        System.out.println(this + "next sanepid check in " + settings.restaruantRatesCheckFrequency + " ticks");
+        TickableAction action = new TickableAction(settings.restaruantRatesCheckFrequency, true);
+
+        action.setOnFinishCallback( () -> {
+
+            System.out.println(this + "next sanepid check in " + settings.restaruantRatesCheckFrequency + " ticks");
+            createSpawnSanepidAction();
+
+        });
+
+        managerActions.add(action);
+    }
+
+    private void createRestaurantProtectionAction(){
+        System.out.println(this + "after " + settings.restaurantStartProtectionDuration + " ticks sanepid will be able" +
+                " to check restaurant. Prepare!" );
+
+        TickableAction action = new TickableAction(settings.restaurantStartProtectionDuration);
+        action.setOnFinishCallback(this::createRestaruantRateCheckAction);
+
+        managerActions.add(action);
+    }
 
     private void tick()
     {
-        elapsedTicks++;
-        System.out.println(this + "Tick("+ elapsedTicks +")! Duration: " + elapsedTime);
+        tickManager.tick();
+        System.out.println(this + "Tick("+ tickManager.getElapsedTicks() +")! Duration: " + elapsedTime);
 
-        if (!tickableActionObjects.isEmpty())
-        {
-            tickManager.updateTickableActionObjects(tickableActionObjects);
+        if(!restaurant.isOpened()){
+            stop();
         }
-    }
 
-    private void registerTickableActionObject(ITickableActionObject object) {
-        tickableActionObjects.add(object);
-    }
-
-    @Override
-    public String toString()
-    {
-        return "SimMan: ";
-    }
-
-    @Override
-    public List<TickableAction> getTickableActions() {
-        return managerActions;
     }
 }
