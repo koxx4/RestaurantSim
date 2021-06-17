@@ -84,7 +84,7 @@ public class SimulationManager implements ITickableActionObject
 
     @Override
     public String toString() {
-        return "SimMan: ";
+        return "\nSimMan: ";
     }
 
     @Override

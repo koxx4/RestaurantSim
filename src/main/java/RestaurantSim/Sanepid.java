@@ -2,6 +2,7 @@ package RestaurantSim;
 
 import RestaurantSim.SimulationSystem.IEvaluationService;
 import RestaurantSim.SimulationSystem.SimulationManager;
+import RestaurantSim.SimulationSystem.SimulationUitilities;
 import RestaurantSim.SimulationSystem.TickableAction;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class Sanepid extends RestaurantGuest  {
     private Restaurant sourceRestaurant;
     private final IEvaluationService evaluationService;
     private boolean shouldBeUnregistered;
+    private String[] sanepidQuotes = {"...macie tu szczury!... ", "...no te blaty takie troche brudne, w lodowce za cieplo...", "...straszny smród..."};
 
     public Sanepid(String name, IEvaluationService evaluationService) {
         super(name, Integer.MAX_VALUE);
@@ -70,7 +72,9 @@ public class Sanepid extends RestaurantGuest  {
     }
 
     private void printRandomEvalutaionMessage() {
-        System.out.println(this + "...no te blaty takie troche brudne, w lodowce za cieplo...");
+        int random = SimulationUitilities.getRandomInt(0, sanepidQuotes.length-1);
+
+        System.out.println(this + sanepidQuotes[random]);
     }
 
 }
