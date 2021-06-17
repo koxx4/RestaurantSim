@@ -125,7 +125,7 @@ public class SimulationManager implements ITickableActionObject
 
         Cook cook = cookBuilder.buildCook()
                 .named(peopleData.getRandomFullName())
-                .withRandomAgility(settings.maxCookAgility, settings.maxCookAgility)
+                .withRandomAgility(settings.minCookAgility, settings.maxCookAgility)
                 .withRandomSkillLevel(settings.minCookSkill, settings.maxCookSkill)
                 .withOrderQualityDeterminer(new SkillBasedQualityDeterminer())
                 .getBuiltCook();
