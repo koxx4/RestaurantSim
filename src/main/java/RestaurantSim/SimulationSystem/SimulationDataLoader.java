@@ -1,6 +1,5 @@
 package RestaurantSim.SimulationSystem;
 
-import RestaurantSim.PeopleData;
 import com.google.gson.Gson;
 
 import java.io.FileNotFoundException;

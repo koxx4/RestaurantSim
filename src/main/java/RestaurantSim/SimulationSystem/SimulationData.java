@@ -1,7 +1,5 @@
 package RestaurantSim.SimulationSystem;
 
-import RestaurantSim.PeopleData;
-
 public class SimulationData {
     public final PeopleData peopleData;
     public final FoodData foodData;

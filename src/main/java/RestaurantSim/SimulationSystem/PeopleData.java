@@ -1,4 +1,4 @@
-package RestaurantSim;
+package RestaurantSim.SimulationSystem;
 
 import RestaurantSim.SimulationSystem.SimulationUitilities;
 
