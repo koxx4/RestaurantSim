@@ -17,14 +17,14 @@ public class Menu
 
     private void populateIngredients(FoodData foodData) {
         this.availableIngredients = new Hashtable<>();
-        for (var ingredient: foodData.GetIngredientsData()) {
+        for (var ingredient: foodData.getIngredientsData()) {
             availableIngredients.put(ingredient.getName(), ingredient);
         }
     }
 
     private void populateDishes(FoodData foodData) {
         this.availableDishes = new Hashtable<>();
-        for (var jsonDish: foodData.GetDishData()) {
+        for (var jsonDish: foodData.getDishData()) {
             List<Ingredient> dishIngredients = new ArrayList<>();
 
             for (var associatedIngredient: jsonDish.getAssociatedIngredients())

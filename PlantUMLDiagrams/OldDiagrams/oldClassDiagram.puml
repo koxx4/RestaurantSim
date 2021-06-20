@@ -1,84 +1,180 @@
 @startuml
 
 package "RestaurantSim"{
-Program *-- Restaurant
-Program *-- RestaurantGuest
+SimulationManager *-- Restaurant
+SimulationManager *-- TickableAction
+Program o-- SimulationManager
 Dish *-- Ingredient
 Order *-- Dish
-Restaurant *-- Order
-Restaurant *-- Worker
-Restaurant *-- Menu
+Restaurant *-- PreparedOrder
+Restaurant *-- Cook
+Restaurant o-- Menu
+Restaurant *-- RestaurantGuest
 Menu *-- Ingredient
 Menu *-- Dish
-Worker <|-- Seller
-Worker <|-- OrderMaker
 RestaurantGuest <|-- Customer
 RestaurantGuest <|-- Sanepid
 }
 
+package RestaurantSim <<Folder>> {
+  class TickableAction
+  interface ITickableActionOnFinishCallback
+  interface ITickableActionOnUpdateCallback
+  class Order
+ }
+
 class Program{
-    -static restaurant: Restaurant
-    -static restaurantGuests: RestaurantGuest[]
-    +void static Main(String[] args)
+    -static simulationManager: SimulationManager
+    +static main(String[]): void
+}
+
+class TickableAction{
+    -name: String
+    -duration: int
+    -ticksToComplete: int
+    +TickableAction(int, String)
+    +TickableAction(int)
+    +GetDuration(): int
+    +GetName(): String
+    +GetTicksToComplete(): int
+    +SetTicksToComplete(): int
+    +Execute(): void
+    +Execute(): void
+}
+
+class SimulationManager{
+    -restaurant: Restaurant
+    -runing: boolean
+    -gameActions: ArrayList<TickableAction>
+    +instance: static SimulationManager
+    -GenerateNextRestaurantGuest(): RestaurantGuest
+    -Tick(): void
+    +SimulationManager()
+    +IsRuning(): boolean
+    +StartSimulation(): void
+    +SubscribeAction(TickableAction, ITickableActionOnFinishCallback, ITickableActionOnUpdateCallback): void
 }
 
 class Restaurant {
- -activeOrders: Order[]
- -workers: Worker[]
+ -activeOrders: Dicitonary<int,PreparedOrder>
+ -cooks: ArrayList<Cook>
+ -restaurantGuestsToBeServed: Queue<RestaurantGuest>
+ -restaurantGuestsWaitingForOrder: ArrayList<RestaurantGuest>
+ -rates: ArrayList<float>
  -menu: Menu
- +MakeAnOrder(Order order): void
- +getMenu(): Menu
+ -PopulateWithWorkers(): void
+ +Restaurant()
+ +ReceiveOrder(Order): int
+ +GetMenu(): Menu
+ +AddGuestToQueue(RestaurantGuest): void
+ +RemoveGuestFromQueue(RestaurantGuest): void
+ +GiveRate(float): void
 }
 
-class Order {
- -dishes: Dish[]
+class PreparedOrder{
+ -dishes: ArrayList<Dish>
  -ready: boolean
- +getTotalPrice(): float
- +isReady(): boolean
+ -CalculateTotalPrice(): float
+ -quality: int
+ +Order(ArrayList<Dish>)
+ +GetTotalPrice(): float
+ +IsReady(): boolean
+ +GetQuality(): int
+ +SetQuality(int): void
 }
+class Order{
+  -dishes: const ArrayList<Dish>
+  +Order(ArrayList<Dish>): void
+  +GetDishes(): ArrayList<Dish>
+ }
 
 class Dish{
- -ingredients: Ingredient[]
+ -ingredients: ArrayList<Ingredient>
  -name: string
- +getName(): string
+ +Dish(ArrayList<Ingredient>, String)
+ +Dish(ArrayList<Ingredient>)
+ +GetName(): String
+ +GetIngredients(): ArrayList<Ingredient>
 }
 
 class Ingredient{
- -moneyValue: float
+ -price: float
  -name: string
-
- +getMoneyValue(): float
- +getName(): string
+ +Ingredient(String, float)
+ +GetPrice(): float
+ +GetName(): string
 }
 
 class Menu{
     -availableDishes: Dictionary<Dish>
     -availableIngredients: Dictionary<Ingredient>
-    +getDish(string dishName): Dish
+    -PopluateIngredients(): void
+    -PopluateDishes(): void
+    +Menu()
+    +GetDish(String): Dish
+    +GetIngredient(String): Ingredient
 }
 
-abstract class Worker{
- +giveOrder(Order): void
-}
-
-class Seller{
-
-}
-
-class OrderMaker{
-
+class Cook{
+ -name: String
+ -busy: bool
+ -EstimateWorkTime(): int
+ +Cook(String)
+ +Cook()
+ +ReceiveOrder(Order): void
+ +GetName(): String
+ +IsBusy(): boolean
 }
 
 abstract class RestaurantGuest{
-
+    -orderID: int
+    -name: String
+    -boolean: waitingToBeServed
+    +InteractWithRestaurant(Restaurant): void
+    +IsWaitingToBeServed(): boolean
+    +RestaurantGuest(name): void
+    +RestaurantGuest(): void
+    +SetName(name: String): void
+    +GetName(): String
+    +GetOrderID(): int
+    +ReceiveOrder(Order): void
 }
 
 class Customer{
-
+    -orderID: int
+    -name: String
+    -boolean: waitingToBeServed
+    -ComposeOrder(): Order
+    -RateRestaurant(): Order
+    +InteractWithRestaurant(Restaurant): void
+    +IsWaitingToBeServed(): boolean
+    +RestaurantGuest(name): void
+    +RestaurantGuest(): void
+    +SetName(name: String): void
+    +GetName(): String
+    +GetOrderID(): int
+    +ReceiveOrder(Order): void
 }
 
 class Sanepid{
-
+    -orderID: int
+    -name: String
+    -boolean: waitingToBeServed
+    -EvaluateRestaurantWork(): void
+    +InteractWithRestaurant(Restaurant): void
+    +IsWaitingToBeServed(): boolean
+    +RestaurantGuest(name): void
+    +RestaurantGuest(): void
+    +SetName(name: String): void
+    +GetName(): String
+    +GetOrderID(): int
+    +ReceiveOrder(Order): void
+}
+interface ITickableActionOnFinishCallback{
+    +Execute(): void
+}
+interface ITickableActionOnUpdateCallback{
+    +Execute(): void
 }
 
 @enduml
