@@ -5,13 +5,20 @@ import java.util.List;
 
 public class Order
 {
-     private final List<Dish> dishes;
+    private final List<Dish> dishes;
 
+    /**
+     * Creates the object of this class
+     * @param dishes Contains the exact Dish
+     */
     public Order(List<Dish> dishes)
     {
         this.dishes = dishes;
     }
 
+    /**
+     * @return Total price for the whole Order
+     */
     public float GetTotalPrice()
     {
         float totalPrice = 0;
@@ -22,7 +29,9 @@ public class Order
         return totalPrice;
     }
 
-
+    /**
+     * @return The List of Dishes
+     */
     public List<Dish> GetDishes()
     {
         return dishes;

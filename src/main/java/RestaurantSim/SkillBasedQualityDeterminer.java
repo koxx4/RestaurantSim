@@ -21,6 +21,13 @@ public class SkillBasedQualityDeterminer implements IOrderQualityDeterminer {
         return randomizeQuality(settings, calculatedQuality , preparedOrderQualityValues);
     }
 
+    /**
+     * Generates random Order quality
+     * @param settings Gives the function information about the food quality and chances to improve or worsen the Dish
+     * @param calculatedQuality Calculates the quality of the dish
+     * @param preparedOrderQualityValues Gives the values of PreparedOrderQuality enum
+     * @return Random Order quality
+     */
     private PreparedOrderQuality randomizeQuality( SimulationSettings settings, int calculatedQuality,
                                                    PreparedOrderQuality[] preparedOrderQualityValues  ) {
         PreparedOrderQuality quality;

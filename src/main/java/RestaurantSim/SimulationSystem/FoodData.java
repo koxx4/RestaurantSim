@@ -14,7 +14,8 @@ public class FoodData
      * List of all loaded ingredients
      */
     private final List<Ingredient> ingredientsData = new ArrayList<>();
-    /*
+
+    /**
      * List of all dishes loaded from json configuration file
      */
     private final List<JsonDish> dishesData = new ArrayList<>();

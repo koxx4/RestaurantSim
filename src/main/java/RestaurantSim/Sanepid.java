@@ -16,6 +16,11 @@ public class Sanepid extends RestaurantGuest  {
                     "...what a disgusting smell..."
             };
 
+    /**
+     * Makes new Sanepid object
+     * @param name Contains the name of Sanepid object
+     * @param evaluationService Evaluates the Restaurant
+     */
     public Sanepid(String name, IEvaluationService evaluationService, Restaurant target) {
         super(name, Integer.MAX_VALUE, target);
         this.tickableActions = new ArrayList<>();
@@ -51,6 +56,9 @@ public class Sanepid extends RestaurantGuest  {
         return "Sanepid (" + super.getName() + "): ";
     }
 
+    /**
+     * Evaluates whether Restaurant should be closed or not
+     */
     private void evaluateRestaurantWork() {
         if(evaluationService.restaurantShouldBeClosed(getTargetRestaurant())){
             Simulation.getInstance().print("This place is too dangerous to eat!\n Close this garbage NOW!");
@@ -58,6 +66,9 @@ public class Sanepid extends RestaurantGuest  {
         }
     }
 
+    /**
+     * Creates tickable actions for Sanepid object and removes it from the queue under some circumstances
+     */
     private void createEvaluationAction(){
         TickableAction action = new TickableAction(Simulation.getInstance().getSettings().sanepidEvaluationTime );
         action.setOnFinishCallback(() -> {
@@ -71,6 +82,9 @@ public class Sanepid extends RestaurantGuest  {
 
     }
 
+    /**
+     * Prints random message while Sanepid object is in the Restaurant
+     */
     private void printRandomEvalutaionMessage() {
         int random = SimulationUtilities.getRandomInt(0, sanepidQuotes.length-1);
         Simulation.getInstance().getOutput().print(sanepidQuotes[random], this.toString());
