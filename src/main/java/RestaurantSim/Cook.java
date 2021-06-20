@@ -1,8 +1,6 @@
 package RestaurantSim;
 
-import RestaurantSim.SimulationSystem.IOrderQualityDeterminer;
-import RestaurantSim.SimulationSystem.ITickableActionObject;
-import RestaurantSim.SimulationSystem.TickableAction;
+import RestaurantSim.SimulationSystem.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -27,11 +25,12 @@ public class Cook implements ITickableActionObject
 
     public void receiveOrder( Order order, int orderID, Restaurant sourceRestaurant) {
 
-        String actionMessage = this + "Preparing order "+ orderID;
+        String actionMessage = "Preparing order "+ orderID;
 
         TickableAction prepareOrderAction = new TickableAction(actionMessage, this.estimateWorkTime(order));
 
-        System.out.println(actionMessage + ". This will take me " + prepareOrderAction.getDuration() + " ticks.");
+        Simulation.getInstance().print(actionMessage + ". This will take me " + prepareOrderAction.getDuration()
+                        + " ticks.", this.toString());
 
         prepareOrderAction.setOnFinishCallback( () -> {
             finishPreparingOrder(order, orderID, sourceRestaurant);
@@ -50,7 +49,8 @@ public class Cook implements ITickableActionObject
 
         this.busy = false;
 
-        System.out.println(this + " I have prepared order, ID: " + orderID + ", quality: " + calculatedQuality);
+        Simulation.getInstance().print( "I have prepared order, ID: " + orderID + ", quality: "
+                        + calculatedQuality, this.toString());
     }
 
     public boolean isBusy() {

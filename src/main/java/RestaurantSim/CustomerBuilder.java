@@ -1,7 +1,8 @@
 package RestaurantSim;
 
 import RestaurantSim.SimulationSystem.IOrderRater;
-import RestaurantSim.SimulationSystem.SimulationUitilities;
+import RestaurantSim.SimulationSystem.Simulation;
+import RestaurantSim.SimulationSystem.SimulationUtilities;
 
 import java.util.List;
 
@@ -32,15 +33,15 @@ public class CustomerBuilder {
     }
 
     public CustomerBuilder namedRandomly( List<String> firstNames, List<String> lastNames ){
-        String firstName = firstNames.get(SimulationUitilities.getRandomInt(firstNames.size()));
-        String lastName = lastNames.get(SimulationUitilities.getRandomInt(firstNames.size()));
+        String firstName = firstNames.get(SimulationUtilities.getRandomInt(firstNames.size()));
+        String lastName = lastNames.get(SimulationUtilities.getRandomInt(firstNames.size()));
         String fullName = firstName + " " + lastName;
         this.name = fullName;
         return this;
     }
 
     public CustomerBuilder withRandomPatience(int minValue, int maxValue){
-        this.patience = SimulationUitilities.getRandomInt(minValue, maxValue);
+        this.patience = SimulationUtilities.getRandomInt(minValue, maxValue);
         return this;
     }
 

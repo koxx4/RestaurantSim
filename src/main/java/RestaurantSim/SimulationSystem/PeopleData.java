@@ -1,7 +1,5 @@
 package RestaurantSim.SimulationSystem;
 
-import RestaurantSim.SimulationSystem.SimulationUitilities;
-
 import java.util.List;
 
 public class PeopleData
@@ -9,8 +7,7 @@ public class PeopleData
     private List<String> names;
     private List<String> surnames;
 
-    public PeopleData()
-    {
+    public PeopleData() {
 
     }
 
@@ -27,7 +24,7 @@ public class PeopleData
     public String getRandomName()
     {
         if (!names.isEmpty())
-            return names.get(SimulationUitilities.getRandomInt(names.size()));
+            return names.get(SimulationUtilities.getRandomInt(names.size()));
 
         return "Invalid name";
     }
@@ -35,7 +32,7 @@ public class PeopleData
     public String getRandomSurname()
     {
         if (!surnames.isEmpty())
-            return surnames.get(SimulationUitilities.getRandomInt(surnames.size()));
+            return surnames.get(SimulationUtilities.getRandomInt(surnames.size()));
 
         return "Invalid surname";
     }

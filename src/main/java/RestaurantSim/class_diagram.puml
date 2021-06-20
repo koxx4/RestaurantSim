@@ -1,13 +1,18 @@
 @startuml
 package "RestaurantSim.SimulationSystem"{
     class FoodData
-    class BuilderNotInitializedException
     interface IEvaluationService
     interface IOrderQualityDeterminer
     interface IOrderRater
     interface ITickableActionFinishCallback
     interface ITickableActionObject
     interface ITickableActionTickCallback
+    interface OutputDisplayProvider
+    class LanternaDisplay
+    class Simulation
+    class SimulationWindow
+    class SimulationWindowController
+    class TerminalDisplay
     class JsonDish
     class SimulationData
     class SimulationDataLoader
