@@ -1,0 +1,262 @@
+
+@startuml
+
+package "RestaurantSim"{
+simulationManager *-- restaurant
+program o-- simulationManager
+program --> simulationManager
+simulationManager --> restaurant
+simulationManager --> gameActions
+restaurantGuestsWaitingForOrder --> customer1
+restaurantGuestsWaitingForOrder --> customer2
+restaurantGuestsToBeServed --> sanepid
+restaurantGuestsToBeServed --> customer3
+gameActions --> tickableAction1
+gameActions --> tickableAction2
+activeOrders --> order1
+activeOrders --> order2
+order1 --> dishes1
+order2 --> dishes2
+dishes1 --> dish1_order1
+dishes1 --> dish2_order1
+dishes2 --> dish1_order2
+dish1_order1 --> ingredients1_dish1_order1
+dish2_order1 --> ingredients1_dish2_order1
+dish1_order2 --> ingredients1_dish1_order2
+ingredients1_dish1_order1 --> ingredient1
+ingredients1_dish1_order1 --> ingredient6
+ingredients1_dish1_order1 --> ingredient4
+ingredients1_dish2_order1 --> ingredient3
+ingredients1_dish1_order2 --> ingredient2
+ingredients1_dish1_order2 --> ingredient5
+ingredients1_dish1_order2 --> ingredient6
+availableIngredients ----> ingredient1
+availableIngredients ----> ingredient6
+availableIngredients ----> ingredient4
+availableIngredients ----> ingredient3
+availableIngredients ----> ingredient2
+availableIngredients ----> ingredient5
+availableIngredients ----> ingredient6
+availableIngredients ----> ingredient7
+availableIngredients ----> ingredient8
+restaurant --> activeOrders
+restaurant --> cooks
+restaurant --> menu
+restaurant --> rates
+restaurant --> restaurantGuestsToBeServed
+restaurant --> restaurantGuestsWaitingForOrder
+cooks --> cook1
+cooks --> cook2
+cooks --> cook3
+menu --> availableDishes
+menu --> availableIngredients
+availableDishes ---> predefinedDish1
+availableDishes ---> predefinedDish2
+predefinedDish2 --> ingredient7
+predefinedDish2 --> ingredient8
+predefinedDish1 --> ingredient1
+predefinedDish1 --> ingredient6
+predefinedDish1 --> ingredient5
+}
+
+object program{
+    
+}
+
+
+object simulationManager{
+    runing = true
+}
+
+object customer1{
+ name = "John Doe"
+ orderID = 8
+ waitingToBeServed = false
+}
+object customer3{
+ name = "El Tost Try Hardosse"
+ orderID = 0
+ waitingToBeServed = true
+}
+object customer2{
+ name = "Bob"
+ orderID = 9
+ waitingToBeServed = false
+}
+object sanepid{
+ name = "Sanepid z Nadodrza"
+ orderID = 0
+ waitingToBeServed = true
+}
+
+object restaurantGuestsToBeServed {
+ customer3
+ sanepid
+ ...
+}
+object restaurantGuestsWaitingForOrder {
+ customer1
+ customer2
+ ...
+}
+
+object tickableAction1{
+ name = "El Tost Try Hardosse jest obsługiwany"
+ duration = 10
+ ticksLeft = 5
+}
+object tickableAction2{
+ name = "Kucharz1 przygotowuje zamówienie orderID=8"
+ duration = 200
+ ticksLeft = 138
+}
+
+
+object gameActions {
+ tickableAction1
+ tickableAction2
+ ...
+}
+
+
+
+object restaurant {
+ menu: Menu 
+
+}
+
+object rates{
+ 3.5
+ 5
+ 4,5
+ ...
+}
+
+object order1{
+ ready = false
+ quality = 5
+}
+object order2{
+ ready = false
+ quality = 7
+}
+
+object activeOrders{
+ 8, order1
+ 9, order2
+ ...
+}
+
+object dishes1{
+ dish1_order1
+ dish2_order1
+}
+object dishes2{
+ dish1_order2
+}
+
+object dish1_order1{
+ name = "Kebab pita ostry"
+}
+object dish2_order1{
+ name = "Frytki duże"
+}
+object dish1_order2{
+ name = "Kebab bułka łagodny"
+}
+
+object ingredients1_dish1_order1{
+ ingredient4
+ ingredient6
+ ingredient1
+}
+object ingredients1_dish1_order2{
+ ingredient6
+ ingredient2
+ ingredient5
+}
+object ingredients1_dish2_order1{
+ ingredient3
+}
+
+object ingredient1{
+ name = "pita"
+ price = 3
+}
+object ingredient2{
+ name = "bułka"
+ price = 2
+}
+object ingredient3{
+ name = "ziemniaki"
+ price = 1
+}
+object ingredient4{
+ name = "sos ostry"
+ price = 5
+}
+object ingredient5{
+ name = "sos łagodny"
+ price = 5.69
+}
+object ingredient6{
+ name = "mięso kurczak"
+ price = 7
+}
+object ingredient7{
+ name = "ciasto pizza"
+ price = 7
+}
+object ingredient8{
+ name = "kawałki ananasa"
+ price = 7
+}
+
+object cooks{
+ cook1
+ cook2
+ cook3
+}
+
+object cook1{
+ name = "Kucharz Piotr"
+ busy = true
+}
+object cook2{
+ name = "Kucharz Igor"
+ busy = true
+}
+object cook3{
+ name = "Kucharz Mohamed"
+ busy = false
+}
+
+object menu{
+}
+
+object availableDishes{
+ "kebab pita sos" predefinedDish1
+ "pizza z ananasem" predefinedDish2
+ ...
+}
+
+object predefinedDish1{
+ name = "kebab pita sos"
+}
+object predefinedDish2{
+ name = "pizza z ananasem"
+}
+
+object availableIngredients{
+ "pita" ingredient1
+ "bułka" ingredient2
+ "ziemniaki" ingredient3
+ "sos łagodny" ingredient5
+ "sos ostry" ingredient4
+ "mięso kurczak" ingredient6
+ "ciasto pizza" ingredient7
+ "kawałki ananasa" ingredient8
+ ...
+}
+
+@enduml

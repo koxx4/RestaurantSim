@@ -1,0 +1,18 @@
+
+@startuml
+title Ticking and Actions
+start
+#yellow:SimulationManager;
+repeat
+  :Tick;
+  :Decrement every tickable action left ticks;
+  if (tickableAction duration == 0) then
+    :Fire off tickableAction on finish callback;
+    :Delete tickableAction from list of actions;
+  endif
+  if (tickableAction has on update callback) then
+    :Fire off tickableAction on update callback;
+  endif    
+repeat while (restaurantOpen?) is (yes)
+->no;
+stop

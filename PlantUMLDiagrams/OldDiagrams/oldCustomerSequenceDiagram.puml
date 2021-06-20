@@ -1,0 +1,25 @@
+@startuml
+
+title Interaction between Customer and Restaurant
+Customer -> Restaurant: Get menu
+Restaurant -> Customer: Gives menu
+Customer -> Restaurant: Gives order
+Restaurant -> Customer: Gives order id
+Restaurant -> Cook: Pass order from customer
+loop While order is not prepared
+Cook -> Cook: Preparing order
+ alt If any cooks left
+    Restaurant -> Restaurant: Handle another client
+ end
+Customer -> Customer: Wait for prepared order
+else Customer wait time elapsed
+    Customer -> Restaurant: Leave queue
+    Restaurant -> Cook: Abort preparing order
+end
+Cook -> Restaurant : Return prepared order
+Restaurant -> Customer: Return prepared order
+alt With 70% chance
+    Customer -> Restaurant: Give rate
+end
+
+@enduml

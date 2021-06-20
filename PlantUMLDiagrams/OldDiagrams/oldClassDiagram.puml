@@ -1,0 +1,84 @@
+@startuml
+
+package "RestaurantSim"{
+Program *-- Restaurant
+Program *-- RestaurantGuest
+Dish *-- Ingredient
+Order *-- Dish
+Restaurant *-- Order
+Restaurant *-- Worker
+Restaurant *-- Menu
+Menu *-- Ingredient
+Menu *-- Dish
+Worker <|-- Seller
+Worker <|-- OrderMaker
+RestaurantGuest <|-- Customer
+RestaurantGuest <|-- Sanepid
+}
+
+class Program{
+    -static restaurant: Restaurant
+    -static restaurantGuests: RestaurantGuest[]
+    +void static Main(String[] args)
+}
+
+class Restaurant {
+ -activeOrders: Order[]
+ -workers: Worker[]
+ -menu: Menu
+ +MakeAnOrder(Order order): void
+ +getMenu(): Menu
+}
+
+class Order {
+ -dishes: Dish[]
+ -ready: boolean
+ +getTotalPrice(): float
+ +isReady(): boolean
+}
+
+class Dish{
+ -ingredients: Ingredient[]
+ -name: string
+ +getName(): string
+}
+
+class Ingredient{
+ -moneyValue: float
+ -name: string
+
+ +getMoneyValue(): float
+ +getName(): string
+}
+
+class Menu{
+    -availableDishes: Dictionary<Dish>
+    -availableIngredients: Dictionary<Ingredient>
+    +getDish(string dishName): Dish
+}
+
+abstract class Worker{
+ +giveOrder(Order): void
+}
+
+class Seller{
+
+}
+
+class OrderMaker{
+
+}
+
+abstract class RestaurantGuest{
+
+}
+
+class Customer{
+
+}
+
+class Sanepid{
+
+}
+
+@enduml

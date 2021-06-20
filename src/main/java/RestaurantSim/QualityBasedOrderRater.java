@@ -1,7 +1,6 @@
 package RestaurantSim;
 
 import RestaurantSim.SimulationSystem.IOrderRater;
-import RestaurantSim.SimulationSystem.Simulation;
 import RestaurantSim.SimulationSystem.SimulationUtilities;
 
 public class QualityBasedOrderRater implements IOrderRater {
