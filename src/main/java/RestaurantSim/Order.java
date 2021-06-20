@@ -31,6 +31,16 @@ public class Order
 
     @Override
     public String toString() {
-        return "Order{" + "dishes=" + dishes + '}';
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("---ORDER---\n");
+        for(var dish : dishes){
+            stringBuilder.append("Dish name: " + dish.getName() +" ");
+            stringBuilder.append("ingredients:\n");
+            for ( var ingredient : dish.getIngredients() ){
+                stringBuilder.append("\u2726" + ingredient.getName() + "\n");
+            }
+            stringBuilder.append("-----------\n");
+        }
+        return stringBuilder.toString();
     }
 }
