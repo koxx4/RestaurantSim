@@ -182,6 +182,9 @@ class SimulationManager implements ITickableActionObject {
 
     }
 
+    /**
+     * Creates TickableAction that will periodically spawn Customer object
+     */
     private void createSpawnCustomerAction() {
         TickableAction spawnNextCustomer = new TickableAction
                 ("Spawning customer action",
@@ -206,6 +209,9 @@ class SimulationManager implements ITickableActionObject {
 
     }
 
+    /**
+     * Creates TickableAction that will periodically spawn Sanepid object
+     */
     private void createSpawnSanepidAction() {
         TickableAction action = new TickableAction(1);
         action.setOnFinishCallback( () -> {
@@ -214,6 +220,10 @@ class SimulationManager implements ITickableActionObject {
         managerActions.add(action);
     }
 
+    /**
+     * Creates TickableAction that will periodically spawn
+     * TickableAction that creates Sanepid object
+     */
     private void createRestaruantRateCheckAction() {
 
         output.printDebug("Next sanepid check in " + settings.restaruantRatesCheckFrequency + " ticks",
@@ -229,6 +239,9 @@ class SimulationManager implements ITickableActionObject {
         managerActions.add(action);
     }
 
+    /**
+     * Creates a TickableAction at which finish sanepid checks will begin
+     */
     private void createRestaurantProtectionAction(){
         output.printDebug("After " + settings.restaurantStartProtectionDuration + " ticks sanepid will be able" +
                 " to check restaurant. Prepare!", this.toString() );
@@ -239,6 +252,11 @@ class SimulationManager implements ITickableActionObject {
         managerActions.add(action);
     }
 
+    /**
+     * Ticks simulation and pushes it forward in time. Updates
+     * all TickableActions. Time between each tick is defined in
+     * SimulationSettings.
+     */
     private void tick() {
         tickManager.tick();
         output.printDebug( "Ticked! This is tick number "

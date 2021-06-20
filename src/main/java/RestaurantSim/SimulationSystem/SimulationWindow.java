@@ -4,6 +4,11 @@ import com.googlecode.lanterna.gui2.*;
 
 import java.util.Set;
 
+/**
+ * Simple window to which all simulation output will be printed.
+ * This class extends BasicWindow from Lanterna library.
+ * @see BasicWindow
+ */
 class SimulationWindow extends BasicWindow {
 
     private final Panel mainPanel;
@@ -13,9 +18,10 @@ class SimulationWindow extends BasicWindow {
     private final Panel restaurantStatusViewPanel;
     private final Panel cooksStatusViewPanel;
     private final Panel tickablesStatusViewPanel;
-   // private final Button pauseButton;
-   // private final Button exitButton;
 
+    /**
+     * Creates instance SimulationWindow, sets its internal panels and their layouts.
+     */
     public SimulationWindow() {
         super("Restaurant simulation window");
         //Make window full screen
@@ -43,26 +49,49 @@ class SimulationWindow extends BasicWindow {
         setComponent(mainPanel);
     }
 
+    /**
+     * Returns main panel which is a parent to all of the {@link Component}s in this window
+     */
     public Panel getMainPanel() {
         return mainPanel;
     }
 
+    /**
+     * Returns a panel in which simulation specific info should be shown
+     * @return
+     */
     public Panel getSimulationViewPanel() {
         return simulationViewPanel;
     }
 
+    /**
+     * Returns a panel in which simulation specific debug info should be shown
+     * @return
+     */
     public Panel getSimulationDebugViewPanel() {
         return simulationDebugViewPanel;
     }
 
+    /**
+     * Returns a panel in which Restaurant specific info should be shown
+     * @return
+     */
     public Panel getRestaurantStatusViewPanel() {
         return restaurantStatusViewPanel;
     }
 
+    /**
+     * Returns a panel in which Cooks specific info should be shown
+     * @return
+     */
     public Panel getCooksStatusViewPanel() {
         return cooksStatusViewPanel;
     }
 
+    /**
+     * Returns a panel in which simulation TickableActions specific info should be shown
+     * @return
+     */
     public Panel getTickablesStatusViewPanel() {
         return tickablesStatusViewPanel;
     }

@@ -1,5 +1,10 @@
 package RestaurantSim.SimulationSystem;
 
+/**
+ * This class implements {@link OutputDisplayProvider}. This implementation
+ * uses simple console output.
+ * @see System#out
+ */
 public class TerminalDisplay implements OutputDisplayProvider{
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_BLACK = "\u001B[30m";
