@@ -6,6 +6,9 @@ import org.apache.commons.lang3.time.StopWatch;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages simulation 🤓👌
+ */
 class SimulationManager implements ITickableActionObject {
 
     private  final OutputDisplayProvider output;
@@ -20,6 +23,12 @@ class SimulationManager implements ITickableActionObject {
     private final StopWatch stopWatch;
     private final List<TickableAction> managerActions;
 
+    /**
+     * Creates instance of SimulationManager with all its dependencies
+     * @param settings Loaded simulation settings
+     * @param simulationData Loaded simulation data
+     * @param output Output to which SimulationManager will print various information
+     */
     public SimulationManager(SimulationSettings settings, SimulationData simulationData,
                              OutputDisplayProvider output) {
         this.running = true;
@@ -33,16 +42,21 @@ class SimulationManager implements ITickableActionObject {
         stopWatch = new StopWatch();
     }
 
+    /**
+     * Indicates whether simulation is running
+     * @return True when simulation is running, false - when it is not 🤓👌
+     */
     public boolean isRunning()
     {
         return this.running;
     }
 
-    public void startSimulation()
-    {
-        // Initialize
+    /**
+     * Starts whole simulation with tick duration that is
+     * defined in SimulationSettings class passed in constructor
+     */
+    public void startSimulation() {
         stopWatch.start();
-
         while (running)
         {
             stopWatch.suspend();
@@ -62,9 +76,11 @@ class SimulationManager implements ITickableActionObject {
         }
     }
 
-    public void stop()
-    {
-        System.out.println(this + "Stopping simulation!");
+    /**
+     * Stops simulation regardless of its state
+     */
+    public void stop() {
+        output.printDebug("Stopping simulation!", this.toString());
         this.running = false;
     }
 
@@ -83,6 +99,10 @@ class SimulationManager implements ITickableActionObject {
         return false;
     }
 
+    /**
+     * Creates new Customer object and registers it to TickableObjects list
+     * @return Newly created Customer
+     */
     private Customer generateAndRegisterCustomer()
     {
         CustomerBuilder customerBuilder = new CustomerBuilder();
@@ -98,6 +118,10 @@ class SimulationManager implements ITickableActionObject {
         tickManager.registerTickableObject(builtCustomer);
         return builtCustomer;
     }
+    /**
+     * Creates new Sanepid object and registers it to TickableObjects list
+     * @return Newly created Sanepid
+     */
     private Sanepid generateAndRegisterSanepid() {
         Sanepid sanepid = new Sanepid(peopleData.getRandomFullName(),
                 new RateBasedEvaluationService(),
@@ -107,6 +131,10 @@ class SimulationManager implements ITickableActionObject {
         return sanepid;
     }
 
+    /**
+     * Creates new Cook object and registers it to TickableObjects list
+     * @return Newly created Cook
+     */
     private Cook generateAndRegisterCook()
     {
         CookBuilder cookBuilder = new CookBuilder();
@@ -124,6 +152,12 @@ class SimulationManager implements ITickableActionObject {
         return cook;
     }
 
+    /**
+     * Generates Cook objects and construct new List object
+     * containing created cooks.
+     * @param listSize Size of List that will be created
+     * @return List of newly created cooks
+     */
     private List<Cook> generateCooksList(int listSize){
         List<Cook> cooks = new ArrayList<>();
 
@@ -134,6 +168,9 @@ class SimulationManager implements ITickableActionObject {
         return cooks;
     }
 
+    /**
+     * Initializes SimulationManager
+     */
     public void initialize()
     {
         tickManager.registerTickableObject(this);

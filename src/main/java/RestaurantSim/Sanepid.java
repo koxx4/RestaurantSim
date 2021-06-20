@@ -24,7 +24,7 @@ public class Sanepid extends RestaurantGuest  {
 
     @Override
     public void interactWithRestaurant() {
-        Simulation.getInstance().getOutput().print( "kontrola! Prosze pokazac stan lokalu i kuchni!"
+        Simulation.getInstance().getOutput().print( "HELLO! Please show me condition of restaurant!"
                 , this.toString());
 
         createEvaluationAction();
