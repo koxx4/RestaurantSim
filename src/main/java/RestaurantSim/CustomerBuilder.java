@@ -9,6 +9,7 @@ public class CustomerBuilder {
     private String name;
     private int patience;
     private IOrderRater orderRater;
+    private Restaurant targetRestaurant;
     boolean startedBuilding;
 
     public CustomerBuilder(){
@@ -16,7 +17,8 @@ public class CustomerBuilder {
         startedBuilding = false;
     }
 
-    public CustomerBuilder buildCustomer(){
+    public CustomerBuilder buildCustomerAssignedToRestaurant(Restaurant targetRestaurant){
+        this.targetRestaurant = targetRestaurant;
         startedBuilding = true;
         return this;
     }
@@ -51,7 +53,7 @@ public class CustomerBuilder {
 
     public Customer getBuiltCustomer(){
         if(startedBuilding)
-            return new Customer(name, patience, orderRater);
+            return new Customer(name, patience, orderRater, targetRestaurant);
         else
             return null;
     }

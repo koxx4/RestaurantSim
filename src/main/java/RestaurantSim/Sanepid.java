@@ -8,7 +8,6 @@ import java.util.List;
 public class Sanepid extends RestaurantGuest  {
 
     private final List<TickableAction> tickableActions;
-    private Restaurant sourceRestaurant;
     private final IEvaluationService evaluationService;
     private boolean shouldBeUnregistered;
     private String[] sanepidQuotes =
@@ -17,16 +16,14 @@ public class Sanepid extends RestaurantGuest  {
                     "...what a disgusting smell..."
             };
 
-    public Sanepid(String name, IEvaluationService evaluationService) {
-        super(name, Integer.MAX_VALUE);
+    public Sanepid(String name, IEvaluationService evaluationService, Restaurant target) {
+        super(name, Integer.MAX_VALUE, target);
         this.tickableActions = new ArrayList<>();
         this.evaluationService = evaluationService;
     }
 
     @Override
-    public void interactWithRestaurant( Restaurant restaurant) {
-        sourceRestaurant = restaurant;
-
+    public void interactWithRestaurant() {
         Simulation.getInstance().getOutput().print( "kontrola! Prosze pokazac stan lokalu i kuchni!"
                 , this.toString());
 
@@ -55,9 +52,9 @@ public class Sanepid extends RestaurantGuest  {
     }
 
     private void evaluateRestaurantWork() {
-        if(evaluationService.restaurantShouldBeClosed(sourceRestaurant)){
+        if(evaluationService.restaurantShouldBeClosed(getTargetRestaurant())){
             Simulation.getInstance().print("This place is too dangerous to eat!\n Close this garbage NOW!");
-            sourceRestaurant.close(this);
+            getTargetRestaurant().close(this);
         }
     }
 
@@ -65,7 +62,7 @@ public class Sanepid extends RestaurantGuest  {
         TickableAction action = new TickableAction(Simulation.getInstance().getSettings().sanepidEvaluationTime );
         action.setOnFinishCallback(() -> {
             evaluateRestaurantWork();
-            sourceRestaurant.removeGuestFromQueue(this);
+            getTargetRestaurant().removeGuestFromQueue(this);
             shouldBeUnregistered = true;
         });
         action.setOnTickCallback(this::printRandomEvalutaionMessage);

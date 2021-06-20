@@ -87,7 +87,7 @@ class SimulationManager implements ITickableActionObject {
     {
         CustomerBuilder customerBuilder = new CustomerBuilder();
 
-        Customer builtCustomer = customerBuilder.buildCustomer()
+        Customer builtCustomer = customerBuilder.buildCustomerAssignedToRestaurant(this.restaurant)
                 .named(peopleData.getRandomFullName())
                 .withRandomPatience(settings.minClientPatience, settings.maxClientPatience)
                 .withRater(new QualityBasedOrderRater())
@@ -99,7 +99,9 @@ class SimulationManager implements ITickableActionObject {
         return builtCustomer;
     }
     private Sanepid generateAndRegisterSanepid() {
-        Sanepid sanepid = new Sanepid(peopleData.getRandomFullName(), new RateBasedEvaluationService());
+        Sanepid sanepid = new Sanepid(peopleData.getRandomFullName(),
+                new RateBasedEvaluationService(),
+                restaurant);
         tickManager.registerTickableObject(sanepid);
 
         return sanepid;

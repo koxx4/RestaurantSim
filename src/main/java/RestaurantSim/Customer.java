@@ -7,23 +7,18 @@ import java.util.List;
 
 public class Customer extends RestaurantGuest
 {
-    private IOrderRater orderRater;
+    private final IOrderRater orderRater;
     private TickableAction waitForOrderAction;
-    private Restaurant currentRestaurant;
     private final List<TickableAction> tickableActions;
     private boolean shouldBeUnregistered;
 
-    public Customer(String name, int patience, IOrderRater orderRater)
+    public Customer(String name, int patience, IOrderRater orderRater, Restaurant targetRestaurant)
     {
-        super(name,patience);
+        super(name,patience, targetRestaurant);
         this.orderRater = orderRater;
         tickableActions = new ArrayList<>();
         this.shouldBeUnregistered = false;
         createWaitingTask();
-    }
-
-    public void setOrderRater( IOrderRater orderRater ) {
-        this.orderRater = orderRater;
     }
 
     public void rateRestaurant( PreparedOrder preparedOrder)
@@ -33,7 +28,7 @@ public class Customer extends RestaurantGuest
             rate = orderRater.rateOrder(preparedOrder);
 
             Simulation.getInstance().print("Rating restaurant for " + rate + " stars", this.toString());
-            currentRestaurant.giveRate(rate);
+            getTargetRestaurant().giveRate(rate);
         }
     }
 
@@ -48,14 +43,11 @@ public class Customer extends RestaurantGuest
     }
 
     @Override
-    public void interactWithRestaurant( Restaurant restaurant )
-    {
-        currentRestaurant = restaurant;
-
+    public void interactWithRestaurant() {
         Simulation.getInstance().print("Is interacting with restaurant",
                 this.toString());
 
-        Order composedOrder = composeOrder(currentRestaurant.getMenu());
+        Order composedOrder = composeOrder(getTargetRestaurant().getMenu());
 
         Simulation.getInstance().print( "I will try to buy " + composedOrder.GetDishes().get(0).getName(),
                 this.toString());
@@ -113,12 +105,12 @@ public class Customer extends RestaurantGuest
             if ( SimulationUtilities.isGoingToHappen(Simulation.getInstance().getSettings().chanceToRateRestaurantImpatience))
             {
                 //2.0 is always a rate given when order is not prepared on time
-                currentRestaurant.giveRate(Simulation.getInstance().getSettings().rateOnOrderNotPreparedOnTime);
+                getTargetRestaurant().giveRate(Simulation.getInstance().getSettings().rateOnOrderNotPreparedOnTime);
                 Simulation.getInstance().print("Also, your restaurant sucks!", this.toString());
             }
 
             //Guest obviously leaves the queue
-            currentRestaurant.removeGuestFromQueue(this);
+            getTargetRestaurant().removeGuestFromQueue(this);
         });
 
         tickableActions.add(waitForOrderAction);
@@ -129,7 +121,7 @@ public class Customer extends RestaurantGuest
         TickableAction leaveTask = new TickableAction(1);
         leaveTask.setOnFinishCallback(
                 () -> {
-                    currentRestaurant.removeGuestFromQueue(this);
+                    getTargetRestaurant().removeGuestFromQueue(this);
                     shouldBeUnregistered = true;
                 });
         tickableActions.add(leaveTask);
@@ -137,7 +129,7 @@ public class Customer extends RestaurantGuest
 
     private void tryMakeOrder( Order composedOrder) {
         OrderReceipt orderReceipt =
-                currentRestaurant.receiveOrder(composedOrder, composedOrder.GetTotalPrice());
+                getTargetRestaurant().receiveOrder(composedOrder, composedOrder.GetTotalPrice());
 
         if(orderReceipt != null)
         {

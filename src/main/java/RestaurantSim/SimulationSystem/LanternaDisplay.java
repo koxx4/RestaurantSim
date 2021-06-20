@@ -6,10 +6,24 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 
+/**
+ * This class is an implementation of a {@link OutputDisplayProvider} interface.
+ * Creates a window in which simulation can output any information it wants.
+ * Provides a simple form of "retro" GUI.
+ */
 public class LanternaDisplay implements OutputDisplayProvider {
+    /**
+     * Thread on which GUI rendering is taking place
+     */
     private AsynchronousTextGUIThread guiThread;
+    /**
+     * Controller of a main window on which output is seen.
+     */
     private SimulationWindowController simulationWindowController;
 
+    /**
+     * Creates a instance of this class and configures GUI related things internally.
+     */
     public LanternaDisplay(){
         try {
             SimulationWindow simulationWindow = new SimulationWindow();

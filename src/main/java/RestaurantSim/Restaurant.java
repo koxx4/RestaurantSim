@@ -108,18 +108,16 @@ public class Restaurant implements ITickableActionObject {
     private void tryHandleNextRestaurantGuest()
     {
         RestaurantGuest restaurantGuestToBeServed = restaurantGuests.poll();
-        if(restaurantGuestToBeServed.isWaitingToBeServed())
-        {
+        if(restaurantGuestToBeServed.isWaitingToBeServed()) {
             handleRestaurantGuest(restaurantGuestToBeServed);
         }
         //For now just readd customer
         restaurantGuests.add(restaurantGuestToBeServed);
     }
 
-    private void handleRestaurantGuest( RestaurantGuest restaurantGuestToBeServed)
-    {
+    private void handleRestaurantGuest( RestaurantGuest restaurantGuestToBeServed) {
         Simulation.getInstance().print("Interacting with " + restaurantGuestToBeServed.getName(), this.toString());
-        restaurantGuestToBeServed.interactWithRestaurant(this);
+        restaurantGuestToBeServed.interactWithRestaurant();
     }
 
     private void createOrderPickUpAction()

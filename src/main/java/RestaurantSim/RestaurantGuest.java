@@ -3,13 +3,14 @@ package RestaurantSim;
 import RestaurantSim.SimulationSystem.ITickableActionObject;
 
 public abstract class RestaurantGuest implements ITickableActionObject {
+    private final Restaurant targetRestaurant;
     private int patience;
     private String name;
     private boolean waitingToBeServed;
     private OrderReceipt orderReceipt;
 
-    public RestaurantGuest(String name, int patience)
-    {
+    public RestaurantGuest(String name, int patience, Restaurant targetRestaurant) {
+        this.targetRestaurant = targetRestaurant;
         this.name = name;
         this.patience = patience;
         waitingToBeServed = true;
@@ -51,6 +52,10 @@ public abstract class RestaurantGuest implements ITickableActionObject {
     {
         return "RestaurantGuest (" + this.name +"): ";
     }
-    abstract public void interactWithRestaurant( Restaurant restaurant);
+    abstract public void interactWithRestaurant();
     abstract public void receiveOrder( PreparedOrder preparedOrder);
+
+    public Restaurant getTargetRestaurant() {
+        return targetRestaurant;
+    }
 }

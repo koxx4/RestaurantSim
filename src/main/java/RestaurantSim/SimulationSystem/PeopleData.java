@@ -2,6 +2,9 @@ package RestaurantSim.SimulationSystem;
 
 import java.util.List;
 
+/**
+ * Class that stores data that is related to people: names and surnames.
+ */
 public class PeopleData
 {
     private List<String> names;
@@ -11,16 +14,28 @@ public class PeopleData
 
     }
 
+    /**
+     *
+     * @return List of strings that contain first names
+     */
     public List<String> getNames()
     {
         return names;
     }
 
+    /**
+     *
+     * @return List of strings that contain surnames
+     */
     public List<String> getSurnames()
     {
         return surnames;
     }
 
+    /**
+     * Chooses a random first name and returns it.
+     * @return String with a random first name
+     */
     public String getRandomName()
     {
         if (!names.isEmpty())
@@ -29,6 +44,10 @@ public class PeopleData
         return "Invalid name";
     }
 
+    /**
+     * Chooses a random surname and returns it.
+     * @return String with a random surname
+     */
     public String getRandomSurname()
     {
         if (!surnames.isEmpty())
@@ -37,6 +56,10 @@ public class PeopleData
         return "Invalid surname";
     }
 
+    /**
+     * Constructs and returns a random name that is composed of a first and a last name.
+     * @return String with a full name.
+     */
     public String getRandomFullName()
     {
         return getRandomName() + " " + getRandomSurname();
