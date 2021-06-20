@@ -10,11 +10,19 @@ public class Menu
     private Map<String,Dish> availableDishes;
     private Map<String,Ingredient> availableIngredients;
 
+    /**
+     * Creates the object of this class
+     * @param foodData Contains all the data about food
+     */
     public Menu(FoodData foodData) {
         populateIngredients(foodData);
         populateDishes(foodData);
     }
 
+    /**
+     * Contains all populate ingredients from FoodData class
+     * @param foodData Contains all the data about food
+     */
     private void populateIngredients(FoodData foodData) {
         this.availableIngredients = new Hashtable<>();
         for (var ingredient: foodData.getIngredientsData()) {
@@ -22,6 +30,10 @@ public class Menu
         }
     }
 
+    /**
+     * Contains all populate dishes from FoodData class
+     * @param foodData Contains all the data about food
+     */
     private void populateDishes(FoodData foodData) {
         this.availableDishes = new Hashtable<>();
         for (var jsonDish: foodData.getDishData()) {
@@ -43,6 +55,9 @@ public class Menu
         return availableIngredients;
     }
 
+    /**
+     * @return Random Dish
+     */
     public Dish getRandomDish() {
         var dishIterator =  availableDishes.values().iterator();
         int randomIndex = SimulationUtilities.getRandomInt(availableDishes.values().size());
@@ -54,6 +69,9 @@ public class Menu
         return dishIterator.next();
     }
 
+    /**
+     * @return Random ingredients for the Dish
+     */
     public Ingredient getRandomIngredient() {
         var ingredIterator =  availableIngredients.values().iterator();
         int randomIndex = SimulationUtilities.getRandomInt(availableIngredients.values().size());

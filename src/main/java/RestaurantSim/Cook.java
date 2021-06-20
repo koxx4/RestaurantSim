@@ -15,6 +15,13 @@ public class Cook implements ITickableActionObject
     private final int skillLevel;
     private final List<TickableAction> tickableActions;
 
+    /**
+     * Creates the object of this class
+     * @param name Contains the name of Cook object
+     * @param agility Contains the agility of Cook object
+     * @param skillLevel Contains the skill level of Cook object
+     * @param orderQualityDeterminer Implementation of IOrderQualityDeterminer
+     */
     public Cook(String name, int agility, int skillLevel, IOrderQualityDeterminer orderQualityDeterminer) {
         this.tickableActions = new ArrayList<>();
         this.name = name;
@@ -23,6 +30,12 @@ public class Cook implements ITickableActionObject
         this.orderQualityDeterminer = orderQualityDeterminer;
     }
 
+    /**
+     * Receives the order and tries to prepare it
+     * @param order Contains exact Order
+     * @param orderID Contains exact Order ID
+     * @param sourceRestaurant
+     */
     public void receiveOrder( Order order, int orderID, Restaurant sourceRestaurant) {
 
         String actionMessage = "Preparing order "+ orderID;
@@ -40,6 +53,12 @@ public class Cook implements ITickableActionObject
         this.busy = true;
     }
 
+    /**
+     * Finishes the order
+     * @param order Contains exact Order
+     * @param orderID Contains exact Order ID
+     * @param sourceRestaurant
+     */
     private void finishPreparingOrder( Order order, int orderID, @NotNull Restaurant sourceRestaurant) {
 
         PreparedOrderQuality calculatedQuality =
@@ -53,14 +72,25 @@ public class Cook implements ITickableActionObject
                         + calculatedQuality, this.toString());
     }
 
+    /**
+     * @return True when Cook is busy or false when not
+     */
     public boolean isBusy() {
         return busy;
     }
 
+    /**
+     * @return The name of Cook object
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Determines how much time it takes to prepare exact order
+     * @param order Contains exact Order
+     * @return How many tick it takes to prepare exact order
+     */
     private int estimateWorkTime( Order order) {
         int ticksToPrepareOrder = 0;
         for (var dish : order.GetDishes())
@@ -94,6 +124,9 @@ public class Cook implements ITickableActionObject
         return false;
     }
 
+    /**
+     * @return Skill level of the Cook
+     */
     public int getSkillLevel() {
         return skillLevel;
     }
