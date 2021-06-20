@@ -1,9 +1,6 @@
 package RestaurantSim;
 
-import RestaurantSim.SimulationSystem.IOrderQualityDeterminer;
-import RestaurantSim.SimulationSystem.SimulationManager;
-import RestaurantSim.SimulationSystem.SimulationSettings;
-import RestaurantSim.SimulationSystem.SimulationUitilities;
+import RestaurantSim.SimulationSystem.*;
 
 //This implementation expects that @PreparedOrderQuality enum starts with
 //worst quality to the best
@@ -14,10 +11,9 @@ public class SkillBasedQualityDeterminer implements IOrderQualityDeterminer {
         //This array should be cached like that to avoid deep copying every time we must use it
         PreparedOrderQuality[] preparedOrderQualityValues = PreparedOrderQuality.values();
 
-        SimulationSettings settings = SimulationManager.instance.getSettings();
+        SimulationSettings settings = Simulation.getInstance().getSettings();
 
-        int numberOfSkillLevels = SimulationManager.instance.getSettings().maxCookSkill
-                - SimulationManager.instance.getSettings().minCookSkill;
+        int numberOfSkillLevels = settings.maxCookSkill - settings.minCookSkill;
 
         float skillPercentage = (float) cook.getSkillLevel() / numberOfSkillLevels;
         int calculatedQuality = Math.round(skillPercentage * (preparedOrderQualityValues.length - 1));
@@ -33,8 +29,8 @@ public class SkillBasedQualityDeterminer implements IOrderQualityDeterminer {
 
         while ( true ) {
 
-            boolean dishQualityShouldImprove = SimulationUitilities.isGoingToHappen(settings.dishQualityImproveChance);
-            boolean dishQualityShouldWorsen = SimulationUitilities.isGoingToHappen(settings.dishQualityWorsenChance);
+            boolean dishQualityShouldImprove = SimulationUtilities.isGoingToHappen(settings.dishQualityImproveChance);
+            boolean dishQualityShouldWorsen = SimulationUtilities.isGoingToHappen(settings.dishQualityWorsenChance);
 
             if ( dishQualityShouldImprove ) {
                 calculatedQuality++;

@@ -6,9 +6,9 @@ import org.apache.commons.lang3.time.StopWatch;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimulationManager implements ITickableActionObject
-{
-    public static SimulationManager instance;
+class SimulationManager implements ITickableActionObject {
+
+    private  final OutputDisplayProvider output;
     private final SimulationSettings settings;
     private final PeopleData peopleData;
     private final FoodData foodData;
@@ -20,26 +20,17 @@ public class SimulationManager implements ITickableActionObject
     private final StopWatch stopWatch;
     private final List<TickableAction> managerActions;
 
-    public SimulationManager(SimulationSettings settings, SimulationData simulationData) {
-        instance = this;
+    public SimulationManager(SimulationSettings settings, SimulationData simulationData,
+                             OutputDisplayProvider output) {
         this.running = true;
         this.tickDuration = settings.tickDuration;
-
         this.settings = settings;
         this.peopleData = simulationData.peopleData;
+        this.output = output;
         this.foodData = simulationData.foodData;
         this.tickManager = new TickManager();
         this.managerActions = new ArrayList<>();
-
         stopWatch = new StopWatch();
-
-        try {
-            initialize();
-        } catch (Exception e) {
-            e.printStackTrace();
-            this.stop();
-        }
-
     }
 
     public boolean isRunning()
@@ -77,14 +68,9 @@ public class SimulationManager implements ITickableActionObject
         this.running = false;
     }
 
-    public SimulationSettings getSettings()
-    {
-        return this.settings;
-    }
-
     @Override
     public String toString() {
-        return "\nSimMan: ";
+        return "SimMan: ";
     }
 
     @Override
@@ -146,10 +132,8 @@ public class SimulationManager implements ITickableActionObject
         return cooks;
     }
 
-    private void initialize()
+    public void initialize()
     {
-        //This might seem a little funny but yeah manager registers
-        //itself
         tickManager.registerTickableObject(this);
         createSpawnCustomerAction();
         createRestaurantProtectionAction();
@@ -159,13 +143,12 @@ public class SimulationManager implements ITickableActionObject
 
     }
 
-    private void createSpawnCustomerAction()
-    {
+    private void createSpawnCustomerAction() {
         TickableAction spawnNextCustomer = new TickableAction
                 ("Spawning customer action",
-                        SimulationUitilities.getRandomInt(settings.minTicksSpawnClient, settings.maxTicksSpawnClient));
+                        SimulationUtilities.getRandomInt(settings.minTicksSpawnClient, settings.maxTicksSpawnClient));
 
-        System.out.println(this + "next customer in " + spawnNextCustomer.getDuration() + " ticks");
+        output.printDebug("Next customer in " + spawnNextCustomer.getDuration() + " ticks", this.toString());
 
         spawnNextCustomer.setOnFinishCallback(  () -> {
             //So we create new customer, place him into simulation
@@ -173,9 +156,9 @@ public class SimulationManager implements ITickableActionObject
             //generatedCustomer.onRestaurantEnter();
             this.restaurant.addGuestToQueue(generatedCustomer);
 
-            System.out.println("SimMan: created customer!");
-            System.out.println(this  + "" +  generatedCustomer + "Arrived at restaurant. Gonna wait " +
-                    generatedCustomer.getPatience() + " ticks before he'll leave!");
+            output.printDebug("Created customer!",this.toString());
+            output.printDebug(generatedCustomer + " arrived at restaurant.\nGonna wait " +
+                    generatedCustomer.getPatience() + " ticks before he'll leave!", this.toString());
 
             createSpawnCustomerAction();
         });
@@ -183,34 +166,33 @@ public class SimulationManager implements ITickableActionObject
         managerActions.add(spawnNextCustomer);
 
     }
+
     private void createSpawnSanepidAction() {
         TickableAction action = new TickableAction(1);
         action.setOnFinishCallback( () -> {
-
             restaurant.addGuestToQueue(generateAndRegisterSanepid());
-
         });
         managerActions.add(action);
     }
 
     private void createRestaruantRateCheckAction() {
 
-        System.out.println(this + "next sanepid check in " + settings.restaruantRatesCheckFrequency + " ticks");
+        output.printDebug("Next sanepid check in " + settings.restaruantRatesCheckFrequency + " ticks",
+                this.toString());
         TickableAction action = new TickableAction(settings.restaruantRatesCheckFrequency, true);
 
         action.setOnFinishCallback( () -> {
-
-            System.out.println(this + "next sanepid check in " + settings.restaruantRatesCheckFrequency + " ticks");
+            output.printDebug("Next sanepid check in " + settings.restaruantRatesCheckFrequency + " ticks",
+                    this.toString());
             createSpawnSanepidAction();
-
         });
 
         managerActions.add(action);
     }
 
     private void createRestaurantProtectionAction(){
-        System.out.println(this + "after " + settings.restaurantStartProtectionDuration + " ticks sanepid will be able" +
-                " to check restaurant. Prepare!" );
+        output.printDebug("After " + settings.restaurantStartProtectionDuration + " ticks sanepid will be able" +
+                " to check restaurant. Prepare!", this.toString() );
 
         TickableAction action = new TickableAction(settings.restaurantStartProtectionDuration);
         action.setOnFinishCallback(this::createRestaruantRateCheckAction);
@@ -218,14 +200,15 @@ public class SimulationManager implements ITickableActionObject
         managerActions.add(action);
     }
 
-    private void tick()
-    {
+    private void tick() {
         tickManager.tick();
-        System.out.println(this + "Tick("+ tickManager.getElapsedTicks() +")! Duration: " + elapsedTime);
+        output.printDebug( "Ticked! This is tick number "
+                + tickManager.getElapsedTicks(), this.toString());
 
-        if(!restaurant.isOpened()){
+        if(!restaurant.isOpened() || !output.isOpened()){
             stop();
         }
 
     }
+
 }

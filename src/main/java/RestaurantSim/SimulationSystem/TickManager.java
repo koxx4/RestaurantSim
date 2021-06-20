@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TickManager {
+ class TickManager {
 
     private final List<ITickableActionObject> tickableActionObjects;
     private final List<ITickableActionObject> tickableActionObjectsBuffer;
@@ -94,9 +94,8 @@ public class TickManager {
         var tickablesToRemove = tickableActionObjects.stream()
                 .filter(ITickableActionObject::shouldBeUnregistered)
                 .collect(Collectors.toList());
-        System.out.println(this + " removing: " + tickablesToRemove.size() + " tickables");
-        tickableActionObjects.removeAll(tickablesToRemove);
 
+        tickableActionObjects.removeAll(tickablesToRemove);
     }
 
     @Override

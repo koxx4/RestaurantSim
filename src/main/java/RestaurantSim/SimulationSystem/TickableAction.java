@@ -63,10 +63,8 @@ public class TickableAction
         this.abort = true;
     }
 
-    public void executeOnFinishCallback()
-    {
-        if(onFinishCallback != null)
-        {
+    public void executeOnFinishCallback() {
+        if(onFinishCallback != null) {
             onFinishCallback.execute();
         }
     }

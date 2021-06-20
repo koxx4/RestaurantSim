@@ -2,7 +2,7 @@ package RestaurantSim.SimulationSystem;
 
 import java.util.Random;
 
-public final class SimulationUitilities
+public final class SimulationUtilities
 {
     private static final Random internalRandomGenerator = new Random();
     /**

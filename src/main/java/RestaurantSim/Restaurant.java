@@ -1,6 +1,7 @@
 package RestaurantSim;
 
 import RestaurantSim.SimulationSystem.ITickableActionObject;
+import RestaurantSim.SimulationSystem.Simulation;
 import RestaurantSim.SimulationSystem.TickableAction;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,53 +29,50 @@ public class Restaurant implements ITickableActionObject {
         this.ordersToPickUp = new Stack<>();
         this.createGuestHandlingAction();
         this.createOrderPickUpAction();
+        this.createCooksStatusPrintAction();
     }
 
-    public OrderReceipt receiveOrder( Order order, float payForOrder)
-    {
+    public OrderReceipt receiveOrder( Order order, float payForOrder) {
         if(payForOrder >= order.GetTotalPrice())
         {
             if( tryHandleOrder(order))
                 return new OrderReceipt(orderCounter);
         }
-
         return null;
     }
 
-    public Menu getMenu()
-    {
+    public Menu getMenu() {
         return menu;
     }
 
-    public void addGuestToQueue( RestaurantGuest restaurantGuest)
-    {
+    public void addGuestToQueue( RestaurantGuest restaurantGuest) {
         restaurantGuests.add(restaurantGuest);
-        System.out.println(this + restaurantGuest.getName() +
-                " joined the queue (" + restaurantGuests.size() + ")");
+        Simulation.getInstance().print(restaurantGuest.getName() +
+                " joined the queue (" + restaurantGuests.size() + ")", this.toString());
+        printRestaurantStatus();
     }
 
-    public void removeGuestFromQueue( RestaurantGuest restaurantGuest)
-    {
+    public void removeGuestFromQueue( RestaurantGuest restaurantGuest) {
         if(!restaurantGuests.isEmpty())
             restaurantGuests.remove(restaurantGuest);
 
-        System.out.println(this + restaurantGuest.getName() + " left the queue");
+        Simulation.getInstance().print(restaurantGuest.getName() + " left the queue", this.toString());
+        printRestaurantStatus();
     }
 
-    public void giveRate( float rate)
-    {
+    public void giveRate( float rate) {
         rates.add(rate);
     }
 
-    public void addPreparedOrder( PreparedOrder preparedOrder)
-    {
+    public void addPreparedOrder( PreparedOrder preparedOrder) {
         this.ordersToPickUp.push(preparedOrder);
     }
 
     public void close(Object sender){
 
-        if ( sender.getClass() == Sanepid.class ){
+        if (sender instanceof Sanepid){
             this.opened = false;
+            Simulation.getInstance().print("RESTAURANT WILL BE CLOSED!");
         }
     }
 
@@ -120,7 +118,7 @@ public class Restaurant implements ITickableActionObject {
 
     private void handleRestaurantGuest( RestaurantGuest restaurantGuestToBeServed)
     {
-        System.out.println(this + "Interacting with " + restaurantGuestToBeServed.getName());
+        Simulation.getInstance().print("Interacting with " + restaurantGuestToBeServed.getName(), this.toString());
         restaurantGuestToBeServed.interactWithRestaurant(this);
     }
 
@@ -144,7 +142,7 @@ public class Restaurant implements ITickableActionObject {
         {
             if( customerIsEligibleForOrder(preparedOrder, guest))
             {
-                System.out.println(this + "Giving order to " + guest.getName());
+                Simulation.getInstance().print("Giving order to " + guest.getName(), this.toString());
                 guest.receiveOrder(preparedOrder);
             }
         }
@@ -186,23 +184,24 @@ public class Restaurant implements ITickableActionObject {
 
         if(freeCook != null)
         {
-            System.out.println(this + "Fine, your order is being made");
+            Simulation.getInstance().print("Fine, your order is being made", this.toString());
             printOrderInfo(order, orderCounter);
             freeCook.receiveOrder(order, orderCounter, this);
             return true;
         }
 
-        System.out.println(this + "I'm so sorry, I don't have any cooks left! Try again later.");
+        Simulation.getInstance().print( "I'm so sorry, I don't have any cooks left! Try again later.",
+                this.toString());
+
         return false;
     }
 
     private void printOrderInfo(Order order, int id){
-        System.out.println("Order info:\nid = " + id + "\n" + order);
+        Simulation.getInstance().print("Order info:\nid = " + id + "\n" + order, this.toString());
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Restaurant: ";
     }
 
@@ -215,4 +214,39 @@ public class Restaurant implements ITickableActionObject {
     public boolean shouldBeUnregistered() {
         return false;
     }
+
+    private void printRestaurantStatus() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for ( var guest : this.restaurantGuests ){
+            if(guest instanceof Customer) {
+                stringBuilder.append("|C");
+                if(guest.isWaitingToBeServed())
+                    stringBuilder.append("(W)|");
+                else
+                    stringBuilder.append("|");
+            }
+            else if(guest instanceof Sanepid)
+                    stringBuilder.append("|S|");
+        }
+        stringBuilder.append("---> Restaurant\n");
+        stringBuilder.append("Average rates: " + getRatesAverage() + "\u2605");
+        Simulation.getInstance().printToRestaurantStatus(stringBuilder.toString());
+    }
+
+    private void printCooksStatus(){
+        StringBuilder stringBuilder = new StringBuilder();
+        for ( var cook : cooks ){
+            stringBuilder.append("|" + cook.toString() + "");
+            stringBuilder.append(", busy: " + cook.isBusy());
+            stringBuilder.append("|\n");
+        }
+        Simulation.getInstance().printToCooksStatus(stringBuilder.toString());
+    }
+
+    private void createCooksStatusPrintAction() {
+        TickableAction action = new TickableAction(1, true);
+        action.setOnFinishCallback(this::printCooksStatus);
+        tickableActions.add(action);
+    }
+
 }

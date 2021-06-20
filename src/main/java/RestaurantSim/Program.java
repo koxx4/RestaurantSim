@@ -1,8 +1,6 @@
 package RestaurantSim;
 
-import RestaurantSim.SimulationSystem.SimulationDataLoader;
-import RestaurantSim.SimulationSystem.SimulationManager;
-import RestaurantSim.SimulationSystem.SimulationSettingsLoader;
+import RestaurantSim.SimulationSystem.*;
 
 import java.io.IOException;
 
@@ -11,16 +9,17 @@ public class Program
 
     public static void main(String[] args)
     {
-        SimulationManager simulationManager = null;
+        Simulation simulation = null;
         SimulationSettingsLoader simulationSettingsLoader = new SimulationSettingsLoader();
         SimulationDataLoader simulationDataLoader = new SimulationDataLoader();
 
         try {
-            simulationManager = new SimulationManager(
+            simulation = new Simulation(
                     simulationSettingsLoader.loadFromJson(),
-                    simulationDataLoader.loadFromJson());
+                    simulationDataLoader.loadFromJson(),
+                    new LanternaDisplay());
 
-            simulationManager.startSimulation();
+            simulation.start();
 
         } catch ( IOException e ) {
             e.printStackTrace();

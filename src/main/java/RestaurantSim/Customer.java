@@ -1,9 +1,6 @@
 package RestaurantSim;
 
-import RestaurantSim.SimulationSystem.IOrderRater;
-import RestaurantSim.SimulationSystem.SimulationManager;
-import RestaurantSim.SimulationSystem.SimulationUitilities;
-import RestaurantSim.SimulationSystem.TickableAction;
+import RestaurantSim.SimulationSystem.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +32,7 @@ public class Customer extends RestaurantGuest
             float rate = 0;
             rate = orderRater.rateOrder(preparedOrder);
 
-            System.out.println(this + "Rating restaurant for " + rate + " stars");
+            Simulation.getInstance().print("Rating restaurant for " + rate + " stars", this.toString());
             currentRestaurant.giveRate(rate);
         }
     }
@@ -53,15 +50,15 @@ public class Customer extends RestaurantGuest
     @Override
     public void interactWithRestaurant( Restaurant restaurant )
     {
-        System.out.println("Customer (" + super.getName() + "): is interacting with restaurant");
-
         currentRestaurant = restaurant;
+
+        Simulation.getInstance().print("Is interacting with restaurant",
+                this.toString());
+
         Order composedOrder = composeOrder(currentRestaurant.getMenu());
 
-        System.out.println(this + "I will try to buy " + composedOrder.GetDishes().get(0).getName());
-
-        //For now we assume that client doesn't give tip
-        //TODO: client gives sometimes tip
+        Simulation.getInstance().print( "I will try to buy " + composedOrder.GetDishes().get(0).getName(),
+                this.toString());
 
         tryMakeOrder(composedOrder);
     }
@@ -69,10 +66,9 @@ public class Customer extends RestaurantGuest
     @Override
     public void receiveOrder( PreparedOrder preparedOrder)
     {
-        System.out.println(this + "Received prepared order " + preparedOrder.getID());
+        Simulation.getInstance().print("Received prepared order " + preparedOrder.getID(), this.toString());
 
-        if ( SimulationUitilities.isGoingToHappen(SimulationManager.instance.getSettings().chanceToRateRestaurant))
-        {
+        if ( SimulationUtilities.isGoingToHappen(Simulation.getInstance().getSettings().chanceToRateRestaurant)) {
             this.rateRestaurant(preparedOrder);
         }
 
@@ -84,7 +80,7 @@ public class Customer extends RestaurantGuest
 
     private Order composeOrder(Menu menu)
     {
-        if(SimulationUitilities.isGoingToHappen(SimulationManager.instance.getSettings().customerChanceToMakeOwnDish))
+        if( SimulationUtilities.isGoingToHappen(Simulation.getInstance().getSettings().customerChanceToMakeOwnDish))
             return composeOwnDish(menu);
 
         return composeOrderFromMenu(menu);
@@ -96,9 +92,8 @@ public class Customer extends RestaurantGuest
 
         do {
             ingredients.add(menu.getRandomIngredient());
-
-        }while (SimulationUitilities
-                .isGoingToHappen(SimulationManager.instance.getSettings().customerChanceToAddIngredient));
+        }while ( SimulationUtilities.isGoingToHappen(
+                Simulation.getInstance().getSettings().customerChanceToAddIngredient));
 
         return new Order(List.of(new Dish(ingredients, dishName)));
     }
@@ -112,14 +107,14 @@ public class Customer extends RestaurantGuest
         waitForOrderAction = new TickableAction(super.getName() + " is waiting for order", this.getPatience());
 
         waitForOrderAction.setOnFinishCallback( () -> {
-            System.out.println(this + "I don't have more time. I'm leaving...");
+            Simulation.getInstance().print( "I don't have more time. I'm leaving...", this.toString());
 
             //If this code is going to happen with this chance... then it's going to happen
-            if (SimulationUitilities.isGoingToHappen(SimulationManager.instance.getSettings().chanceToRateRestaurantImpatience))
+            if ( SimulationUtilities.isGoingToHappen(Simulation.getInstance().getSettings().chanceToRateRestaurantImpatience))
             {
                 //2.0 is always a rate given when order is not prepared on time
-                currentRestaurant.giveRate(SimulationManager.instance.getSettings().rateOnOrderNotPreparedOnTime);
-                System.out.println(this + "Also, your restaurant sucks!");
+                currentRestaurant.giveRate(Simulation.getInstance().getSettings().rateOnOrderNotPreparedOnTime);
+                Simulation.getInstance().print("Also, your restaurant sucks!", this.toString());
             }
 
             //Guest obviously leaves the queue
@@ -140,8 +135,7 @@ public class Customer extends RestaurantGuest
         tickableActions.add(leaveTask);
     }
 
-    private void tryMakeOrder( Order composedOrder)
-    {
+    private void tryMakeOrder( Order composedOrder) {
         OrderReceipt orderReceipt =
                 currentRestaurant.receiveOrder(composedOrder, composedOrder.GetTotalPrice());
 
@@ -149,13 +143,12 @@ public class Customer extends RestaurantGuest
         {
             super.setOrderReceipt(orderReceipt);
             super.setWaitingToBeServed(false);
-            System.out.println(this + "received order receipt, ID: " + orderReceipt.getOrderID());
+            Simulation.getInstance().print("received order receipt, ID: " + orderReceipt.getOrderID(), this.toString());
         }
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Customer (" + super.getName() +"): ";
     }
 
