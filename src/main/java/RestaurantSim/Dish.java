@@ -7,12 +7,21 @@ public class Dish
     private final List<Ingredient> ingredients;
     private final String name;
 
+    /**
+     *  Creates dish which consist of ingredients and name
+     * @param ingredients Contains exact ingredients
+     * @param name Contains exact name
+     */
     public Dish(List<Ingredient> ingredients, String name) 
     {
         this.ingredients = ingredients;
         this.name = name;
     }
 
+    /**
+     * Ges price of Dish
+     * @return price
+     */
     public float GetPrice() 
     {
         float price = 0;
@@ -24,11 +33,19 @@ public class Dish
         return price;
     }
 
+    /**
+     * Gets name of Dish
+     * @return name
+     */
     public String getName() 
     {
         return name;
     }
 
+    /**
+     * Consists of list of ingredients
+     * @return ingredients
+     */
     public List<Ingredient> getIngredients() 
     {
         return ingredients;
