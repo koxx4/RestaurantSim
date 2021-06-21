@@ -19,6 +19,7 @@ class SimulationWindowController {
      * Maximum number of normal print labels that will be visible at once
      */
     private final int PRINT_MAX_LABELS = 12;
+    private final int ACTIONS_MAX_LABELS = 8;
     /**
      * Window controlled by this controller
      */

@@ -213,7 +213,7 @@ class SimulationManager implements ITickableActionObject {
      * Creates TickableAction that will periodically spawn Sanepid object
      */
     private void createSpawnSanepidAction() {
-        TickableAction action = new TickableAction(1);
+        TickableAction action = new TickableAction("Spawning sanepid",1);
         action.setOnFinishCallback( () -> {
             restaurant.addGuestToQueue(generateAndRegisterSanepid());
         });
@@ -228,7 +228,8 @@ class SimulationManager implements ITickableActionObject {
 
         output.printDebug("Next sanepid check in " + settings.restaruantRatesCheckFrequency + " ticks",
                 this.toString());
-        TickableAction action = new TickableAction(settings.restaruantRatesCheckFrequency, true);
+        TickableAction action = new TickableAction("Restaurant rate check"
+                ,settings.restaruantRatesCheckFrequency, true);
 
         action.setOnFinishCallback( () -> {
             output.printDebug("Next sanepid check in " + settings.restaruantRatesCheckFrequency + " ticks",
@@ -246,7 +247,8 @@ class SimulationManager implements ITickableActionObject {
         output.printDebug("After " + settings.restaurantStartProtectionDuration + " ticks sanepid will be able" +
                 " to check restaurant. Prepare!", this.toString() );
 
-        TickableAction action = new TickableAction(settings.restaurantStartProtectionDuration);
+        TickableAction action = new TickableAction("Restaurant initial protection",
+                settings.restaurantStartProtectionDuration);
         action.setOnFinishCallback(this::createRestaruantRateCheckAction);
 
         managerActions.add(action);

@@ -53,6 +53,10 @@ import java.util.stream.Collectors;
         tickableActionObjectsBuffer.add(tickableActionObject);
     }
 
+    /**
+     * Ticks, updates all tickable objects and its tickabel actions, increments
+     * internal total ticks counter that have elapsed since simulation start
+     */
     public void tick() {
 
         elapsedTicks++;
@@ -64,6 +68,7 @@ import java.util.stream.Collectors;
         }
         synchronizeTickableActionObjects();
         cleanupTickableActionObjects();
+        printTickableActions();
     }
 
     private void updateTickableActions( List<TickableAction> tickableActions ) {
@@ -139,6 +144,16 @@ import java.util.stream.Collectors;
         tickableActionObjects.removeAll(tickablesToRemove);
     }
 
+    private void printTickableActions() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for ( var tickableObj : tickableActionObjects ){
+            for ( var actions : tickableObj.getTickableActions() ){
+                stringBuilder.append("[\u25A3" + actions.getDescription() + ", ticksLeft: "
+                        + actions.getTicksToComplete() + "]\n")      ;
+            }
+        }
+        Simulation.getInstance().printToTickableActionsStatus(stringBuilder.toString());
+    }
     @Override
     public String toString() {
         return "TickManager: ";
