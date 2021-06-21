@@ -67,7 +67,7 @@ public class Sanepid extends RestaurantGuest  {
     }
 
     /**
-     * Creates tickable actions for Sanepid object and removes it from the queue under some circumstances
+     * Creates and registers TickableAction at which finish Sanepid object will evaluate Restaurant
      */
     private void createEvaluationAction(){
         TickableAction action = new TickableAction(Simulation.getInstance().getSettings().sanepidEvaluationTime );
@@ -83,7 +83,7 @@ public class Sanepid extends RestaurantGuest  {
     }
 
     /**
-     * Prints random message while Sanepid object is in the Restaurant
+     * Prints random message while Sanepid object is evaluating a Restaurant
      */
     private void printRandomEvalutaionMessage() {
         int random = SimulationUtilities.getRandomInt(0, sanepidQuotes.length-1);
