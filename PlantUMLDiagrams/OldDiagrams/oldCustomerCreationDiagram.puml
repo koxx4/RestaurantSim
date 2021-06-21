@@ -1,0 +1,19 @@
+
+
+
+@startuml
+title Creation of customer
+start
+#yellow:SimulationManager;
+repeat
+  :Generate random chance to spawn customer;
+  if (chance > 33%) then
+    :Create new customer;
+    :Add customer to restaurant's queue;
+  endif
+repeat while (restaurantOpen?) is (yes)
+->no;
+stop
+
+@enduml
+

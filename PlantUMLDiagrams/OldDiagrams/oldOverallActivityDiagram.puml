@@ -1,0 +1,20 @@
+@startuml
+title Simulation overall
+start
+:Program;
+#yellow:SimulationManager;
+repeat :StartSimulation;
+repeat :RunSimulation;
+  :Tick;
+  :Create new customers;
+  if (restaurant average rate < 2.8) then
+    :Create sanepid object;
+  endif
+repeat while (restaurantOpen?) is (yes)
+->no;
+:Show simulation statistics;
+:Prompt to restart simulation;
+repeat while (restart simulation?) is (yes)
+->no;
+stop
+@enduml

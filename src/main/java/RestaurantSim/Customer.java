@@ -1,18 +1,14 @@
 package RestaurantSim;
 
-import RestaurantSim.SimulationSystem.IOrderRater;
-import RestaurantSim.SimulationSystem.SimulationManager;
-import RestaurantSim.SimulationSystem.SimulationUitilities;
-import RestaurantSim.SimulationSystem.TickableAction;
+import RestaurantSim.SimulationSystem.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Customer extends RestaurantGuest
 {
-    private IOrderRater orderRater;
+    private final IOrderRater orderRater;
     private TickableAction waitForOrderAction;
-    private Restaurant currentRestaurant;
     private final List<TickableAction> tickableActions;
     private boolean shouldBeUnregistered;
 
@@ -21,22 +17,15 @@ public class Customer extends RestaurantGuest
      * @param name Contains exact name
      * @param patience  Contains exact patience
      * @param orderRater  Contains exact orderRater
+     * @param targetRestaurant Restaurant that this Guest is bound to
      */
-    public Customer(String name, int patience, IOrderRater orderRater)
+    public Customer(String name, int patience, IOrderRater orderRater, Restaurant targetRestaurant)
     {
-        super(name,patience);
+        super(name,patience, targetRestaurant);
         this.orderRater = orderRater;
         tickableActions = new ArrayList<>();
         this.shouldBeUnregistered = false;
         createWaitingTask();
-    }
-
-    /**
-     * Sets orderRater
-     * @param orderRater Consists of exact orderRater
-     */
-    public void setOrderRater( IOrderRater orderRater ) {
-        this.orderRater = orderRater;
     }
 
     /**
@@ -49,8 +38,8 @@ public class Customer extends RestaurantGuest
             float rate = 0;
             rate = orderRater.rateOrder(preparedOrder);
 
-            System.out.println(this + "Rating restaurant for " + rate + " stars");
-            currentRestaurant.giveRate(rate);
+            Simulation.getInstance().print("Rating restaurant for " + rate + " stars", this.toString());
+            getTargetRestaurant().giveRate(rate);
         }
     }
 
@@ -65,17 +54,14 @@ public class Customer extends RestaurantGuest
     }
 
     @Override
-    public void interactWithRestaurant( Restaurant restaurant )
-    {
-        System.out.println("Customer (" + super.getName() + "): is interacting with restaurant");
+    public void interactWithRestaurant() {
+        Simulation.getInstance().print("Is interacting with restaurant",
+                this.toString());
 
-        currentRestaurant = restaurant;
-        Order composedOrder = composeOrder(currentRestaurant.getMenu());
+        Order composedOrder = composeOrder(getTargetRestaurant().getMenu());
 
-        System.out.println(this + "I will try to buy " + composedOrder.GetDishes().get(0).getName());
-
-        //For now we assume that client doesn't give tip
-        //TODO: client gives sometimes tip
+        Simulation.getInstance().print( "I will try to buy " + composedOrder.GetDishes().get(0).getName(),
+                this.toString());
 
         tryMakeOrder(composedOrder);
     }
@@ -83,10 +69,9 @@ public class Customer extends RestaurantGuest
     @Override
     public void receiveOrder( PreparedOrder preparedOrder)
     {
-        System.out.println(this + "Received prepared order " + preparedOrder.getID());
+        Simulation.getInstance().print("Received prepared order " + preparedOrder.getID(), this.toString());
 
-        if ( SimulationUitilities.isGoingToHappen(SimulationManager.instance.getSettings().chanceToRateRestaurant))
-        {
+        if ( SimulationUtilities.isGoingToHappen(Simulation.getInstance().getSettings().chanceToRateRestaurant)) {
             this.rateRestaurant(preparedOrder);
         }
 
@@ -103,7 +88,7 @@ public class Customer extends RestaurantGuest
      */
     private Order composeOrder(Menu menu)
     {
-        if(SimulationUitilities.isGoingToHappen(SimulationManager.instance.getSettings().customerChanceToMakeOwnDish))
+        if( SimulationUtilities.isGoingToHappen(Simulation.getInstance().getSettings().customerChanceToMakeOwnDish))
             return composeOwnDish(menu);
 
         return composeOrderFromMenu(menu);
@@ -120,9 +105,8 @@ public class Customer extends RestaurantGuest
 
         do {
             ingredients.add(menu.getRandomIngredient());
-
-        }while (SimulationUitilities
-                .isGoingToHappen(SimulationManager.instance.getSettings().customerChanceToAddIngredient));
+        }while ( SimulationUtilities.isGoingToHappen(
+                Simulation.getInstance().getSettings().customerChanceToAddIngredient));
 
         return new Order(List.of(new Dish(ingredients, dishName)));
     }
@@ -144,18 +128,18 @@ public class Customer extends RestaurantGuest
         waitForOrderAction = new TickableAction(super.getName() + " is waiting for order", this.getPatience());
 
         waitForOrderAction.setOnFinishCallback( () -> {
-            System.out.println(this + "I don't have more time. I'm leaving...");
+            Simulation.getInstance().print( "I don't have more time. I'm leaving...", this.toString());
 
             //If this code is going to happen with this chance... then it's going to happen
-            if (SimulationUitilities.isGoingToHappen(SimulationManager.instance.getSettings().chanceToRateRestaurantImpatience))
+            if ( SimulationUtilities.isGoingToHappen(Simulation.getInstance().getSettings().chanceToRateRestaurantImpatience))
             {
                 //2.0 is always a rate given when order is not prepared on time
-                currentRestaurant.giveRate(SimulationManager.instance.getSettings().rateOnOrderNotPreparedOnTime);
-                System.out.println(this + "Also, your restaurant sucks!");
+                getTargetRestaurant().giveRate(Simulation.getInstance().getSettings().rateOnOrderNotPreparedOnTime);
+                Simulation.getInstance().print("Also, your restaurant sucks!", this.toString());
             }
 
             //Guest obviously leaves the queue
-            currentRestaurant.removeGuestFromQueue(this);
+            getTargetRestaurant().removeGuestFromQueue(this);
         });
 
         tickableActions.add(waitForOrderAction);
@@ -169,7 +153,7 @@ public class Customer extends RestaurantGuest
         TickableAction leaveTask = new TickableAction(1);
         leaveTask.setOnFinishCallback(
                 () -> {
-                    currentRestaurant.removeGuestFromQueue(this);
+                    getTargetRestaurant().removeGuestFromQueue(this);
                     shouldBeUnregistered = true;
                 });
         tickableActions.add(leaveTask);
@@ -179,22 +163,20 @@ public class Customer extends RestaurantGuest
      * It allows to make order
      * @param composedOrder Contains exact composed order
      */
-    private void tryMakeOrder( Order composedOrder)
-    {
+    private void tryMakeOrder( Order composedOrder) {
         OrderReceipt orderReceipt =
-                currentRestaurant.receiveOrder(composedOrder, composedOrder.GetTotalPrice());
+                getTargetRestaurant().receiveOrder(composedOrder, composedOrder.GetTotalPrice());
 
         if(orderReceipt != null)
         {
             super.setOrderReceipt(orderReceipt);
             super.setWaitingToBeServed(false);
-            System.out.println(this + "received order receipt, ID: " + orderReceipt.getOrderID());
+            Simulation.getInstance().print("received order receipt, ID: " + orderReceipt.getOrderID(), this.toString());
         }
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Customer (" + super.getName() +"): ";
     }
 

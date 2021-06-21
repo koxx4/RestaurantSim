@@ -12,8 +12,7 @@ public class Ingredient
      * @param price Contains exact price
      * @param ticksToPrepare Contains exact ticks to prepare
      */
-    public Ingredient(String name, float price, int ticksToPrepare)
-    {
+    public Ingredient(String name, float price, int ticksToPrepare){
         this.price=price;
         this.name=name;
         this.ticksToPrepare = ticksToPrepare;
@@ -48,6 +47,6 @@ public class Ingredient
 
     @Override
     public String toString() {
-        return "Ingredient{" + "price=" + price + ", ticksToPrepare=" + ticksToPrepare + ", name='" + name + '\'' + '}';
+        return "Ingredient{" + ", name='" + name + '}';
     }
 }

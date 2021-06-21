@@ -5,8 +5,16 @@ import com.google.gson.Gson;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
+/**
+ * This class is responsible for loading simulation data.
+ */
 public class SimulationDataLoader {
 
+    /**
+     * Loads simulation data from JSON config files.
+     * @return Simulation data object that is fully deserialized from json files.
+     * @throws FileNotFoundException
+     */
     public SimulationData loadFromJson() throws FileNotFoundException {
         Gson gson = new Gson();
 

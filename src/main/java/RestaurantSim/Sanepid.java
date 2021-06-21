@@ -1,9 +1,6 @@
 package RestaurantSim;
 
-import RestaurantSim.SimulationSystem.IEvaluationService;
-import RestaurantSim.SimulationSystem.SimulationManager;
-import RestaurantSim.SimulationSystem.SimulationUitilities;
-import RestaurantSim.SimulationSystem.TickableAction;
+import RestaurantSim.SimulationSystem.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,23 +8,30 @@ import java.util.List;
 public class Sanepid extends RestaurantGuest  {
 
     private final List<TickableAction> tickableActions;
-    private Restaurant sourceRestaurant;
     private final IEvaluationService evaluationService;
     private boolean shouldBeUnregistered;
-    private String[] sanepidQuotes = {"...macie tu szczury!... ", "...no te blaty takie troche brudne, w lodowce za cieplo...", "...straszny smród..."};
+    private String[] sanepidQuotes =
+            {       "...there are rats!... ",
+                    "...those tables are dirty, too warm in fridge...",
+                    "...what a disgusting smell..."
+            };
 
-    public Sanepid(String name, IEvaluationService evaluationService) {
-        super(name, Integer.MAX_VALUE);
+    /**
+     * Makes new Sanepid object
+     * @param name Contains the name of Sanepid object
+     * @param evaluationService Evaluates the Restaurant
+     */
+    public Sanepid(String name, IEvaluationService evaluationService, Restaurant target) {
+        super(name, Integer.MAX_VALUE, target);
         this.tickableActions = new ArrayList<>();
         this.evaluationService = evaluationService;
     }
 
-
     @Override
-    public void interactWithRestaurant( Restaurant restaurant) {
-        sourceRestaurant = restaurant;
+    public void interactWithRestaurant() {
+        Simulation.getInstance().getOutput().print( "HELLO! Please show me condition of restaurant!"
+                , this.toString());
 
-        System.out.println(this + "kontrola! Prosze pokazac stan lokalu i kuchni!");
         createEvaluationAction();
         evaluateRestaurantWork();
     }
@@ -52,17 +56,24 @@ public class Sanepid extends RestaurantGuest  {
         return "Sanepid (" + super.getName() + "): ";
     }
 
+    /**
+     * Evaluates whether Restaurant should be closed or not
+     */
     private void evaluateRestaurantWork() {
-        if(evaluationService.restaurantShouldBeClosed(sourceRestaurant)){
-            sourceRestaurant.close(this);
+        if(evaluationService.restaurantShouldBeClosed(getTargetRestaurant())){
+            Simulation.getInstance().print("This place is too dangerous to eat!\n Close this garbage NOW!");
+            getTargetRestaurant().close(this);
         }
     }
 
+    /**
+     * Creates and registers TickableAction at which finish Sanepid object will evaluate Restaurant
+     */
     private void createEvaluationAction(){
-        TickableAction action = new TickableAction(SimulationManager.instance.getSettings().sanepidEvaluationTime );
+        TickableAction action = new TickableAction(Simulation.getInstance().getSettings().sanepidEvaluationTime );
         action.setOnFinishCallback(() -> {
             evaluateRestaurantWork();
-            sourceRestaurant.removeGuestFromQueue(this);
+            getTargetRestaurant().removeGuestFromQueue(this);
             shouldBeUnregistered = true;
         });
         action.setOnTickCallback(this::printRandomEvalutaionMessage);
@@ -71,10 +82,12 @@ public class Sanepid extends RestaurantGuest  {
 
     }
 
+    /**
+     * Prints random message while Sanepid object is evaluating a Restaurant
+     */
     private void printRandomEvalutaionMessage() {
-        int random = SimulationUitilities.getRandomInt(0, sanepidQuotes.length-1);
-
-        System.out.println(this + sanepidQuotes[random]);
+        int random = SimulationUtilities.getRandomInt(0, sanepidQuotes.length-1);
+        Simulation.getInstance().getOutput().print(sanepidQuotes[random], this.toString());
     }
 
 }

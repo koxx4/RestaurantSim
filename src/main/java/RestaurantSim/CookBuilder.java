@@ -1,7 +1,7 @@
 package RestaurantSim;
 
 import RestaurantSim.SimulationSystem.IOrderQualityDeterminer;
-import RestaurantSim.SimulationSystem.SimulationUitilities;
+import RestaurantSim.SimulationSystem.SimulationUtilities;
 
 import java.util.List;
 
@@ -51,8 +51,8 @@ public class CookBuilder {
      * @return First Name is associated with surname
      */
     public CookBuilder namedRandomly(List<String> firstNames, List<String> surnames){
-        String firstName = firstNames.get(SimulationUitilities.getRandomInt(firstNames.size()));
-        String surname = surnames.get(SimulationUitilities.getRandomInt(surnames.size()));
+        String firstName = firstNames.get(SimulationUtilities.getRandomInt(firstNames.size()));
+        String surname = surnames.get(SimulationUtilities.getRandomInt(surnames.size()));
         this.name = firstName + " " + surname;
 
         return this;
@@ -75,7 +75,7 @@ public class CookBuilder {
      * @return Random agility
      */
     public CookBuilder withRandomAgility(int minValue, int maxValue){
-        this.agility = SimulationUitilities.getRandomInt(minValue, maxValue);
+        this.agility = SimulationUtilities.getRandomInt(minValue, maxValue);
         return this;
     }
 
@@ -96,7 +96,7 @@ public class CookBuilder {
      * @return Random Skill Level
      */
     public CookBuilder withRandomSkillLevel(int minValue, int maxValue){
-        this.skillLevel = SimulationUitilities.getRandomInt(minValue, maxValue);
+        this.skillLevel = SimulationUtilities.getRandomInt(minValue, maxValue);
         return this;
     }
 
