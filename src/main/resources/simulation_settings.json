@@ -3,7 +3,7 @@
   "chanceToRateRestaurant": 0.66,
   "chanceToRateRestaurantImpatience": 0.7,
   "numberOfCooks": 4,
-  "rateOnOrderNotPreparedOnTime": 2,
+  "rateOnOrderNotPreparedOnTime": 1,
   "maxClientPatience": 35,
   "minClientPatience": 7,
   "maxCookAgility": 15,

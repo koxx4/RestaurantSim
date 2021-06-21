@@ -1,6 +1,10 @@
 package RestaurantSim.SimulationSystem;
 
+import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.graphics.DelegatingTheme;
+import com.googlecode.lanterna.graphics.SimpleTheme;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
@@ -28,11 +32,18 @@ public class LanternaDisplay implements OutputDisplayProvider {
         try {
             SimulationWindow simulationWindow = new SimulationWindow();
             Screen screen = new TerminalScreen(new DefaultTerminalFactory()
-                    .setInitialTerminalSize(new TerminalSize(190,50))
+                    .setInitialTerminalSize(new TerminalSize(200,55))
                     .setTerminalEmulatorTitle("RestaurantSim!")
                     .createTerminal());
             TextGUIThreadFactory factory = new SeparateTextGUIThread.Factory();
             WindowBasedTextGUI windowBasedTextGUI = new MultiWindowTextGUI(factory,screen);
+            /*windowBasedTextGUI.setTheme(new SimpleTheme(
+                    TextColor.ANSI.GREEN_BRIGHT,
+                    TextColor.ANSI.BLACK_BRIGHT,
+                    SGR.FRAKTUR,
+                    SGR.ITALIC,
+                    SGR.BOLD
+            )); */
 
             screen.startScreen();
             windowBasedTextGUI.addWindow(simulationWindow);
