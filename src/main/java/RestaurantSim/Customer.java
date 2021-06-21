@@ -12,6 +12,13 @@ public class Customer extends RestaurantGuest
     private final List<TickableAction> tickableActions;
     private boolean shouldBeUnregistered;
 
+    /**
+     * Creates Customer with name, patience and orderRater
+     * @param name Contains exact name
+     * @param patience  Contains exact patience
+     * @param orderRater  Contains exact orderRater
+     * @param targetRestaurant Restaurant that this Guest is bound to
+     */
     public Customer(String name, int patience, IOrderRater orderRater, Restaurant targetRestaurant)
     {
         super(name,patience, targetRestaurant);
@@ -21,6 +28,10 @@ public class Customer extends RestaurantGuest
         createWaitingTask();
     }
 
+    /**
+     * Rates restaurant provided when orderRater doesn't equal null
+     * @param preparedOrder
+     */
     public void rateRestaurant( PreparedOrder preparedOrder)
     {
         if ( orderRater != null ) {
@@ -70,6 +81,11 @@ public class Customer extends RestaurantGuest
         createLeaveTask();
     }
 
+    /**
+     * Composes order from Memu
+     * @param menu Contains list of dishes
+     * @return Order
+     */
     private Order composeOrder(Menu menu)
     {
         if( SimulationUtilities.isGoingToHappen(Simulation.getInstance().getSettings().customerChanceToMakeOwnDish))
@@ -78,6 +94,11 @@ public class Customer extends RestaurantGuest
         return composeOrderFromMenu(menu);
     }
 
+    /**
+     * It allows the customer to compose his own dish
+     * @param menu Consists of available dishes
+     * @return Order which was prepared by Customer
+     */
     private Order composeOwnDish( Menu menu ) {
         String dishName = getName() + " custom dish.";
         List<Ingredient> ingredients = new ArrayList<>();
@@ -90,10 +111,18 @@ public class Customer extends RestaurantGuest
         return new Order(List.of(new Dish(ingredients, dishName)));
     }
 
+    /**
+     * It allows the customer to compose Order from menu
+     * @param menu Contains exact Menu
+     * @return Order  from list
+     */
     private Order composeOrderFromMenu(Menu menu) {
         return new Order(List.of(menu.getRandomDish()));
     }
 
+    /**
+     * Adds wait for order to tickable actions
+     */
     private void createWaitingTask()
     {
         waitForOrderAction = new TickableAction(super.getName() + " is waiting for order", this.getPatience());
@@ -116,6 +145,9 @@ public class Customer extends RestaurantGuest
         tickableActions.add(waitForOrderAction);
     }
 
+    /**
+     * Adds leave tasks to tickable actions
+     */
     private void createLeaveTask()
     {
         TickableAction leaveTask = new TickableAction(1);
@@ -127,6 +159,10 @@ public class Customer extends RestaurantGuest
         tickableActions.add(leaveTask);
     }
 
+    /**
+     * It allows to make order
+     * @param composedOrder Contains exact composed order
+     */
     private void tryMakeOrder( Order composedOrder) {
         OrderReceipt orderReceipt =
                 getTargetRestaurant().receiveOrder(composedOrder, composedOrder.GetTotalPrice());
