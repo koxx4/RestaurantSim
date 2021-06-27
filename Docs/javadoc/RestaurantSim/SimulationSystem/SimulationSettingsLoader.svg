@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="99px" preserveAspectRatio="none" style="width:220px;height:99px;" version="1.1" viewBox="0 0 220 99" width="220px" zoomAndPan="magnify"><defs><filter height="300%" id="f1krznf92kab0f" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[eb16c5a3e7efa2f98f190b854fa900cb]
+class RestaurantSim.SimulationSystem.SimulationSettingsLoader--><a href="SimulationSettingsLoader.html" target="_top" title="SimulationSettingsLoader.html" xlink:actuate="onRequest" xlink:href="SimulationSettingsLoader.html" xlink:show="new" xlink:title="SimulationSettingsLoader.html" xlink:type="simple"><rect codeLine="5" fill="#FEFECE" filter="url(#f1krznf92kab0f)" height="62.0234" id="RestaurantSim.SimulationSystem.SimulationSettingsLoader" style="stroke: #A80036; stroke-width: 1.5;" width="194" x="7" y="7"/><ellipse cx="22.45" cy="27.0938" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M25.2156,22.9688 Q25.3719,22.75 25.5594,22.6406 Q25.7469,22.5313 25.9656,22.5313 Q26.3406,22.5313 26.575,22.7969 Q26.8094,23.0469 26.8094,23.6563 L26.8094,25.1094 Q26.8094,25.7188 26.575,25.9844 Q26.3406,26.25 25.9656,26.25 Q25.6219,26.25 25.4188,26.0469 Q25.2156,25.8594 25.1063,25.3438 Q25.0594,24.9844 24.8719,24.7969 Q24.5438,24.4219 23.9344,24.2031 Q23.325,23.9844 22.7,23.9844 Q21.9344,23.9844 21.2938,24.3125 Q20.6688,24.6406 20.1688,25.3906 Q19.6844,26.1406 19.6844,27.1719 L19.6844,28.2656 Q19.6844,29.5 20.575,30.3281 Q21.4656,31.1406 23.0594,31.1406 Q23.9969,31.1406 24.6531,30.8906 Q25.0438,30.7344 25.4656,30.2969 Q25.7313,30.0313 25.8719,29.9531 Q26.0281,29.875 26.2313,29.875 Q26.5594,29.875 26.8094,30.1406 Q27.075,30.3906 27.075,30.7344 Q27.075,31.0781 26.7313,31.4844 Q26.2313,32.0625 25.4344,32.3906 Q24.3563,32.8438 23.0594,32.8438 Q21.5438,32.8438 20.3406,32.2188 Q19.3563,31.7188 18.6688,30.6563 Q17.9813,29.5781 17.9813,28.2969 L17.9813,27.1406 Q17.9813,25.8125 18.5906,24.6719 Q19.2156,23.5156 20.3094,22.9063 Q21.4031,22.2813 22.6375,22.2813 Q23.3719,22.2813 24.0125,22.4531 Q24.6688,22.6094 25.2156,22.9688 Z "/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="161" x="36.55" y="26.5332">SimulationSettingsLoader</text><text fill="#000000" font-family="sans-serif" font-size="10" lengthAdjust="spacingAndGlyphs" textLength="158" x="38.05" y="39.9902">RestaurantSim.SimulationSystem</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="8" x2="200" y1="47.1875" y2="47.1875"/><ellipse cx="18" cy="58.1875" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="168" x="27" y="62.6064">loadFromJson(): SimulationSettings</text></a><text fill="#888888" font-family="sans-serif" font-size="10" lengthAdjust="spacingAndGlyphs" textLength="190" x="9" y="86.4043">UMLDoclet 2.0.12, PlantUML 1.2020.16</text><!--MD5=[3e202fec452cf2062565b8f302c3e2a2]
+@startuml
+    set namespaceSeparator none
+    hide empty fields
+    hide empty methods
+
+    class "<size:14>SimulationSettingsLoader\n<size:10>RestaurantSim.SimulationSystem" as RestaurantSim.SimulationSystem.SimulationSettingsLoader [[SimulationSettingsLoader.html]] {
+        +loadFromJson(): SimulationSettings
+    }
+
+    center footer UMLDoclet 2.0.12, PlantUML 1.2020.16
+@enduml
+
+PlantUML version 1.2020.16(Sun Aug 23 22:20:43 CEST 2020)
+(APACHE source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: Cp1250
+Language: pl
+Country: PL
+--></g></svg>

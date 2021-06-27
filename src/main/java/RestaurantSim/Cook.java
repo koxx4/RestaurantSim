@@ -6,6 +6,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class resembles a cook that is able to make an requested {@link Order} into a {@link PreparedOrder}.
+ * Time in which the order will be prepared depends solely on cook's agility and
+ * the quality of the prepared order can depend on a cook's skill level
+ * but any implementation {@link IOrderQualityDeterminer} passed to this class
+ * constructor can provide its own way to determine the quality of the {@link PreparedOrder}.
+ * @see QualityBasedOrderRater
+ */
 public class Cook implements ITickableActionObject
 {
     private final IOrderQualityDeterminer orderQualityDeterminer;
@@ -14,6 +22,7 @@ public class Cook implements ITickableActionObject
     private final int agility;
     private final int skillLevel;
     private final List<TickableAction> tickableActions;
+    private final Restaurant restaurantWorkplace;
 
     /**
      * Creates the object of this class
@@ -21,36 +30,40 @@ public class Cook implements ITickableActionObject
      * @param agility Contains the agility of Cook object
      * @param skillLevel Contains the skill level of Cook object
      * @param orderQualityDeterminer Implementation of IOrderQualityDeterminer
+     * @param workplace Restaurant that this cook will work for
      */
-    public Cook(String name, int agility, int skillLevel, IOrderQualityDeterminer orderQualityDeterminer) {
+    public Cook(String name, int agility, int skillLevel,
+                IOrderQualityDeterminer orderQualityDeterminer, Restaurant workplace) {
         this.tickableActions = new ArrayList<>();
         this.name = name;
         this.agility = agility;
         this.skillLevel = skillLevel;
         this.orderQualityDeterminer = orderQualityDeterminer;
+        this.restaurantWorkplace = workplace;
     }
 
     /**
-     * Receives the order and tries to prepare it
+     * Tries to make an order.
      * @param order Contains exact Order
      * @param orderID Contains exact Order ID
-     * @param sourceRestaurant
      */
-    public void receiveOrder( Order order, int orderID, Restaurant sourceRestaurant) {
-
+    public void makeOrder( Order order, int orderID) {
         String actionMessage = "Preparing order "+ orderID;
+        createMakeOrderAction(order, orderID, actionMessage);
 
+        this.busy = true;
+    }
+
+    private void createMakeOrderAction( Order order, int orderID, String actionMessage ) {
         TickableAction prepareOrderAction = new TickableAction(actionMessage, this.estimateWorkTime(order));
 
         Simulation.getInstance().print(actionMessage + ". This will take me " + prepareOrderAction.getDuration()
                         + " ticks.", this.toString());
 
         prepareOrderAction.setOnFinishCallback( () -> {
-            finishPreparingOrder(order, orderID, sourceRestaurant);
+            finishPreparingOrder(order, orderID, restaurantWorkplace);
         });
         tickableActions.add(prepareOrderAction);
-
-        this.busy = true;
     }
 
     /**
@@ -73,7 +86,7 @@ public class Cook implements ITickableActionObject
     }
 
     /**
-     * @return True when Cook is busy or false when not
+     * @return True when Cook is busy, false when not
      */
     public boolean isBusy() {
         return busy;
@@ -87,13 +100,13 @@ public class Cook implements ITickableActionObject
     }
 
     /**
-     * Determines how much time it takes to prepare exact order
+     * Determines how much time it takes to prepare order
      * @param order Contains exact Order
      * @return How many tick it takes to prepare exact order
      */
     private int estimateWorkTime( Order order) {
         int ticksToPrepareOrder = 0;
-        for (var dish : order.GetDishes())
+        for (var dish : order.getDishes())
         {
             for (var ingredient : dish.getIngredients())
             {

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Manages simulation 🤓👌
+ * Manages simulation, spawns RestaurantGuests, decides when to make next tick.
  */
 class SimulationManager implements ITickableActionObject {
 
@@ -57,18 +57,14 @@ class SimulationManager implements ITickableActionObject {
      */
     public void startSimulation() {
         stopWatch.start();
-        while (running)
-        {
+
+        while (running) {
             stopWatch.suspend();
             elapsedTime = stopWatch.getTime();
 
-            //If elapsed time matches tick duration
-            if (elapsedTime >= tickDuration)
-            {
-                //Tick
+            if (elapsedTime >= tickDuration) {
                 stopWatch.reset();
-                try { tick(); }
-                catch (Exception ex) { ex.printStackTrace(); }
+                try { tick(); } catch (Exception ex) { ex.printStackTrace(); }
                 stopWatch.start();
             }
             else
@@ -124,7 +120,7 @@ class SimulationManager implements ITickableActionObject {
      */
     private Sanepid generateAndRegisterSanepid() {
         Sanepid sanepid = new Sanepid(peopleData.getRandomFullName(),
-                new RateBasedEvaluationService(),
+                new AverageRateBasedEvaluationService(),
                 restaurant);
         tickManager.registerTickableObject(sanepid);
 
@@ -144,6 +140,7 @@ class SimulationManager implements ITickableActionObject {
                 .withRandomAgility(settings.minCookAgility, settings.maxCookAgility)
                 .withRandomSkillLevel(settings.minCookSkill, settings.maxCookSkill)
                 .withOrderQualityDeterminer(new SkillBasedQualityDeterminer())
+                .workingAt(this.restaurant)
                 .getBuiltCook();
 
         assert cook != null;
@@ -177,9 +174,9 @@ class SimulationManager implements ITickableActionObject {
         createSpawnCustomerAction();
         createRestaurantProtectionAction();
 
-        restaurant = new Restaurant(new Menu(this.foodData), generateCooksList(settings.numberOfCooks));
+        restaurant = new Restaurant(new Menu(this.foodData));
+        restaurant.addCooks(generateCooksList(settings.numberOfCooks));
         tickManager.registerTickableObject(restaurant);
-
     }
 
     /**

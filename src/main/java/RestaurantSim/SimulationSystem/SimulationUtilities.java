@@ -2,6 +2,10 @@ package RestaurantSim.SimulationSystem;
 
 import java.util.Random;
 
+/**
+ * This class provides many useful methods that are often used in simulation
+ * especially methods that are somehow related to the random number generation.
+ */
 public final class SimulationUtilities
 {
     private static final Random internalRandomGenerator = new Random();

@@ -1,7 +1,8 @@
 package RestaurantSim.SimulationSystem;
 
 /**
- *
+ * Class that wraps all the data that the simulation requires to run properly.
+ * For now it only consists of {@link PeopleData} and {@link FoodData}
  */
 public class SimulationData {
     public final PeopleData peopleData;

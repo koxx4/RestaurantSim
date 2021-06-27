@@ -1,5 +1,9 @@
 package RestaurantSim;
 
+/**
+ * Class that resembles an edible ingredient.
+ * It is an important building block for {@link Dish}.
+ */
 public class Ingredient
 {
     private final float price;
@@ -8,9 +12,9 @@ public class Ingredient
 
     /**
      * Creates a new Ingredient
-     * @param name Contains exact name
-     * @param price Contains exact price
-     * @param ticksToPrepare Contains exact ticks to prepare
+     * @param name Name of the new ingredient
+     * @param price Price of the new ingredient
+     * @param ticksToPrepare Amount of ticks that it takes to prepare this ingredient
      */
     public Ingredient(String name, float price, int ticksToPrepare){
         this.price=price;
@@ -19,8 +23,8 @@ public class Ingredient
     }
 
     /**
-     * Gets a price
-     * @return price of ingredient
+     * Returns a price of this ingredient
+     * @return Float containing price of this ingredient
      */
     public float getPrice()
     {
@@ -28,8 +32,8 @@ public class Ingredient
     }
 
     /**
-     * Gets a name
-     * @return name of ingredients
+     * Returns name of this ingredient
+     * @return String with name of ingredient
      */
     public String getName()
     {
@@ -37,8 +41,8 @@ public class Ingredient
     }
 
     /**
-     * Gets ticks to prepare ingredient
-     * @return Number ticks to prepare
+     * Returns amount of ticks that it takes to prepare this ingredient
+     * @return Integer of value of total ticks that it takes to prepare this ingredient
      */
     public int getTicksToPrepare()
     {

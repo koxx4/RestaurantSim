@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="113px" preserveAspectRatio="none" style="width:246px;height:113px;" version="1.1" viewBox="0 0 246 113" width="246px" zoomAndPan="magnify"><defs><filter height="300%" id="f1u8taetl5emac" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[9f086b1946fe6fc018eb79a310a3aae0]
+class RestaurantSim.SimulationSystem.JsonDish--><a href="JsonDish.html" target="_top" title="JsonDish.html" xlink:actuate="onRequest" xlink:href="JsonDish.html" xlink:show="new" xlink:title="JsonDish.html" xlink:type="simple"><rect codeLine="5" fill="#FEFECE" filter="url(#f1u8taetl5emac)" height="75.8594" id="RestaurantSim.SimulationSystem.JsonDish" style="stroke: #A80036; stroke-width: 1.5;" width="220" x="7" y="7"/><ellipse cx="35.5" cy="27.0938" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M38.2656,22.9688 Q38.4219,22.75 38.6094,22.6406 Q38.7969,22.5313 39.0156,22.5313 Q39.3906,22.5313 39.625,22.7969 Q39.8594,23.0469 39.8594,23.6563 L39.8594,25.1094 Q39.8594,25.7188 39.625,25.9844 Q39.3906,26.25 39.0156,26.25 Q38.6719,26.25 38.4688,26.0469 Q38.2656,25.8594 38.1563,25.3438 Q38.1094,24.9844 37.9219,24.7969 Q37.5938,24.4219 36.9844,24.2031 Q36.375,23.9844 35.75,23.9844 Q34.9844,23.9844 34.3438,24.3125 Q33.7188,24.6406 33.2188,25.3906 Q32.7344,26.1406 32.7344,27.1719 L32.7344,28.2656 Q32.7344,29.5 33.625,30.3281 Q34.5156,31.1406 36.1094,31.1406 Q37.0469,31.1406 37.7031,30.8906 Q38.0938,30.7344 38.5156,30.2969 Q38.7813,30.0313 38.9219,29.9531 Q39.0781,29.875 39.2813,29.875 Q39.6094,29.875 39.8594,30.1406 Q40.125,30.3906 40.125,30.7344 Q40.125,31.0781 39.7813,31.4844 Q39.2813,32.0625 38.4844,32.3906 Q37.4063,32.8438 36.1094,32.8438 Q34.5938,32.8438 33.3906,32.2188 Q32.4063,31.7188 31.7188,30.6563 Q31.0313,29.5781 31.0313,28.2969 L31.0313,27.1406 Q31.0313,25.8125 31.6406,24.6719 Q32.2656,23.5156 33.3594,22.9063 Q34.4531,22.2813 35.6875,22.2813 Q36.4219,22.2813 37.0625,22.4531 Q37.7188,22.6094 38.2656,22.9688 Z "/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="57" x="103" y="26.5332">JsonDish</text><text fill="#000000" font-family="sans-serif" font-size="10" lengthAdjust="spacingAndGlyphs" textLength="158" x="52.5" y="39.9902">RestaurantSim.SimulationSystem</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="8" x2="226" y1="47.1875" y2="47.1875"/><ellipse cx="18" cy="58.1875" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="84" x="27" y="62.6064">getName(): String</text><ellipse cx="18" cy="72.0234" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="194" x="27" y="76.4424">getAssociatedIngredients(): List&lt;String&gt;</text></a><text fill="#888888" font-family="sans-serif" font-size="10" lengthAdjust="spacingAndGlyphs" textLength="190" x="22" y="100.2402">UMLDoclet 2.0.12, PlantUML 1.2020.16</text><!--MD5=[127ef98639eff7686a6cfc5fc3b0070c]
+@startuml
+    set namespaceSeparator none
+    hide empty fields
+    hide empty methods
+
+    class "<size:14>JsonDish\n<size:10>RestaurantSim.SimulationSystem" as RestaurantSim.SimulationSystem.JsonDish [[JsonDish.html]] {
+        +getName(): String
+        +getAssociatedIngredients(): List<String>
+    }
+
+    center footer UMLDoclet 2.0.12, PlantUML 1.2020.16
+@enduml
+
+PlantUML version 1.2020.16(Sun Aug 23 22:20:43 CEST 2020)
+(APACHE source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: Cp1250
+Language: pl
+Country: PL
+--></g></svg>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="155px" preserveAspectRatio="none" style="width:202px;height:155px;" version="1.1" viewBox="0 0 202 155" width="202px" zoomAndPan="magnify"><defs><filter height="300%" id="fijqimelpgtml" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[f86cf63807d50ab04cba580e5a5807fb]
+class RestaurantSim.PreparedOrderQuality--><a href="PreparedOrderQuality.html" target="_top" title="PreparedOrderQuality.html" xlink:actuate="onRequest" xlink:href="PreparedOrderQuality.html" xlink:show="new" xlink:title="PreparedOrderQuality.html" xlink:type="simple"><rect codeLine="5" fill="#FEFECE" filter="url(#fijqimelpgtml)" height="117.3672" id="RestaurantSim.PreparedOrderQuality" style="stroke: #A80036; stroke-width: 1.5;" width="172" x="9" y="7"/><ellipse cx="24" cy="27.0938" fill="#EB937F" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M22.8594,27.8906 L22.8594,30.3906 L27.1875,30.3906 L27.1875,29.4688 Q27.1875,28.8594 27.4219,28.5938 Q27.6719,28.3281 28.0469,28.3281 Q28.4219,28.3281 28.6563,28.5938 Q28.8906,28.8594 28.8906,29.4688 L28.8906,32.0938 L20.8906,32.0938 Q20.2656,32.0938 20,31.8594 Q19.75,31.625 19.75,31.2344 Q19.75,30.8594 20.0156,30.625 Q20.2813,30.3906 20.8906,30.3906 L21.1563,30.3906 L21.1563,23.7344 L20.8906,23.7344 Q20.2656,23.7344 20,23.5 Q19.75,23.2656 19.75,22.875 Q19.75,22.5 20,22.2656 Q20.2656,22.0313 20.8906,22.0313 L28.5156,22.0313 L28.5156,24.625 Q28.5156,25.2344 28.2813,25.5 Q28.0625,25.75 27.6719,25.75 Q27.2969,25.75 27.0625,25.5 Q26.8281,25.2344 26.8281,24.625 L26.8281,23.7344 L22.8594,23.7344 L22.8594,26.1875 L24.3438,26.1875 Q24.3438,25.5313 24.4688,25.3438 Q24.7344,24.9375 25.2031,24.9375 Q25.5781,24.9375 25.8125,25.2031 Q26.0469,25.4531 26.0469,26.0625 L26.0469,28.0313 Q26.0469,28.5781 25.9219,28.7656 Q25.6563,29.1563 25.2031,29.1563 Q24.7344,29.1563 24.4688,28.75 Q24.3438,28.5625 24.3438,27.8906 L22.8594,27.8906 Z "/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="140" x="38" y="26.5332">PreparedOrderQuality</text><text fill="#000000" font-family="sans-serif" font-size="10" lengthAdjust="spacingAndGlyphs" textLength="69" x="73.5" y="39.9902">RestaurantSim</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="10" x2="180" y1="47.1875" y2="47.1875"/><ellipse cx="20" cy="58.1875" fill="none" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="36" x="29" y="62.6064">Inedible</text><ellipse cx="20" cy="72.0234" fill="none" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="19" x="29" y="76.4424">Bad</text><ellipse cx="20" cy="85.8594" fill="none" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="42" x="29" y="90.2783">Average</text><ellipse cx="20" cy="99.6953" fill="none" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="26" x="29" y="104.1143">Good</text><ellipse cx="20" cy="113.5313" fill="none" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" text-decoration="underline" textLength="43" x="29" y="117.9502">Excellent</text></a><text fill="#888888" font-family="sans-serif" font-size="10" lengthAdjust="spacingAndGlyphs" textLength="190" x="0" y="141.748">UMLDoclet 2.0.12, PlantUML 1.2020.16</text><!--MD5=[0745c8892f980a9873608fe2ddccba94]
+@startuml
+    set namespaceSeparator none
+    hide empty fields
+    hide empty methods
+
+    enum "<size:14>PreparedOrderQuality\n<size:10>RestaurantSim" as RestaurantSim.PreparedOrderQuality [[PreparedOrderQuality.html]] {
+        {static} +Inedible
+        {static} +Bad
+        {static} +Average
+        {static} +Good
+        {static} +Excellent
+    }
+
+    center footer UMLDoclet 2.0.12, PlantUML 1.2020.16
+@enduml
+
+PlantUML version 1.2020.16(Sun Aug 23 22:20:43 CEST 2020)
+(APACHE source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: Cp1250
+Language: pl
+Country: PL
+--></g></svg>

@@ -5,6 +5,9 @@ import RestaurantSim.SimulationSystem.SimulationUtilities;
 
 import java.util.*;
 
+/**
+ * CLass that contains loaded data of all available dishes and ingredients
+ */
 public class Menu 
 {
     private Map<String,Dish> availableDishes;
@@ -12,7 +15,7 @@ public class Menu
 
     /**
      * Creates the object of this class
-     * @param foodData Contains all the data about food
+     * @param foodData Loaded food data that this menu will use
      */
     public Menu(FoodData foodData) {
         populateIngredients(foodData);
@@ -20,8 +23,9 @@ public class Menu
     }
 
     /**
-     * Contains all populate ingredients from FoodData class
-     * @param foodData Contains all the data about food
+     * Populates {@link this#availableIngredients} map with ingredients
+     * from provided {@link FoodData}.
+     * @param foodData Loaded food data
      */
     private void populateIngredients(FoodData foodData) {
         this.availableIngredients = new Hashtable<>();
@@ -31,8 +35,9 @@ public class Menu
     }
 
     /**
-     * Contains all populate dishes from FoodData class
-     * @param foodData Contains all the data about food
+     * Populates {@link this#availableDishes} map with dishes
+     * from provided {@link FoodData}.
+     * @param foodData Loaded food data
      */
     private void populateDishes(FoodData foodData) {
         this.availableDishes = new Hashtable<>();
@@ -47,16 +52,25 @@ public class Menu
         }
     }
 
+    /**
+     * Returns map of loaded and available dishes that this menu has access to.
+     * @return Map with values of {@link Dish} and keys that are names of the corresponding dishes
+     */
     public Map<String, Dish> getAvailableDishes() {
         return availableDishes;
     }
 
+    /**
+     * Returns map of loaded and available ingredients that this menu has access to.
+     * @return Map with values of {@link Ingredient} and keys that are names of the corresponding ingredients
+     */
     public Map<String, Ingredient> getAvailableIngredients() {
         return availableIngredients;
     }
 
     /**
-     * @return Random Dish
+     * Returns random {@link Dish} that is menu has.
+     * @return Random {@link Dish}
      */
     public Dish getRandomDish() {
         var dishIterator =  availableDishes.values().iterator();
@@ -70,7 +84,8 @@ public class Menu
     }
 
     /**
-     * @return Random ingredients for the Dish
+     * Returns random {@link Ingredient} that is menu has.
+     * @return Random {@link Ingredient}
      */
     public Ingredient getRandomIngredient() {
         var ingredIterator =  availableIngredients.values().iterator();

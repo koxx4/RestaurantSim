@@ -9,6 +9,9 @@ version '1.0'
 repositories {
     mavenCentral()
 }
+configurations {
+    umlDoclet
+}
 
 dependencies {
     implementation 'org.jetbrains:annotations:20.1.0'
@@ -17,6 +20,14 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation 'com.google.code.gson:gson:2.8.7'
     implementation 'com.googlecode.lanterna:lanterna:3.1.1'
+    implementation 'org.apache.logging.log4j:log4j-api:2.14.1'
+    umlDoclet "nl.talsmasoftware:umldoclet:2.0.12"
+}
+javadoc {
+    source = sourceSets.main.allJava
+    options.docletpath = configurations.umlDoclet.files.asType(List)
+    options.doclet = "nl.talsmasoftware.umldoclet.UMLDoclet"
+    //options.addStringOption ""
 }
 
 test {

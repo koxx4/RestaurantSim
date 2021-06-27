@@ -55,7 +55,12 @@ import java.util.stream.Collectors;
 
     /**
      * Ticks, updates all tickable objects and its tickabel actions, increments
-     * internal total ticks counter that have elapsed since simulation start
+     * internal total ticks counter that have elapsed since simulation start.
+     * Unfollows tickable game objects that don't want to be registered anymore.
+     * Also prints active tickable actions statuses.
+     * @see this#printTickableActions()
+     * @see this#synchronizeTickableActionObjects()
+     * @see this#cleanupTickableActionObjects()
      */
     public void tick() {
 
@@ -144,6 +149,11 @@ import java.util.stream.Collectors;
         tickableActionObjects.removeAll(tickablesToRemove);
     }
 
+    /**
+     * Prints active tickable actions that this class has access into, using
+     * output provided to simulation.
+     * @see OutputDisplayProvider#printTickableActionsStatus(String)
+     */
     private void printTickableActions() {
         StringBuilder stringBuilder = new StringBuilder();
         for ( var tickableObj : tickableActionObjects ){

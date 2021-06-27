@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="238px" preserveAspectRatio="none" style="width:422px;height:238px;" version="1.1" viewBox="0 0 422 238" width="422px" zoomAndPan="magnify"><defs><filter height="300%" id="f6uldf2i89y7t" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[1ec9a05d02c6995d9888fa9540d28c15]
+class RestaurantSim--><a href="RestaurantSim\package-summary.html" target="_top" title="RestaurantSim\package-summary.html" xlink:actuate="onRequest" xlink:href="RestaurantSim\package-summary.html" xlink:show="new" xlink:title="RestaurantSim\package-summary.html" xlink:type="simple"><rect codeLine="12" fill="#FEFECE" filter="url(#f6uldf2i89y7t)" height="25.0938" id="RestaurantSim" style="stroke: #A80036; stroke-width: 1.5;" width="89" x="157" y="7"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="83" x="160" y="24.457">RestaurantSim</text></a><!--MD5=[8294825b32c7a38d2eb098e17719f8b4]
+class RestaurantSim.SimulationSystem--><a href="RestaurantSim\SimulationSystem\package-summary.html" target="_top" title="RestaurantSim\SimulationSystem\package-summary.html" xlink:actuate="onRequest" xlink:href="RestaurantSim\SimulationSystem\package-summary.html" xlink:show="new" xlink:title="RestaurantSim\SimulationSystem\package-summary.html" xlink:type="simple"><rect codeLine="14" fill="#FEFECE" filter="url(#f6uldf2i89y7t)" height="25.0938" id="RestaurantSim.SimulationSystem" style="stroke: #A80036; stroke-width: 1.5;" width="192" x="105.5" y="92"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="186" x="108.5" y="109.457">RestaurantSim.SimulationSystem</text></a><!--MD5=[437bd8515ae92313120ca473dc5c0ccc]
+class com.googlecode.lanterna.gui2--><rect fill="#FEFECE" filter="url(#f6uldf2i89y7t)" height="25.0938" id="com.googlecode.lanterna.gui2" style="stroke: #A80036; stroke-width: 1.5;" width="173" x="7" y="177"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="167" x="10" y="194.457">com.googlecode.lanterna.gui2</text><!--MD5=[ffd19b82e6f9e393b7d59cc85abca3ff]
+class org.apache.commons.lang3.time--><rect fill="#FEFECE" filter="url(#f6uldf2i89y7t)" height="25.0938" id="org.apache.commons.lang3.time" style="stroke: #A80036; stroke-width: 1.5;" width="188" x="215.5" y="177"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="182" x="218.5" y="194.457">org.apache.commons.lang3.time</text><!--MD5=[236ca4bf7f1e3b93a06f21f81a229172]
+link RestaurantSim to RestaurantSim.SimulationSystem--><path codeLine="6" d="M192.35,32.04 C188.05,46.21 187.6,70.35 191,86.6 " fill="none" id="RestaurantSim-to-RestaurantSim.SimulationSystem" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="192.3,91.79,193.9977,82.0886,191.0873,86.9393,186.2366,84.0289,192.3,91.79" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[3f05f91cd8d71cbb8783e3df21934595]
+link RestaurantSim.SimulationSystem to RestaurantSim--><path codeLine="7" d="M211.24,91.79 C215.76,77.54 216.2,53.4 212.58,37.2 " fill="none" id="RestaurantSim.SimulationSystem-to-RestaurantSim" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="211.19,32.04,209.6404,41.7662,212.4765,36.8716,217.3711,39.7077,211.19,32.04" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[efddc71a73f76c00e92432582ba0596d]
+link RestaurantSim.SimulationSystem to com.googlecode.lanterna.gui2--><path codeLine="8" d="M186.48,117.04 C167.25,131.82 133.88,157.47 112.79,173.68 " fill="none" id="RestaurantSim.SimulationSystem-to-com.googlecode.lanterna.gui2" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="108.74,176.79,118.3129,174.4748,112.7037,173.7421,113.4363,168.1329,108.74,176.79" style="stroke: #A80036; stroke-width: 1.0;"/><!--MD5=[256a18b50c5f63d7fceec85c83b5add4]
+link RestaurantSim.SimulationSystem to org.apache.commons.lang3.time--><path codeLine="9" d="M216.52,117.04 C235.75,131.82 269.12,157.47 290.21,173.68 " fill="none" id="RestaurantSim.SimulationSystem-to-org.apache.commons.lang3.time" style="stroke: #A80036; stroke-width: 1.0;"/><polygon fill="#A80036" points="294.26,176.79,289.5637,168.1329,290.2963,173.7421,284.6871,174.4748,294.26,176.79" style="stroke: #A80036; stroke-width: 1.0;"/><text fill="#888888" font-family="sans-serif" font-size="10" lengthAdjust="spacingAndGlyphs" textLength="190" x="107.25" y="225.4746">UMLDoclet 2.0.12, PlantUML 1.2020.16</text><!--MD5=[b6c99bd97b1f6e2a2a21b4d4d26e9882]
+@startuml
+    set namespaceSeparator none
+    hide circle
+    hide empty fields
+    hide empty methods
+
+    RestaurantSim - -> RestaurantSim.SimulationSystem
+    RestaurantSim.SimulationSystem - -> RestaurantSim
+    RestaurantSim.SimulationSystem - -> com.googlecode.lanterna.gui2
+    RestaurantSim.SimulationSystem - -> org.apache.commons.lang3.time
+
+    ' Package links
+    class "RestaurantSim" [[RestaurantSim\package-summary.html]] {
+    }
+    class "RestaurantSim.SimulationSystem" [[RestaurantSim\SimulationSystem\package-summary.html]] {
+    }
+
+    center footer UMLDoclet 2.0.12, PlantUML 1.2020.16
+@enduml
+
+@startuml
+    set namespaceSeparator none
+    hide circle
+    hide empty fields
+    hide empty methods
+
+    RestaurantSim - -> RestaurantSim.SimulationSystem
+    RestaurantSim.SimulationSystem - -> RestaurantSim
+    RestaurantSim.SimulationSystem - -> com.googlecode.lanterna.gui2
+    RestaurantSim.SimulationSystem - -> org.apache.commons.lang3.time
+
+    class "RestaurantSim" [[RestaurantSim\package-summary.html]] {
+    }
+    class "RestaurantSim.SimulationSystem" [[RestaurantSim\SimulationSystem\package-summary.html]] {
+    }
+
+    center footer UMLDoclet 2.0.12, PlantUML 1.2020.16
+@enduml
+
+PlantUML version 1.2020.16(Sun Aug 23 22:20:43 CEST 2020)
+(APACHE source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: Cp1250
+Language: pl
+Country: PL
+--></g></svg>

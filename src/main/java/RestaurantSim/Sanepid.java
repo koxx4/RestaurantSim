@@ -5,11 +5,23 @@ import RestaurantSim.SimulationSystem.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This type of a RestaurantGuest is able to evaluate an given Restaurant and
+ * decide whether to close it depending on provided {@link IEvaluationService}
+ */
 public class Sanepid extends RestaurantGuest  {
 
     private final List<TickableAction> tickableActions;
     private final IEvaluationService evaluationService;
     private boolean shouldBeUnregistered;
+
+    /**
+     * Array of precoded strings that contain texts that
+     * this object can randomly print while evaluating
+     * the restaruant
+     * @see this#evaluateRestaurantWork()
+     * @see this#printRandomEvalutaionMessage()
+     */
     private String[] sanepidQuotes =
             {       "...there are rats!... ",
                     "...those tables are dirty, too warm in fridge...",
@@ -20,6 +32,7 @@ public class Sanepid extends RestaurantGuest  {
      * Makes new Sanepid object
      * @param name Contains the name of Sanepid object
      * @param evaluationService Evaluates the Restaurant
+     * @param target Restaurant that this Sanepid object should evaluate
      */
     public Sanepid(String name, IEvaluationService evaluationService, Restaurant target) {
         super(name, Integer.MAX_VALUE, target);

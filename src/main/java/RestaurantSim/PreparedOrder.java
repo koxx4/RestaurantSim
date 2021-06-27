@@ -4,6 +4,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Class that resembles the order that is fully finished and can be received by proper {@link RestaurantGuest}
+ */
 public class PreparedOrder
 {
     private final List<Dish> dishes;
@@ -17,16 +20,20 @@ public class PreparedOrder
      * @param id Contains the Order ID
      * @param quality Contains the quality of the Order
      */
-    public PreparedOrder(List<Dish> listOfDishes, int id, PreparedOrderQuality quality)
-    {
+    public PreparedOrder(List<Dish> listOfDishes, int id, PreparedOrderQuality quality) {
         this.dishes = listOfDishes;
         this.id = id;
         this.quality = quality;
     }
 
-    public PreparedOrder(@NotNull Order sourceOrder, int id, PreparedOrderQuality quality)
-    {
-        this(sourceOrder.GetDishes(), id, quality);
+    /**
+     * Creates the object of this class
+     * @param sourceOrder Order that this PreparedOrder bases on.
+     * @param id Id of this order
+     * @param quality Quality of this prepared order
+     */
+    public PreparedOrder(@NotNull Order sourceOrder, int id, PreparedOrderQuality quality) {
+        this(sourceOrder.getDishes(), id, quality);
     }
 
     /**

@@ -1,5 +1,5 @@
 {
-  "tickDuration" : 1500,
+  "tickDuration" : 2000,
   "chanceToRateRestaurant": 0.66,
   "chanceToRateRestaurantImpatience": 0.7,
   "numberOfCooks": 4,

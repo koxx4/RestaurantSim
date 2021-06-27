@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="141px" preserveAspectRatio="none" style="width:210px;height:141px;" version="1.1" viewBox="0 0 210 141" width="210px" zoomAndPan="magnify"><defs><filter height="300%" id="fxbrh0fxsbuh5" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[e11a7fd2d646197688bdb0edbaf15b5a]
+class RestaurantSim.Dish--><a href="Dish.html" target="_top" title="Dish.html" xlink:actuate="onRequest" xlink:href="Dish.html" xlink:show="new" xlink:title="Dish.html" xlink:type="simple"><rect codeLine="5" fill="#FEFECE" filter="url(#fxbrh0fxsbuh5)" height="103.5313" id="RestaurantSim.Dish" style="stroke: #A80036; stroke-width: 1.5;" width="184" x="7" y="7"/><ellipse cx="60.25" cy="27.0938" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"/><path d="M63.0156,22.9688 Q63.1719,22.75 63.3594,22.6406 Q63.5469,22.5313 63.7656,22.5313 Q64.1406,22.5313 64.375,22.7969 Q64.6094,23.0469 64.6094,23.6563 L64.6094,25.1094 Q64.6094,25.7188 64.375,25.9844 Q64.1406,26.25 63.7656,26.25 Q63.4219,26.25 63.2188,26.0469 Q63.0156,25.8594 62.9063,25.3438 Q62.8594,24.9844 62.6719,24.7969 Q62.3438,24.4219 61.7344,24.2031 Q61.125,23.9844 60.5,23.9844 Q59.7344,23.9844 59.0938,24.3125 Q58.4688,24.6406 57.9688,25.3906 Q57.4844,26.1406 57.4844,27.1719 L57.4844,28.2656 Q57.4844,29.5 58.375,30.3281 Q59.2656,31.1406 60.8594,31.1406 Q61.7969,31.1406 62.4531,30.8906 Q62.8438,30.7344 63.2656,30.2969 Q63.5313,30.0313 63.6719,29.9531 Q63.8281,29.875 64.0313,29.875 Q64.3594,29.875 64.6094,30.1406 Q64.875,30.3906 64.875,30.7344 Q64.875,31.0781 64.5313,31.4844 Q64.0313,32.0625 63.2344,32.3906 Q62.1563,32.8438 60.8594,32.8438 Q59.3438,32.8438 58.1406,32.2188 Q57.1563,31.7188 56.4688,30.6563 Q55.7813,29.5781 55.7813,28.2969 L55.7813,27.1406 Q55.7813,25.8125 56.3906,24.6719 Q57.0156,23.5156 58.1094,22.9063 Q59.2031,22.2813 60.4375,22.2813 Q61.1719,22.2813 61.8125,22.4531 Q62.4688,22.6094 63.0156,22.9688 Z "/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacingAndGlyphs" textLength="28" x="101.25" y="26.5332">Dish</text><text fill="#000000" font-family="sans-serif" font-size="10" lengthAdjust="spacingAndGlyphs" textLength="69" x="80.75" y="39.9902">RestaurantSim</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="8" x2="190" y1="47.1875" y2="47.1875"/><ellipse cx="18" cy="58.1875" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="139" x="27" y="62.6064">Dish(List&lt;Ingredient&gt;, String)</text><ellipse cx="18" cy="72.0234" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="74" x="27" y="76.4424">getPrice(): float</text><ellipse cx="18" cy="85.8594" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="84" x="27" y="90.2783">getName(): String</text><ellipse cx="18" cy="99.6953" fill="#84BE84" rx="3" ry="3" style="stroke: #038048; stroke-width: 1.0;"/><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="158" x="27" y="104.1143">getIngredients(): List&lt;Ingredient&gt;</text></a><text fill="#888888" font-family="sans-serif" font-size="10" lengthAdjust="spacingAndGlyphs" textLength="190" x="4" y="127.9121">UMLDoclet 2.0.12, PlantUML 1.2020.16</text><!--MD5=[0a97332992e03c10c35f41d128aaf883]
+@startuml
+    set namespaceSeparator none
+    hide empty fields
+    hide empty methods
+
+    class "<size:14>Dish\n<size:10>RestaurantSim" as RestaurantSim.Dish [[Dish.html]] {
+        +Dish(List<Ingredient>, String)
+        +getPrice(): float
+        +getName(): String
+        +getIngredients(): List<Ingredient>
+    }
+
+    center footer UMLDoclet 2.0.12, PlantUML 1.2020.16
+@enduml
+
+PlantUML version 1.2020.16(Sun Aug 23 22:20:43 CEST 2020)
+(APACHE source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: Cp1250
+Language: pl
+Country: PL
+--></g></svg>

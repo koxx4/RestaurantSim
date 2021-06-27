@@ -2,14 +2,17 @@ package RestaurantSim;
 
 import java.util.List;
 
-
+/**
+ * This class contains all the crucial information about order that the {@link Restaurant}
+ * can process.
+ */
 public class Order
 {
     private final List<Dish> dishes;
 
     /**
      * Creates the object of this class
-     * @param dishes Contains the exact Dish
+     * @param dishes List of dishes that this order consists of
      */
     public Order(List<Dish> dishes)
     {
@@ -17,22 +20,20 @@ public class Order
     }
 
     /**
-     * @return Total price for the whole Order
+     * @return Total price that is the sum of all dish prices that this order consists of
      */
-    public float GetTotalPrice()
-    {
+    public float getTotalPrice() {
         float totalPrice = 0;
-        for (var dish: dishes)
-        {
-            totalPrice += dish.GetPrice();
+        for (var dish: dishes) {
+            totalPrice += dish.getPrice();
         }
         return totalPrice;
     }
 
     /**
-     * @return The List of Dishes
+     * @return List of dishes that this order consist of
      */
-    public List<Dish> GetDishes()
+    public List<Dish> getDishes()
     {
         return dishes;
     }

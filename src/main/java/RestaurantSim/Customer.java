@@ -5,6 +5,11 @@ import RestaurantSim.SimulationSystem.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class extends a {@link RestaurantGuest}. It describes a customer which can make order requests out
+ * of dishes that it chooses. Customers also have patience which means the won't wait for the order to be prepared
+ * infinitely. They can also rate the restaurant work using provided implementation of {@link IOrderRater}.
+ */
 public class Customer extends RestaurantGuest
 {
     private final IOrderRater orderRater;
@@ -60,7 +65,7 @@ public class Customer extends RestaurantGuest
 
         Order composedOrder = composeOrder(getTargetRestaurant().getMenu());
 
-        Simulation.getInstance().print( "I will try to buy " + composedOrder.GetDishes().get(0).getName(),
+        Simulation.getInstance().print( "I will try to buy " + composedOrder.getDishes().get(0).getName(),
                 this.toString());
 
         tryMakeOrder(composedOrder);
@@ -165,7 +170,7 @@ public class Customer extends RestaurantGuest
      */
     private void tryMakeOrder( Order composedOrder) {
         OrderReceipt orderReceipt =
-                getTargetRestaurant().receiveOrder(composedOrder, composedOrder.GetTotalPrice());
+                getTargetRestaurant().receiveOrderRequest(composedOrder, composedOrder.getTotalPrice());
 
         if(orderReceipt != null)
         {
