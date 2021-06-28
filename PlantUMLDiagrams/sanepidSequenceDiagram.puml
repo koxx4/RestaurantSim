@@ -1,0 +1,21 @@
+@startuml
+title Interaction between Sanepid and Restaurant
+    alt Average of restaurant rates is < 3
+    SimulationManager -> Restaurant: Create Sanepid guest and add him to queue
+    Restaurant -> Sanepid: Handle guest
+     alt Chance 80%
+     Sanepid -> Restaurant: Close Restaurant
+     else Chance 20 %
+     Sanepid -> Restaurant: Leave Restaurant alone
+    end
+    SimulationManager -> Restaurant: Is restaurant opened?
+    alt
+    Restaurant -> SimulationManager : False
+    SimulationManager -> SimulationManager: Exit simulation
+    else
+    Restaurant -> SimulationManager : True
+    SimulationManager -> SimulationManager: Continue simulation
+    end
+end
+
+@enduml

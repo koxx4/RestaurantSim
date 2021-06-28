@@ -1,0 +1,15 @@
+@startuml
+title Simulation overall
+start
+:Program;
+:Simulation;
+#yellow:SimulationManager;
+:StartSimulation;
+repeat :RunSimulation;
+  :Tick;
+  :Spawn new customers from time to time;
+  :Spawn sanepid objects from time to time;
+repeat while (restaurantOpen?) is (yes)
+->no;
+stop
+@enduml

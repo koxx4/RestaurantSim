@@ -2,9 +2,10 @@
 @startuml
 title Ticking and Actions
 start
-#yellow:SimulationManager;
+#yellow:TickManager;
 repeat
   :Tick;
+  :For every registered tickableActionObject;
   :Decrement every tickable action left ticks;
   if (tickableAction duration == 0) then
     :Fire off tickableAction on finish callback;
@@ -13,7 +14,13 @@ repeat
   if (tickableAction has on update callback) then
     :Fire off tickableAction on update callback;
   endif
-repeat while (restaurantOpen?) is (yes)
+  if(tickableActionObjectsBuffor is not empty) then
+        :synchronize tickableActionObjectsBuffor;
+  endif
+  :cleanupTickableActionObjects;
+  :printTickableActionsStatus;
+  :increment passed ticks counter;
+repeat while (simulationRunning?) is (yes)
 ->no;
 stop
 @enduml
