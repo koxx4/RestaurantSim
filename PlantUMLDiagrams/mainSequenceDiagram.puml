@@ -1,0 +1,1122 @@
+@startuml
+participant Actor
+Actor -> Program : main
+activate Program
+Program -> SimulationSettingsLoader : loadFromJson
+activate SimulationSettingsLoader
+SimulationSettingsLoader --> Program
+deactivate SimulationSettingsLoader
+Program -> SimulationDataLoader : loadFromJson
+activate SimulationDataLoader
+SimulationDataLoader -> SimulationData : new
+activate SimulationData
+SimulationData --> SimulationDataLoader
+deactivate SimulationData
+SimulationDataLoader --> Program
+deactivate SimulationDataLoader
+Program -> LanternaDisplay : new
+activate LanternaDisplay
+LanternaDisplay -> SimulationWindow : new
+activate SimulationWindow
+SimulationWindow --> LanternaDisplay
+deactivate SimulationWindow
+LanternaDisplay -> SimulationWindowController : new
+activate SimulationWindowController
+SimulationWindowController --> LanternaDisplay
+deactivate SimulationWindowController
+LanternaDisplay --> Program
+deactivate LanternaDisplay
+Program -> Simulation : new
+activate Simulation
+Simulation -> SimulationManager : new
+activate SimulationManager
+SimulationManager -> TickManager : new
+activate TickManager
+TickManager --> SimulationManager
+deactivate TickManager
+SimulationManager --> Simulation
+deactivate SimulationManager
+Simulation --> Program
+deactivate Simulation
+Program -> Simulation : start
+activate Simulation
+Simulation -> SimulationManager : initialize
+activate SimulationManager
+SimulationManager -> TickManager : registerTickableObject
+activate TickManager
+TickManager --> SimulationManager
+deactivate TickManager
+SimulationManager -> SimulationManager : createSpawnCustomerAction
+activate SimulationManager
+SimulationManager -> SimulationUtilities : getRandomInt
+activate SimulationUtilities
+SimulationUtilities --> SimulationManager
+deactivate SimulationUtilities
+SimulationManager -> TickableAction : new
+activate TickableAction
+TickableAction -> TickableAction : new
+activate TickableAction
+TickableAction --> TickableAction
+deactivate TickableAction
+TickableAction --> SimulationManager
+deactivate TickableAction
+SimulationManager -> TickableAction : getDuration
+activate TickableAction
+TickableAction --> SimulationManager
+deactivate TickableAction
+SimulationManager -> SimulationManager : toString
+activate SimulationManager
+SimulationManager --> SimulationManager
+deactivate SimulationManager
+SimulationManager -> OutputDisplayProvider : printDebug
+activate OutputDisplayProvider
+OutputDisplayProvider --> SimulationManager
+deactivate OutputDisplayProvider
+SimulationManager -> TickableAction : setOnFinishCallback
+activate TickableAction
+TickableAction --> SimulationManager
+deactivate TickableAction
+SimulationManager -> SimulationManager : λ→
+activate SimulationManager
+SimulationManager -> SimulationManager : generateAndRegisterCustomer
+activate SimulationManager
+SimulationManager -> CustomerBuilder : new
+activate CustomerBuilder
+CustomerBuilder --> SimulationManager
+deactivate CustomerBuilder
+SimulationManager -> CustomerBuilder : buildCustomerAssignedToRestaurant
+activate CustomerBuilder
+CustomerBuilder --> SimulationManager
+deactivate CustomerBuilder
+SimulationManager -> CustomerBuilder : named
+activate CustomerBuilder
+CustomerBuilder --> SimulationManager
+deactivate CustomerBuilder
+SimulationManager -> PeopleData : getRandomFullName
+activate PeopleData
+PeopleData -> PeopleData : getRandomName
+activate PeopleData
+PeopleData -> SimulationUtilities : getRandomInt
+activate SimulationUtilities
+SimulationUtilities --> PeopleData
+deactivate SimulationUtilities
+PeopleData --> PeopleData
+deactivate PeopleData
+PeopleData -> PeopleData : getRandomSurname
+activate PeopleData
+PeopleData -> SimulationUtilities : getRandomInt
+activate SimulationUtilities
+SimulationUtilities --> PeopleData
+deactivate SimulationUtilities
+PeopleData --> PeopleData
+deactivate PeopleData
+PeopleData --> SimulationManager
+deactivate PeopleData
+SimulationManager -> CustomerBuilder : withRandomPatience
+activate CustomerBuilder
+CustomerBuilder -> SimulationUtilities : getRandomInt
+activate SimulationUtilities
+SimulationUtilities --> CustomerBuilder
+deactivate SimulationUtilities
+CustomerBuilder --> SimulationManager
+deactivate CustomerBuilder
+SimulationManager -> CustomerBuilder : withRater
+activate CustomerBuilder
+CustomerBuilder --> SimulationManager
+deactivate CustomerBuilder
+SimulationManager -> CustomerBuilder : getBuiltCustomer
+activate CustomerBuilder
+CustomerBuilder -> Customer : new
+activate Customer
+Customer -> RestaurantGuest : new
+activate RestaurantGuest
+RestaurantGuest --> Customer
+deactivate RestaurantGuest
+Customer -> Customer : createWaitingTask
+activate Customer
+Customer -> RestaurantGuest : getName
+activate RestaurantGuest
+RestaurantGuest --> Customer
+deactivate RestaurantGuest
+Customer -> RestaurantGuest : getPatience
+activate RestaurantGuest
+RestaurantGuest --> Customer
+deactivate RestaurantGuest
+Customer -> TickableAction : new
+activate TickableAction
+TickableAction -> TickableAction : new
+activate TickableAction
+TickableAction --> TickableAction
+deactivate TickableAction
+TickableAction --> Customer
+deactivate TickableAction
+Customer -> TickableAction : setOnFinishCallback
+activate TickableAction
+TickableAction --> Customer
+deactivate TickableAction
+Customer -> Customer : λ→
+activate Customer
+Customer -> Simulation : getInstance
+activate Simulation
+Simulation --> Customer
+deactivate Simulation
+Customer -> Simulation : print
+activate Simulation
+Simulation -> OutputDisplayProvider : print
+activate OutputDisplayProvider
+OutputDisplayProvider --> Simulation
+deactivate OutputDisplayProvider
+Simulation --> Customer
+deactivate Simulation
+Customer -> Customer : toString
+activate Customer
+Customer -> RestaurantGuest : getName
+activate RestaurantGuest
+RestaurantGuest --> Customer
+deactivate RestaurantGuest
+Customer --> Customer
+deactivate Customer
+Customer -> SimulationUtilities : isGoingToHappen
+activate SimulationUtilities
+SimulationUtilities --> Customer
+deactivate SimulationUtilities
+Customer -> RestaurantGuest : getTargetRestaurant
+activate RestaurantGuest
+RestaurantGuest --> Customer
+deactivate RestaurantGuest
+Customer -> Restaurant : giveRate
+activate Restaurant
+Restaurant --> Customer
+deactivate Restaurant
+Customer -> Simulation : getInstance
+activate Simulation
+Simulation --> Customer
+deactivate Simulation
+Customer -> Simulation : print
+activate Simulation
+Simulation -> OutputDisplayProvider : print
+activate OutputDisplayProvider
+OutputDisplayProvider --> Simulation
+deactivate OutputDisplayProvider
+Simulation --> Customer
+deactivate Simulation
+Customer -> Customer : toString
+activate Customer
+Customer -> RestaurantGuest : getName
+activate RestaurantGuest
+RestaurantGuest --> Customer
+deactivate RestaurantGuest
+Customer --> Customer
+deactivate Customer
+Customer -> RestaurantGuest : getTargetRestaurant
+activate RestaurantGuest
+RestaurantGuest --> Customer
+deactivate RestaurantGuest
+Customer -> Restaurant : removeGuestFromQueue
+activate Restaurant
+Restaurant -> Simulation : getInstance
+activate Simulation
+Simulation --> Restaurant
+deactivate Simulation
+Restaurant -> Simulation : print
+activate Simulation
+Simulation -> OutputDisplayProvider : print
+activate OutputDisplayProvider
+OutputDisplayProvider --> Simulation
+deactivate OutputDisplayProvider
+Simulation --> Restaurant
+deactivate Simulation
+Restaurant -> RestaurantGuest : getName
+activate RestaurantGuest
+RestaurantGuest --> Restaurant
+deactivate RestaurantGuest
+Restaurant -> Restaurant : toString
+activate Restaurant
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant -> Restaurant : printRestaurantStatus
+activate Restaurant
+Restaurant -> RestaurantGuest : isWaitingToBeServed
+activate RestaurantGuest
+RestaurantGuest --> Restaurant
+deactivate RestaurantGuest
+Restaurant -> Restaurant : getRatesAverage
+activate Restaurant
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant -> Simulation : getInstance
+activate Simulation
+Simulation --> Restaurant
+deactivate Simulation
+Restaurant -> Simulation : printToRestaurantStatus
+activate Simulation
+Simulation --> Restaurant
+deactivate Simulation
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant --> Customer
+deactivate Restaurant
+Customer --> Customer
+deactivate Customer
+Customer --> Customer
+deactivate Customer
+Customer --> CustomerBuilder
+deactivate Customer
+CustomerBuilder --> SimulationManager
+deactivate CustomerBuilder
+SimulationManager -> TickManager : registerTickableObject
+activate TickManager
+TickManager --> SimulationManager
+deactivate TickManager
+SimulationManager --> SimulationManager
+deactivate SimulationManager
+SimulationManager -> Restaurant : addGuestToQueue
+activate Restaurant
+Restaurant -> Simulation : getInstance
+activate Simulation
+Simulation --> Restaurant
+deactivate Simulation
+Restaurant -> Simulation : print
+activate Simulation
+Simulation -> OutputDisplayProvider : print
+activate OutputDisplayProvider
+OutputDisplayProvider --> Simulation
+deactivate OutputDisplayProvider
+Simulation --> Restaurant
+deactivate Simulation
+Restaurant -> RestaurantGuest : getName
+activate RestaurantGuest
+RestaurantGuest --> Restaurant
+deactivate RestaurantGuest
+Restaurant -> Restaurant : toString
+activate Restaurant
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant -> Restaurant : printRestaurantStatus
+activate Restaurant
+Restaurant -> RestaurantGuest : isWaitingToBeServed
+activate RestaurantGuest
+RestaurantGuest --> Restaurant
+deactivate RestaurantGuest
+Restaurant -> Restaurant : getRatesAverage
+activate Restaurant
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant -> Simulation : getInstance
+activate Simulation
+Simulation --> Restaurant
+deactivate Simulation
+Restaurant -> Simulation : printToRestaurantStatus
+activate Simulation
+Simulation -> OutputDisplayProvider : printRestaurantStatus
+activate OutputDisplayProvider
+OutputDisplayProvider --> Simulation
+deactivate OutputDisplayProvider
+Simulation --> Restaurant
+deactivate Simulation
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant --> SimulationManager
+deactivate Restaurant
+SimulationManager -> SimulationManager : toString
+activate SimulationManager
+SimulationManager --> SimulationManager
+deactivate SimulationManager
+SimulationManager -> OutputDisplayProvider : printDebug
+activate OutputDisplayProvider
+OutputDisplayProvider --> SimulationManager
+deactivate OutputDisplayProvider
+SimulationManager -> RestaurantGuest : getPatience
+activate RestaurantGuest
+RestaurantGuest --> SimulationManager
+deactivate RestaurantGuest
+SimulationManager -> SimulationManager : toString
+activate SimulationManager
+SimulationManager --> SimulationManager
+deactivate SimulationManager
+SimulationManager -> OutputDisplayProvider : printDebug
+activate OutputDisplayProvider
+OutputDisplayProvider --> SimulationManager
+deactivate OutputDisplayProvider
+SimulationManager --> SimulationManager
+deactivate SimulationManager
+SimulationManager --> SimulationManager
+deactivate SimulationManager
+SimulationManager -> SimulationManager : createRestaurantProtectionAction
+activate SimulationManager
+SimulationManager -> SimulationManager : toString
+activate SimulationManager
+SimulationManager --> SimulationManager
+deactivate SimulationManager
+SimulationManager -> OutputDisplayProvider : printDebug
+activate OutputDisplayProvider
+OutputDisplayProvider --> SimulationManager
+deactivate OutputDisplayProvider
+SimulationManager -> TickableAction : new
+activate TickableAction
+TickableAction -> TickableAction : new
+activate TickableAction
+TickableAction --> TickableAction
+deactivate TickableAction
+TickableAction --> SimulationManager
+deactivate TickableAction
+SimulationManager -> TickableAction : setOnFinishCallback
+activate TickableAction
+TickableAction --> SimulationManager
+deactivate TickableAction
+SimulationManager --> SimulationManager
+deactivate SimulationManager
+SimulationManager -> Menu : new
+activate Menu
+Menu -> Menu : populateIngredients
+activate Menu
+Menu -> FoodData : getIngredientsData
+activate FoodData
+FoodData --> Menu
+deactivate FoodData
+Menu -> Ingredient : getName
+activate Ingredient
+Ingredient --> Menu
+deactivate Ingredient
+Menu --> Menu
+deactivate Menu
+Menu -> Menu : populateDishes
+activate Menu
+Menu -> FoodData : getDishData
+activate FoodData
+FoodData --> Menu
+deactivate FoodData
+Menu -> JsonDish : getAssociatedIngredients
+activate JsonDish
+JsonDish --> Menu
+deactivate JsonDish
+Menu -> JsonDish : getName
+activate JsonDish
+JsonDish --> Menu
+deactivate JsonDish
+Menu -> Dish : new
+activate Dish
+Dish --> Menu
+deactivate Dish
+Menu -> Dish : getName
+activate Dish
+Dish --> Menu
+deactivate Dish
+Menu --> Menu
+deactivate Menu
+Menu --> SimulationManager
+deactivate Menu
+SimulationManager -> Restaurant : new
+activate Restaurant
+Restaurant -> Restaurant : createCooksStatusPrintAction
+activate Restaurant
+Restaurant -> TickableAction : new
+activate TickableAction
+TickableAction -> TickableAction : new
+activate TickableAction
+TickableAction --> TickableAction
+deactivate TickableAction
+TickableAction --> Restaurant
+deactivate TickableAction
+Restaurant -> TickableAction : setOnFinishCallback
+activate TickableAction
+TickableAction --> Restaurant
+deactivate TickableAction
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant -> Restaurant : createGuestHandlingAction
+activate Restaurant
+Restaurant -> TickableAction : new
+activate TickableAction
+TickableAction --> Restaurant
+deactivate TickableAction
+Restaurant -> TickableAction : setOnFinishCallback
+activate TickableAction
+TickableAction --> Restaurant
+deactivate TickableAction
+Restaurant -> Restaurant : λ→
+activate Restaurant
+Restaurant -> Restaurant : freeCookAvailable
+activate Restaurant
+Restaurant -> Restaurant : λ→
+activate Restaurant
+Restaurant -> Cook : isBusy
+activate Cook
+Cook --> Restaurant
+deactivate Cook
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant -> Restaurant : tryHandleNextRestaurantGuest
+activate Restaurant
+Restaurant -> RestaurantGuest : isWaitingToBeServed
+activate RestaurantGuest
+RestaurantGuest --> Restaurant
+deactivate RestaurantGuest
+Restaurant -> Restaurant : handleRestaurantGuest
+activate Restaurant
+Restaurant -> Simulation : getInstance
+activate Simulation
+Simulation --> Restaurant
+deactivate Simulation
+Restaurant -> Simulation : print
+activate Simulation
+Simulation -> OutputDisplayProvider : print
+activate OutputDisplayProvider
+OutputDisplayProvider --> Simulation
+deactivate OutputDisplayProvider
+Simulation --> Restaurant
+deactivate Simulation
+Restaurant -> RestaurantGuest : getName
+activate RestaurantGuest
+RestaurantGuest --> Restaurant
+deactivate RestaurantGuest
+Restaurant -> Restaurant : toString
+activate Restaurant
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant -> RestaurantGuest : interactWithRestaurant
+activate RestaurantGuest
+RestaurantGuest -> Customer : interactWithRestaurant
+activate Customer
+Customer -> Simulation : getInstance
+activate Simulation
+Simulation --> Customer
+deactivate Simulation
+Customer -> Simulation : print
+activate Simulation
+Simulation -> OutputDisplayProvider : print
+activate OutputDisplayProvider
+OutputDisplayProvider --> Simulation
+deactivate OutputDisplayProvider
+Simulation --> Customer
+deactivate Simulation
+Customer -> Customer : toString
+activate Customer
+Customer -> RestaurantGuest : getName
+activate RestaurantGuest
+RestaurantGuest --> Customer
+deactivate RestaurantGuest
+Customer --> Customer
+deactivate Customer
+Customer -> RestaurantGuest : getTargetRestaurant
+activate RestaurantGuest
+RestaurantGuest --> Customer
+deactivate RestaurantGuest
+Customer -> Restaurant : getMenu
+activate Restaurant
+Restaurant --> Customer
+deactivate Restaurant
+Customer -> Customer : composeOrder
+activate Customer
+Customer -> SimulationUtilities : isGoingToHappen
+activate SimulationUtilities
+SimulationUtilities --> Customer
+deactivate SimulationUtilities
+Customer -> Customer : composeOwnDish
+activate Customer
+Customer -> RestaurantGuest : getName
+activate RestaurantGuest
+RestaurantGuest --> Customer
+deactivate RestaurantGuest
+Customer -> Menu : getRandomIngredient
+activate Menu
+Menu --> Customer
+deactivate Menu
+Customer -> SimulationUtilities : isGoingToHappen
+activate SimulationUtilities
+SimulationUtilities --> Customer
+deactivate SimulationUtilities
+Customer -> Dish : new
+activate Dish
+Dish --> Customer
+deactivate Dish
+Customer -> Order : new
+activate Order
+Order --> Customer
+deactivate Order
+Customer --> Customer
+deactivate Customer
+Customer -> Customer : composeOrderFromMenu
+activate Customer
+Customer -> Menu : getRandomDish
+activate Menu
+Menu --> Customer
+deactivate Menu
+Customer -> Order : new
+activate Order
+Order --> Customer
+deactivate Order
+Customer --> Customer
+deactivate Customer
+Customer --> Customer
+deactivate Customer
+Customer -> Simulation : getInstance
+activate Simulation
+Simulation --> Customer
+deactivate Simulation
+Customer -> Simulation : print
+activate Simulation
+Simulation -> OutputDisplayProvider : print
+activate OutputDisplayProvider
+OutputDisplayProvider --> Simulation
+deactivate OutputDisplayProvider
+Simulation --> Customer
+deactivate Simulation
+Customer -> Order : getDishes
+activate Order
+Order --> Customer
+deactivate Order
+Customer -> Dish : getName
+activate Dish
+Dish --> Customer
+deactivate Dish
+Customer -> Customer : toString
+activate Customer
+Customer -> RestaurantGuest : getName
+activate RestaurantGuest
+RestaurantGuest --> Customer
+deactivate RestaurantGuest
+Customer --> Customer
+deactivate Customer
+Customer -> Customer : tryMakeOrder
+activate Customer
+Customer -> RestaurantGuest : getTargetRestaurant
+activate RestaurantGuest
+RestaurantGuest --> Customer
+deactivate RestaurantGuest
+Customer -> Restaurant : receiveOrderRequest
+activate Restaurant
+Restaurant -> Order : getTotalPrice
+activate Order
+Order --> Restaurant
+deactivate Order
+Restaurant -> Restaurant : isAbleToHandleOrder
+activate Restaurant
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant -> OrderReceipt : new
+activate OrderReceipt
+OrderReceipt --> Restaurant
+deactivate OrderReceipt
+Restaurant --> Customer
+deactivate Restaurant
+Customer -> Order : getTotalPrice
+activate Order
+Order -> Dish : getPrice
+activate Dish
+Dish --> Order
+deactivate Dish
+Order --> Customer
+deactivate Order
+Customer -> RestaurantGuest : setOrderReceipt
+activate RestaurantGuest
+RestaurantGuest --> Customer
+deactivate RestaurantGuest
+Customer -> RestaurantGuest : setWaitingToBeServed
+activate RestaurantGuest
+RestaurantGuest --> Customer
+deactivate RestaurantGuest
+Customer -> Simulation : getInstance
+activate Simulation
+Simulation --> Customer
+deactivate Simulation
+Customer -> Simulation : print
+activate Simulation
+Simulation -> OutputDisplayProvider : print
+activate OutputDisplayProvider
+OutputDisplayProvider --> Simulation
+deactivate OutputDisplayProvider
+Simulation --> Customer
+deactivate Simulation
+Customer -> OrderReceipt : getOrderID
+activate OrderReceipt
+OrderReceipt --> Customer
+deactivate OrderReceipt
+Customer -> Customer : toString
+activate Customer
+Customer -> RestaurantGuest : getName
+activate RestaurantGuest
+RestaurantGuest --> Customer
+deactivate RestaurantGuest
+Customer --> Customer
+deactivate Customer
+Customer --> Customer
+deactivate Customer
+Customer --> RestaurantGuest
+deactivate Customer
+RestaurantGuest --> Restaurant
+deactivate RestaurantGuest
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant -> Restaurant : createOrderPickUpAction
+activate Restaurant
+Restaurant -> TickableAction : new
+activate TickableAction
+TickableAction --> Restaurant
+deactivate TickableAction
+Restaurant -> TickableAction : setOnFinishCallback
+activate TickableAction
+TickableAction --> Restaurant
+deactivate TickableAction
+Restaurant -> Restaurant : λ→
+activate Restaurant
+Restaurant -> Restaurant : givePreparedOrderToGuest
+activate Restaurant
+Restaurant -> Restaurant : customerIsEligibleForOrder
+activate Restaurant
+Restaurant -> RestaurantGuest : getOrderReceipt
+activate RestaurantGuest
+RestaurantGuest --> Restaurant
+deactivate RestaurantGuest
+Restaurant -> OrderReceipt : getOrderID
+activate OrderReceipt
+OrderReceipt --> Restaurant
+deactivate OrderReceipt
+Restaurant -> PreparedOrder : getID
+activate PreparedOrder
+PreparedOrder --> Restaurant
+deactivate PreparedOrder
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant -> Simulation : getInstance
+activate Simulation
+Simulation --> Restaurant
+deactivate Simulation
+Restaurant -> Simulation : print
+activate Simulation
+Simulation -> OutputDisplayProvider : print
+activate OutputDisplayProvider
+OutputDisplayProvider --> Simulation
+deactivate OutputDisplayProvider
+Simulation --> Restaurant
+deactivate Simulation
+Restaurant -> RestaurantGuest : getName
+activate RestaurantGuest
+RestaurantGuest --> Restaurant
+deactivate RestaurantGuest
+Restaurant -> Restaurant : toString
+activate Restaurant
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant -> RestaurantGuest : receiveOrder
+activate RestaurantGuest
+RestaurantGuest -> Customer : receiveOrder
+activate Customer
+Customer -> Simulation : getInstance
+activate Simulation
+Simulation --> Customer
+deactivate Simulation
+Customer -> Simulation : print
+activate Simulation
+Simulation -> OutputDisplayProvider : print
+activate OutputDisplayProvider
+OutputDisplayProvider --> Simulation
+deactivate OutputDisplayProvider
+Simulation --> Customer
+deactivate Simulation
+Customer -> PreparedOrder : getID
+activate PreparedOrder
+PreparedOrder --> Customer
+deactivate PreparedOrder
+Customer -> Customer : toString
+activate Customer
+Customer -> RestaurantGuest : getName
+activate RestaurantGuest
+RestaurantGuest --> Customer
+deactivate RestaurantGuest
+Customer --> Customer
+deactivate Customer
+Customer -> SimulationUtilities : isGoingToHappen
+activate SimulationUtilities
+SimulationUtilities --> Customer
+deactivate SimulationUtilities
+Customer -> Customer : rateRestaurant
+activate Customer
+Customer -> IOrderRater : rateOrder
+activate IOrderRater
+IOrderRater -> QualityBasedOrderRater : rateOrder
+activate QualityBasedOrderRater
+QualityBasedOrderRater -> PreparedOrder : getQuality
+activate PreparedOrder
+PreparedOrder --> QualityBasedOrderRater
+deactivate PreparedOrder
+QualityBasedOrderRater -> SimulationUtilities : getRandomFloat
+activate SimulationUtilities
+SimulationUtilities --> QualityBasedOrderRater
+deactivate SimulationUtilities
+QualityBasedOrderRater -> SimulationUtilities : getRandomFloat
+activate SimulationUtilities
+SimulationUtilities --> QualityBasedOrderRater
+deactivate SimulationUtilities
+QualityBasedOrderRater -> SimulationUtilities : getRandomFloat
+activate SimulationUtilities
+SimulationUtilities --> QualityBasedOrderRater
+deactivate SimulationUtilities
+QualityBasedOrderRater -> SimulationUtilities : getRandomFloat
+activate SimulationUtilities
+SimulationUtilities --> QualityBasedOrderRater
+deactivate SimulationUtilities
+QualityBasedOrderRater -> SimulationUtilities : getRandomFloat
+activate SimulationUtilities
+SimulationUtilities --> QualityBasedOrderRater
+deactivate SimulationUtilities
+QualityBasedOrderRater --> IOrderRater
+deactivate QualityBasedOrderRater
+IOrderRater --> Customer
+deactivate IOrderRater
+Customer -> Simulation : getInstance
+activate Simulation
+Simulation --> Customer
+deactivate Simulation
+Customer -> Simulation : print
+activate Simulation
+Simulation -> OutputDisplayProvider : print
+activate OutputDisplayProvider
+OutputDisplayProvider --> Simulation
+deactivate OutputDisplayProvider
+Simulation --> Customer
+deactivate Simulation
+Customer -> Customer : toString
+activate Customer
+Customer -> RestaurantGuest : getName
+activate RestaurantGuest
+RestaurantGuest --> Customer
+deactivate RestaurantGuest
+Customer --> Customer
+deactivate Customer
+Customer -> RestaurantGuest : getTargetRestaurant
+activate RestaurantGuest
+RestaurantGuest --> Customer
+deactivate RestaurantGuest
+Customer -> Restaurant : giveRate
+activate Restaurant
+Restaurant --> Customer
+deactivate Restaurant
+Customer --> Customer
+deactivate Customer
+Customer -> TickableAction : abort
+activate TickableAction
+TickableAction --> Customer
+deactivate TickableAction
+Customer -> Customer : createLeaveTask
+activate Customer
+Customer -> TickableAction : new
+activate TickableAction
+TickableAction -> TickableAction : new
+activate TickableAction
+TickableAction --> TickableAction
+deactivate TickableAction
+TickableAction --> Customer
+deactivate TickableAction
+Customer -> TickableAction : setOnFinishCallback
+activate TickableAction
+TickableAction --> Customer
+deactivate TickableAction
+Customer -> Customer : λ→
+activate Customer
+Customer -> RestaurantGuest : getTargetRestaurant
+activate RestaurantGuest
+RestaurantGuest --> Customer
+deactivate RestaurantGuest
+Customer -> Restaurant : removeGuestFromQueue
+activate Restaurant
+Restaurant -> Simulation : getInstance
+activate Simulation
+Simulation --> Restaurant
+deactivate Simulation
+Restaurant -> Simulation : print
+activate Simulation
+Simulation -> OutputDisplayProvider : print
+activate OutputDisplayProvider
+OutputDisplayProvider --> Simulation
+deactivate OutputDisplayProvider
+Simulation --> Restaurant
+deactivate Simulation
+Restaurant -> RestaurantGuest : getName
+activate RestaurantGuest
+RestaurantGuest --> Restaurant
+deactivate RestaurantGuest
+Restaurant -> Restaurant : toString
+activate Restaurant
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant -> Restaurant : printRestaurantStatus
+activate Restaurant
+Restaurant -> RestaurantGuest : isWaitingToBeServed
+activate RestaurantGuest
+RestaurantGuest --> Restaurant
+deactivate RestaurantGuest
+Restaurant -> Restaurant : getRatesAverage
+activate Restaurant
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant -> Simulation : getInstance
+activate Simulation
+Simulation --> Restaurant
+deactivate Simulation
+Restaurant -> Simulation : printToRestaurantStatus
+activate Simulation
+Simulation --> Restaurant
+deactivate Simulation
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant --> Customer
+deactivate Restaurant
+Customer --> Customer
+deactivate Customer
+Customer --> Customer
+deactivate Customer
+Customer --> RestaurantGuest
+deactivate Customer
+RestaurantGuest --> Restaurant
+deactivate RestaurantGuest
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant --> Restaurant
+deactivate Restaurant
+Restaurant --> SimulationManager
+deactivate Restaurant
+SimulationManager -> SimulationManager : generateCooksList
+activate SimulationManager
+SimulationManager -> SimulationManager : generateAndRegisterCook
+activate SimulationManager
+SimulationManager -> CookBuilder : new
+activate CookBuilder
+CookBuilder --> SimulationManager
+deactivate CookBuilder
+SimulationManager -> CookBuilder : buildCook
+activate CookBuilder
+CookBuilder --> SimulationManager
+deactivate CookBuilder
+SimulationManager -> CookBuilder : named
+activate CookBuilder
+CookBuilder --> SimulationManager
+deactivate CookBuilder
+SimulationManager -> PeopleData : getRandomFullName
+activate PeopleData
+PeopleData -> PeopleData : getRandomName
+activate PeopleData
+PeopleData -> SimulationUtilities : getRandomInt
+activate SimulationUtilities
+SimulationUtilities --> PeopleData
+deactivate SimulationUtilities
+PeopleData --> PeopleData
+deactivate PeopleData
+PeopleData -> PeopleData : getRandomSurname
+activate PeopleData
+PeopleData -> SimulationUtilities : getRandomInt
+activate SimulationUtilities
+SimulationUtilities --> PeopleData
+deactivate SimulationUtilities
+PeopleData --> PeopleData
+deactivate PeopleData
+PeopleData --> SimulationManager
+deactivate PeopleData
+SimulationManager -> CookBuilder : withRandomAgility
+activate CookBuilder
+CookBuilder -> SimulationUtilities : getRandomInt
+activate SimulationUtilities
+SimulationUtilities --> CookBuilder
+deactivate SimulationUtilities
+CookBuilder --> SimulationManager
+deactivate CookBuilder
+SimulationManager -> CookBuilder : withRandomSkillLevel
+activate CookBuilder
+CookBuilder -> SimulationUtilities : getRandomInt
+activate SimulationUtilities
+SimulationUtilities --> CookBuilder
+deactivate SimulationUtilities
+CookBuilder --> SimulationManager
+deactivate CookBuilder
+SimulationManager -> CookBuilder : withOrderQualityDeterminer
+activate CookBuilder
+CookBuilder --> SimulationManager
+deactivate CookBuilder
+SimulationManager -> CookBuilder : workingAt
+activate CookBuilder
+CookBuilder --> SimulationManager
+deactivate CookBuilder
+SimulationManager -> CookBuilder : getBuiltCook
+activate CookBuilder
+CookBuilder -> Cook : new
+activate Cook
+Cook --> CookBuilder
+deactivate Cook
+CookBuilder --> SimulationManager
+deactivate CookBuilder
+SimulationManager -> TickManager : registerTickableObject
+activate TickManager
+TickManager --> SimulationManager
+deactivate TickManager
+SimulationManager --> SimulationManager
+deactivate SimulationManager
+SimulationManager --> SimulationManager
+deactivate SimulationManager
+SimulationManager -> Restaurant : addCooks
+activate Restaurant
+Restaurant --> SimulationManager
+deactivate Restaurant
+SimulationManager -> TickManager : registerTickableObject
+activate TickManager
+TickManager --> SimulationManager
+deactivate TickManager
+SimulationManager --> Simulation
+deactivate SimulationManager
+Simulation -> SimulationManager : startSimulation
+activate SimulationManager
+SimulationManager -> SimulationManager : tick
+activate SimulationManager
+SimulationManager -> TickManager : tick
+activate TickManager
+TickManager -> ITickableActionObject : getTickableActions
+activate ITickableActionObject
+ITickableActionObject -> Customer : getTickableActions
+activate Customer
+Customer --> ITickableActionObject
+deactivate Customer
+ITickableActionObject --> TickManager
+deactivate ITickableActionObject
+TickManager -> TickManager : updateTickableActions
+activate TickManager
+TickManager -> TickableAction : isToBeAborted
+activate TickableAction
+TickableAction --> TickManager
+deactivate TickableAction
+TickManager -> TickableAction : getTicksToComplete
+activate TickableAction
+TickableAction --> TickManager
+deactivate TickableAction
+TickManager -> TickManager : handleActionFinish
+activate TickManager
+TickManager -> TickableAction : executeOnFinishCallback
+activate TickableAction
+TickableAction -> ITickableActionFinishCallback : execute
+activate ITickableActionFinishCallback
+ITickableActionFinishCallback --> TickableAction
+deactivate ITickableActionFinishCallback
+TickableAction --> TickManager
+deactivate TickableAction
+TickManager -> TickableAction : isRepeatable
+activate TickableAction
+TickableAction --> TickManager
+deactivate TickableAction
+TickManager -> TickableAction : getDuration
+activate TickableAction
+TickableAction --> TickManager
+deactivate TickableAction
+TickManager -> TickableAction : setTicksToComplete
+activate TickableAction
+TickableAction --> TickManager
+deactivate TickableAction
+TickManager --> TickManager
+deactivate TickManager
+TickManager -> TickManager : handleActionUpdate
+activate TickManager
+TickManager -> TickableAction : decrementTicks
+activate TickableAction
+TickableAction --> TickManager
+deactivate TickableAction
+TickManager -> TickableAction : executeOnUpdateCallback
+activate TickableAction
+TickableAction -> ITickableActionTickCallback : execute
+activate ITickableActionTickCallback
+ITickableActionTickCallback --> TickableAction
+deactivate ITickableActionTickCallback
+TickableAction --> TickManager
+deactivate TickableAction
+TickManager --> TickManager
+deactivate TickManager
+TickManager --> TickManager
+deactivate TickManager
+TickManager -> TickManager : synchronizeTickableActionObjects
+activate TickManager
+TickManager --> TickManager
+deactivate TickManager
+TickManager -> TickManager : cleanupTickableActionObjects
+activate TickManager
+TickManager --> TickManager
+deactivate TickManager
+TickManager -> TickManager : printTickableActions
+activate TickManager
+TickManager -> ITickableActionObject : getTickableActions
+activate ITickableActionObject
+ITickableActionObject -> Customer : getTickableActions
+activate Customer
+Customer --> ITickableActionObject
+deactivate Customer
+ITickableActionObject --> TickManager
+deactivate ITickableActionObject
+TickManager -> TickableAction : getDescription
+activate TickableAction
+TickableAction --> TickManager
+deactivate TickableAction
+TickManager -> TickableAction : getTicksToComplete
+activate TickableAction
+TickableAction --> TickManager
+deactivate TickableAction
+TickManager -> Simulation : getInstance
+activate Simulation
+Simulation --> TickManager
+deactivate Simulation
+TickManager -> Simulation : printToTickableActionsStatus
+activate Simulation
+Simulation -> OutputDisplayProvider : printTickableActionsStatus
+activate OutputDisplayProvider
+OutputDisplayProvider --> Simulation
+deactivate OutputDisplayProvider
+Simulation --> TickManager
+deactivate Simulation
+TickManager --> TickManager
+deactivate TickManager
+TickManager --> SimulationManager
+deactivate TickManager
+SimulationManager -> TickManager : getElapsedTicks
+activate TickManager
+TickManager --> SimulationManager
+deactivate TickManager
+SimulationManager -> SimulationManager : toString
+activate SimulationManager
+SimulationManager --> SimulationManager
+deactivate SimulationManager
+SimulationManager -> OutputDisplayProvider : printDebug
+activate OutputDisplayProvider
+OutputDisplayProvider --> SimulationManager
+deactivate OutputDisplayProvider
+SimulationManager -> Restaurant : isOpened
+activate Restaurant
+Restaurant --> SimulationManager
+deactivate Restaurant
+SimulationManager -> OutputDisplayProvider : isOpened
+activate OutputDisplayProvider
+OutputDisplayProvider --> SimulationManager
+deactivate OutputDisplayProvider
+SimulationManager -> SimulationManager : stop
+activate SimulationManager
+SimulationManager -> SimulationManager : toString
+activate SimulationManager
+SimulationManager --> SimulationManager
+deactivate SimulationManager
+SimulationManager -> OutputDisplayProvider : printDebug
+activate OutputDisplayProvider
+OutputDisplayProvider --> SimulationManager
+deactivate OutputDisplayProvider
+SimulationManager --> SimulationManager
+deactivate SimulationManager
+SimulationManager --> SimulationManager
+deactivate SimulationManager
+SimulationManager --> Simulation
+deactivate SimulationManager
+Simulation --> Program
+deactivate Simulation
+return
+@enduml
